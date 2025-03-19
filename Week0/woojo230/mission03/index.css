@@ -1,0 +1,116 @@
+body {
+  background-color: #edf2f7;
+  color: #333;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+.header {
+  font-size: 2.5rem;
+  text-align: center;
+  margin: 2rem 0;
+  font-weight: bold;
+}
+
+.header__line {
+  width: 90%;
+  max-width: 1200px;
+  margin: 0 auto;
+  border: none;
+  height: 1px;
+  background-color: #ccc;
+}
+
+.searchBar {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.searchBar input {
+  background: white;
+  width: 50%;
+  height: 50px;
+  padding-left: 10px;
+  border: 2px solid #7c7c7c;
+  font-size: 1rem;
+  color: #666;
+}
+
+.lists {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 2rem;
+  width: 90%;
+  max-width: 1200px;
+  margin: 20px auto;
+}
+
+.list-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+}
+
+.list-container p {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-decoration-color: #ccc;
+  text-underline-offset: 0.5rem;
+}
+
+.doList,
+.didList {
+  width: 100%;
+  list-style: none;
+  padding: 0;
+}
+
+.doList li,
+.didList li {
+  margin: 10px 0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 3px solid #ccc;
+  border-bottom-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+  align-items: center;
+}
+
+.doList li button,
+.didList li button {
+  background-color: #ccc;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.doList li button:hover,
+.didList li button:hover {
+  background-color: #ddd;
+}
+
+@media (max-width: 768px) {
+  .lists {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .list-container {
+    width: 100%;
+    margin-bottom: 2rem;
+  }
+
+  .searchBar input {
+    width: 90%;
+  }
+}
