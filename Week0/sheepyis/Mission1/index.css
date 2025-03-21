@@ -19,6 +19,11 @@ nav {
     align-items: center;
 }
 
+button {
+    background: none;
+    border: none;
+}
+
 img {
     width: 20px;
     height: 20px;
@@ -30,12 +35,17 @@ img {
     gap: 30px;
 }
 
-p {
+li {
+    list-style-type: none;
     cursor: pointer;
+}
+
+a {
+    text-decoration-line: none;
     color: #FFFFFF;
 }
 
-.menu-icon {
+.menuButton {
     display: none;
 }
 
@@ -44,7 +54,7 @@ p {
         display: none;
     }
 
-    .menu-icon {
+    .menuButton {
         display: block;
     }
 }
