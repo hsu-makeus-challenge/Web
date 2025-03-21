@@ -1,0 +1,76 @@
+body {
+    background-color:aliceblue;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    box-sizing: border-box;
+}
+
+.customhr {
+    margin-top: 50px;
+    background-color: rgb(100, 112, 124);
+    width: 80vw;
+    height: 2px;
+}
+
+input {
+    padding: 5px;
+    margin-top: 20px;
+    height: 50px;
+    font-size: 15px;
+    width: 70vw;
+}
+
+input::placeholder {
+    font-style: italic;
+}
+
+.todopannel {
+    width: 70vw;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.subT{
+    margin-bottom: 30px;
+    font-weight: 900;
+    text-decoration: underline;
+    text-decoration-color: navy;
+}
+
+.todo {
+    font-weight: bold;
+    
+}
+
+.task-container{
+    padding: 20px 10px 20px 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width:200px;
+    align-items: center;
+    border-bottom: 3px solid rgb(109, 134, 169);
+}
+
+
+.taskList,
+.doneList {
+    display: flex;
+    flex-direction: column;
+    
+    align-items: center;
+    width:200px;
+}
+
+.btn {
+    height: 25px;
+    border: none;
+    background-color: lightblue;
+    cursor: pointer;
+}
