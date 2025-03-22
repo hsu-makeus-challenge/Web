@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #grid_container{
+            box-sizing: border-box;
+            border:3px black solid;
+            width:800px; height: 900px;
+            display: grid;
+            grid-template-columns: repeat(4,1fr);
+            grid-template-rows: repeat(10,1fr);
+        }
+        #header_box{
+            grid-column-start: 1;
+            grid-column-end: 2;
+            grid-row-start: 1;
+            grid-row-end: 2;
+            background-color: blue;
+            display: flex;
+            justify-content: space-around; /* 내부 아이템 균등 배치 */
+            align-items: center; /* 세로 중앙 정렬 */
+        }
+        #header{
+            color:white;
+            font-size: 30px;
+        }
+        #menu_box{
+            grid-column-start: 2;
+            grid-column-end: 5;
+            grid-row-start: 1;
+            grid-row-end:2;
+            background-color: brown;
+            display: flex;
+            justify-content: space-around; /* 내부 아이템 균등 배치 */
+            align-items: center; /* 세로 중앙 정렬 */
+        }
+        #menu{
+            color:white;
+            font-size: 30px;
+        }
+        #hero_box{
+            grid-column-start: 1;
+            grid-column-end: 5;
+
+            grid-row-start: 2;
+            grid-row-end: 6;
+            background-color: aqua;
+
+            display: flex;
+            justify-content: space-around; /* 내부 아이템 균등 배치 */
+            align-items: center; /* 세로 중앙 정렬 */
+
+        }
+        #hero{
+            color:white;
+            font-size: 30px;
+        }
+        #main_box{
+            grid-column-start: 1;
+            grid-column-end: 3;
+            grid-row-start: 6;
+            grid-row-end: 10;
+            background-color: darkblue;
+            display:flex;
+            justify-content: space-around; /* 내부 아이템 균등 배치 */
+            align-items: center; /* 세로 중앙 정렬 */
+        }
+        #main{
+            color:white;
+            font-size: 30px;
+        }
+        #image_box{
+            grid-column-start: 4;
+            grid-column-end: 5;
+            grid-row-start: 6;
+            grid-row-end: 8;
+            background-color: greenyellow;
+            display:flex;
+            justify-content: space-around; /* 내부 아이템 균등 배치 */
+            align-items: center; /* 세로 중앙 정렬 */
+        }
+        #image{
+            color:white;
+            font-size: 30px;
+        }
+        #extra_box{
+            grid-column-start: 4;
+            grid-column-end: 5;
+            grid-row-start: 8;
+            grid-row-end: 10;
+            background-color: aquamarine;
+            display:flex;
+            justify-content: space-around; /* 내부 아이템 균등 배치 */
+            align-items: center; /* 세로 중앙 정렬 */
+        }
+        #extra{
+            color:white;
+            font-size: 30px;
+        }
+        #banner_box{
+            grid-column-start: 1;
+            grid-column-end: 5;
+            grid-row-start: 10;
+            grid-row-end: 11;
+            background-color: yellow;
+            display:flex;
+            justify-content: space-around; /* 내부 아이템 균등 배치 */
+            align-items: center; /* 세로 중앙 정렬 */
+        }
+        #banner{
+            color:white;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div id="grid_container">
+        <div id="header_box"><div id="header">HEADER</div></div>
+        <div id="menu_box"><div id="menu">MENU</div></div>
+        <div id="hero_box"><div id="hero">HERO</div></div>
+        <div id="main_box"><div id="main">MAIN</div></div>
+        <div id="image_box"><div id="image">IMAGE</div></div>
+        <div id="extra_box"><div id="extra">EXTRA</div></div>
+        <div id="banner_box"><div id="banner">BANNER</div></div>
+        
+    </div>
+</body>
+</html>
