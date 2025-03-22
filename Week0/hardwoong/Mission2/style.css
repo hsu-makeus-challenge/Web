@@ -1,0 +1,90 @@
+* {
+  margin: 0;
+}
+
+body {
+  display: grid;
+  grid-template-rows: 9vh 40vh auto 12vh;
+  width: 100%;
+  height: 100vh;
+}
+
+.head {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  width: 100%;
+}
+
+.header, .menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+}
+
+.header {
+  background-color: rgb(8, 8, 33);
+}
+
+.menu {
+  background-color: rgb(219, 35, 72);
+}
+
+.hero {
+  background-color: rgb(78, 139, 188);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  width: 100%;
+  height: auto;
+}
+
+.main {
+  background-color: rgb(32, 46, 61);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: white;
+}
+
+.gap {
+  background-color: white;
+}
+
+.right {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+
+.image {
+  background-color: rgb(183, 229, 244);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.extra {
+  background-color: rgb(71, 191, 125);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}
+
+.banner {
+  background-color: rgb(251, 226, 83);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+}

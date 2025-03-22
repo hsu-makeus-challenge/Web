@@ -1,0 +1,60 @@
+html {
+    width: 100vw;
+    height: 100vh;
+}
+
+header {
+    width: 100%;
+    height: 60px;
+    background: #02061F;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+nav {
+    width: 80%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+button {
+    background: none;
+    border: none;
+}
+
+img {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.menu {
+    display: flex;
+    gap: 30px;
+}
+
+li {
+    list-style-type: none;
+    cursor: pointer;
+}
+
+a {
+    text-decoration-line: none;
+    color: #FFFFFF;
+}
+
+.menuButton {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .menu {
+        display: none;
+    }
+
+    .menuButton {
+        display: block;
+    }
+}

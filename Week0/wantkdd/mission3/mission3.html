@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UMC Study Plan</title>
+    <link rel="stylesheet" href="mission3.css" />
+  </head>
+  <body>
+    <header>
+      <h1>UMC Study Plan</h1>
+    </header>
+    <hr />
+    <main>
+      <form id="todo-form">
+        <input
+          class="input"
+          type="text"
+          id="todo-input"
+          placeholder="스터디 계획을 작성해보세요!"
+        />
+      </form>
+      <div class="lists">
+        <section class="todo">
+          <h2 class="title">해야할 일</h2>
+          <ul id="todo-list"></ul>
+        </section>
+        <section class="complete">
+          <h2 class="title">해낸 일</h2>
+          <ul id="done-list"></ul>
+        </section>
+      </div>
+    </main>
+    <script src="mission3.js"></script>
+  </body>
+</html>

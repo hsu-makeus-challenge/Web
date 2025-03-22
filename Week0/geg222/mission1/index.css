@@ -1,0 +1,43 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #b3b3b3;
+}
+
+.mission1 {
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    background-color: #0a0a1a;
+    padding: 15px 50px;
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 25px;
+    padding: 0;
+    margin-right: 200px; 
+}
+
+.nav-links li {
+    display: inline-block;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+
+.logo {
+    display: flex;
+    align-items: center;
+    margin-left: 100px; 
+}
+
+.logo img {
+    height: 20px;
+}
