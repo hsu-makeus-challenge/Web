@@ -62,6 +62,7 @@ function render() {
         button.onclick = () => completeTodo(todo.id);
 
         li.appendChild(textBox);
+
         li.appendChild(button);
         todoList.appendChild(li);
     });
@@ -79,6 +80,7 @@ function render() {
         button.onclick = () => deleteTask(task.id);
 
         li.appendChild(textBox);
+
         li.appendChild(button);
         doneList.appendChild(li);
     });
