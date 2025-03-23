@@ -3,56 +3,83 @@ const addButton = document.getElementById("addButton") as HTMLButtonElement;
 const todoList = document.getElementById("todoList") as HTMLUListElement;
 const doneList = document.getElementById("doneList") as HTMLUListElement;
 
-// input 엔터 시
-input.addEventListener("keypress", (event: KeyboardEvent) => {
-    if (event.key === "Enter" && input.value.trim() !== "") {
-        addTodoItem(input.value.trim());
-        input.value = "";
-    }
-});
+type Todo = {
+    id: number;
+    text: string;
+};
 
-// 추가 버튼 클릭 시
-addButton.addEventListener("click", () => {
-    if (input.value.trim() !== "") {
-        addTodoItem(input.value.trim());
-        input.value = "";
-    }
+let todos: Todo[] = [];
+let doneTasks: Todo[] = [];
+let nextId = 0;
+
+// 엔터 이벤트
+input.addEventListener("keypress", (event) => {
+    if (event.key === "Enter") handleAdd();
 });
+addButton.addEventListener("click", handleAdd);
 
 // 할 일 추가
-function addTodoItem(text: string): void {
-    const li = document.createElement("li");
-    li.classList.add("todo-item");
+function handleAdd() {
+    const text = input.value.trim();
+    if (!text) return;
 
-    const textBox = document.createElement("span");
-    textBox.textContent = text;
-
-    const completeButton = document.createElement("button");
-    completeButton.textContent = "완료";
-
-    // 완료 버튼 클릭 시 -> li 이동
-    completeButton.addEventListener("click", () => moveToDone(li, text));
-
-    li.appendChild(textBox);
-    li.appendChild(completeButton);
-    todoList.appendChild(li);
+    todos.push({ id: nextId++, text });
+    input.value = "";
+    render();
 }
 
-// 이동
-function moveToDone(li: HTMLLIElement, text: string): void {
-    li.innerHTML = "";
+// 완료 버튼 클릭 시
+function completeTodo(id: number) {
+    const index = todos.findIndex(t => t.id === id);
+    if (index === -1) return;
 
-    const textBox = document.createElement("span");
-    textBox.textContent = text;
+    const [done] = todos.splice(index, 1);
+    if (done) {
+        doneTasks.push(done);
+        render();
+    }
+}
 
-    const deleteButton = document.createElement("button");
-    deleteButton.classList.add("delete");
-    deleteButton.textContent = "삭제";
+// 할 일 삭제
+function deleteTask(id: number) {
+    doneTasks = doneTasks.filter(t => t.id !== id);
+    render();
+}
 
-    // 삭제 버튼 클릭 시 -> li 삭제
-    deleteButton.addEventListener("click", () => li.remove());
+function render() {
+    todoList.innerHTML = "";
+    doneList.innerHTML = "";
 
-    li.appendChild(textBox);
-    li.appendChild(deleteButton);
-    doneList.appendChild(li);
+    // 할 일 목록
+    todos.forEach(todo => {
+        const li = document.createElement("li");
+
+        const textSpan = document.createElement("span");
+        textSpan.textContent = todo.text;
+
+        const button = document.createElement("button");
+        button.textContent = "완료";
+        button.onclick = () => completeTodo(todo.id);
+
+        li.appendChild(textSpan);
+        li.appendChild(button);
+        todoList.appendChild(li);
+    });
+
+    // 완료된 목록
+    doneTasks.forEach(task => {
+        const li = document.createElement("li");
+
+        const textSpan = document.createElement("span");
+        textSpan.textContent = task.text;
+
+        const button = document.createElement("button");
+        button.textContent = "삭제";
+        button.classList.add("delete");
+        button.onclick = () => deleteTask(task.id);
+
+        li.appendChild(textSpan);
+        li.appendChild(button);
+        doneList.appendChild(li);
+    });
 }
