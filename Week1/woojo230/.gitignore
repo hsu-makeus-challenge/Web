@@ -1,0 +1,17 @@
+node_modules/
+dist/
+*.log
+*.env
+.idea/
+.vscode/
+.DS_Store
+*.tsbuildinfo
+coverage/
+.npm/
+out/
+.tmp/
+.eslintcache
+jest.config.js
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
