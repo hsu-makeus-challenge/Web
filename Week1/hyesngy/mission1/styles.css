@@ -1,0 +1,99 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: aliceblue;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+form {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+  margin-bottom: 20px;
+}
+
+input {
+  flex: 1;
+  padding: 8px;
+  border: 1.5px solid lightgray;
+  border-radius: 4px;
+}
+
+input:focus {
+  outline: none;
+}
+
+button {
+  color: white;
+  border-radius: 6px;
+  border: none;
+  padding: 6px 8px;
+  cursor: pointer;
+}
+
+section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+ul {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+li {
+  display: block;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: start;
+  background-color: #f2f2f2;
+  padding: 8px;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.16), 0 1px 3px rgba(0, 0, 0, 0.23);
+}
+
+.container {
+  width: 500px;
+  height: fit-content;
+  padding: 24px;
+  margin: 0 auto;
+  background-color: white;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+}
+
+.todo-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.add-btn,
+.complete-btn {
+  background-color: mediumseagreen;
+  margin-right: 6px;
+}
+
+.delete-btn {
+  background-color: red;
+}
