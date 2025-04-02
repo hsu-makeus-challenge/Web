@@ -25,7 +25,6 @@ document.addEventListener('DOMContentLoaded', function () {
             moveTask(taskItem, todoList, completedList);
         });
         taskItem.appendChild(completeBtn);
-
         todoList.appendChild(taskItem);
     }
 

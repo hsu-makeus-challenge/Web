@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>To do List</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./dist/script.js" defer></script>
+</head>
+
+<body>
+  <main class="container">
+    <header>
+      <h1>YHS TODO</h1>
+    </header>
+
+    <form id="todo-form">
+      <input type="text" id="todo-input" placeholder="할 일 입력">
+      <button type="submit" class="add-btn">할 일 추가</button>
+    </form>
+
+    <div class="todo-container">
+      <section>
+        <h3>할 일</h3>
+        <ul id="todo-list">
+        </ul>
+      </section>
+      <section>
+        <h3>완료</h3>
+        <ul id="completed-list">
+        </ul>
+      </section>
+    </div>
+  </main>
+</body>
+
+</html>

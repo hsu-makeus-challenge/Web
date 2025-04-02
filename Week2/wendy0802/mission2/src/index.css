@@ -1,0 +1,19 @@
+/* index.css */
+body {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* 라이트 모드 */
+body.light {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* 다크 모드 */
+body.dark {
+  background-color: #1a1a2e;
+  color: #ffffff;
+}
