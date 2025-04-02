@@ -1,0 +1,116 @@
+body {
+  background-color: #e1e7f5;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+main {
+  width: 90%;
+  max-width: 500px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.input {
+  padding: 8px;
+  font-size: 15px;
+  border: 2px solid lightgray;
+  border-radius: 5px;
+  flex-grow: 1;
+  min-width: 120px;
+}
+
+.input:focus {
+  border-color: blue;
+  outline: none;
+}
+
+.addButton {
+  background-color: green;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 8px 12px;
+  min-width: 100px;
+}
+
+.addButton:hover {
+  transform: scale(0.9);
+}
+
+.lists {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.list-section {
+  flex: 1;
+  text-align: center;
+  min-width: 200px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  background-color: #f9f9f9;
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.complete-btn,
+.delete-btn {
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 4px 6px;
+  margin-left: 10px;
+}
+
+.complete-btn {
+  background-color: green;
+}
+
+.delete-btn {
+  background-color: red;
+}
+
+.delete-btn:hover,
+.complete-btn:hover {
+  transform: scale(0.9);
+}
+
+.todo-list,
+.done-list {
+  width: 100%;
+}
