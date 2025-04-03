@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UMC Study Plan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e8ecf1;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            margin-top: 30px;
+        }
+        input {
+            width: 60%;
+            padding: 10px;
+            margin: 20px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 14px;
+            background: white;
+        }
+        .study-list {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .column {
+            width: 40%;
+            padding: 10px;
+        }
+        h3 {
+            border-bottom: 2px solid black;
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+        .task {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f1f3f5;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+        .btn {
+            background: #b0b3b8;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 3px;
+            font-size: 12px;
+        }
+        .btn:hover {
+            background: #8c8f94;
+        }
+    </style>
+</head>
+<body>
+    <h1>UMC Study Plan</h1>
+    <br><br><br>
+    <hr>
+    <input type="text" id="taskInput" placeholder="해야 할 일을 작성하세요!">
+    <div class="study-list">
+        <div class="column">
+            <h3>해야 할 일</h3>
+            <div id="todoList"></div>
+        </div>
+        <div class="column">
+            <h3>해낸 일</h3>
+            <div id="doneList"></div>
+        </div>
+    </div>
+
+    <script>
+        const taskInput = document.getElementById("taskInput");
+        const todoList = document.getElementById("todoList");
+        const doneList = document.getElementById("doneList");
+
+        taskInput.addEventListener("keypress", function(event) {
+            if (event.key === "Enter" && taskInput.value.trim() !== "") {
+                addTask(taskInput.value.trim());
+                taskInput.value = "";
+            }
+        });
+
+        function addTask(taskText) {
+            const taskDiv = document.createElement("div");
+            taskDiv.classList.add("task");
+
+            const taskSpan = document.createElement("span");
+            taskSpan.textContent = taskText;
+
+            const completeBtn = document.createElement("button");
+            completeBtn.classList.add("btn");
+            completeBtn.textContent = "완료";
+            completeBtn.onclick = function() {
+                moveTaskToDone(taskDiv);
+            };
+
+            taskDiv.appendChild(taskSpan);
+            taskDiv.appendChild(completeBtn);
+            todoList.appendChild(taskDiv);
+        }
+
+        function moveTaskToDone(taskDiv) {
+            taskDiv.querySelector("button").remove();
+            const deleteBtn = document.createElement("button");
+            deleteBtn.classList.add("btn");
+            deleteBtn.textContent = "삭제";
+            deleteBtn.onclick = function() {
+                taskDiv.remove();
+            };
+
+            taskDiv.appendChild(deleteBtn);
+            doneList.appendChild(taskDiv);
+        }
+    </script>
+</body>
+</html>
