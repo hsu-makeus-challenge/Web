@@ -3,14 +3,15 @@ import ItemTodo from "./item-todo";
 
 interface ListTodoProps {
   title: string;
-  funcName: string;
+  isDone: boolean;
 }
 
-const ListTodo = ({ title, funcName }: ListTodoProps) => {
+const ListTodo = ({ title, isDone }: ListTodoProps) => {
   const { todos, doneTasks, handleComplete, handleDelete } = useTodo();
 
-  const items = funcName === "완료" ? todos : doneTasks;
-  const onClick = funcName === "완료" ? handleComplete : handleDelete;
+  const items = isDone ? doneTasks : todos;
+  const onClick = isDone ? handleDelete : handleComplete;
+  const funcName = isDone ? "삭제" : "완료";
 
   return (
     <ul>

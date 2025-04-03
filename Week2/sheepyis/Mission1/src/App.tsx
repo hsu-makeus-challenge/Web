@@ -12,8 +12,8 @@ function App() {
             <Form />
 
             <section id="listContainer">
-              <ListTodo title="할 일" funcName="완료" />
-              <ListTodo title="완료" funcName="삭제" />
+              <ListTodo title="할 일" isDone={false} />
+              <ListTodo title="완료" isDone={true} />
             </section>
         </main>
       </div>
