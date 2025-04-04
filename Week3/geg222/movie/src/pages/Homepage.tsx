@@ -39,10 +39,10 @@ const Homepage = (): JSX.Element => {
   }, [location.pathname]);
 
   return (
-    <div>
+    <div className="bg-black min-h-screen text-white">
       <Navbar />
       {location.pathname === "/" ? (
-        <div className="relative w-full h-screen overflow-hidden">
+        <div className="relative w-full h-screen overflow-hidden bg-black">
           <div className="absolute inset-0 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-1 blur-sm brightness-50 z-0">
             {backgroundImages.map((src, index) => (
               <img
@@ -54,11 +54,13 @@ const Homepage = (): JSX.Element => {
             ))}
           </div>
           <div className="flex justify-center items-center h-screen z-10 relative">
-            <h1 className="text-[12rem] font-extrabold text-red-600 tracking-wider drop-shadow-2xl">JUNFLIX</h1>
+          <h1 className="text-[12rem] font-extrabold text-red-600 tracking-wider drop-shadow-2xl zoom-fade">YOUNGFLIX</h1>
           </div>
         </div>
       ) : (
-        <Outlet />
+        <div className="min-h-screen text-white">
+          <Outlet />
+        </div>
       )}
     </div>
   );

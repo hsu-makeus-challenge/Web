@@ -18,8 +18,8 @@ const Navbar = () => {
               to={to}
               className={({ isActive }) =>
                 isActive
-                  ? 'text-lg font-semibold text-blue-600'
-                  : 'text-lg font-semibold text-gray-800 hover:text-blue-500'
+                  ? 'text-lg font-semibold text-red-600'
+                  : 'text-lg font-semibold text-white hover:text-red-500'
               }
             >
               {label}

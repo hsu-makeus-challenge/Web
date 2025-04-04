@@ -3,7 +3,7 @@ import axios from "axios";
 import { Movie, MovieResponse } from "../types/movie";
 import MovieCard from "../components/MovieCard";
 import { LoadingSpinner } from "../components/LoadingSpinner";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 export default function MoviePage(): JSX.Element {
   const [movies, setMovies] = useState<Movie[]>([]);
@@ -15,13 +15,19 @@ export default function MoviePage(): JSX.Element {
     category: string;
   }>();
   
+  const categoryMap = {
+    popular: "인기 영화",
+    top_rated: "평점 높은 영화",
+    now_playing: "상영 중인 영화",
+    upcoming: "개봉 예정 영화"
+  };
 
   useEffect(() => {
     const fetchMovies = async (): Promise<void> => {
       setIsPending(true);
       try {
         const { data } = await axios.get<MovieResponse>(
-          `https://api.themoviedb.org/3/movie/${category}?language=en-US&page=${page}`,
+          `https://api.themoviedb.org/3/movie/${category}?language=ko-KR&page=${page}`,
           {
             headers: {
               Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
@@ -50,19 +56,44 @@ export default function MoviePage(): JSX.Element {
   }
 
   return (
-    <>
-      <div className="flex items-center justify-center gap-4 my-6">
+    <div className="bg-black p-10">
+      <div className="relative w-full h-[70vh] bg-black text-white mb-10 overflow-hidden">
+        {movies[0] && (
+          <div
+            className="absolute inset-0 bg-cover bg-center opacity-40 blur-sm"
+            style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${movies[0].backdrop_path})` }}
+          />
+        )}
+        <Link
+          to={`/movie/${movies[0]?.id}`}
+          className="relative z-10 flex flex-col justify-center items-start h-full px-10 hover:opacity-90 transition-opacity duration-200"
+        >
+          <h1 className="text-6xl font-extrabold mb-4 drop-shadow-lg">{movies[0]?.title}</h1>
+          <p className="text-lg max-w-xl line-clamp-3 drop-shadow-sm">{movies[0]?.overview}</p>
+        </Link>
+      </div>
+
+      <h2 className="text-4xl font-extrabold text-white mb-8 tracking-wide">
+        {{
+          popular: "인기 영화",
+          top_rated: "평점 높은 영화",
+          now_playing: "상영 중인 영화",
+          upcoming: "개봉 예정 영화"
+        }[category as keyof typeof categoryMap] || "영화 목록"}
+      </h2>
+
+      <div className="flex items-center justify-center gap-4 my-6 bg-black text-white">
         <button
           disabled={page === 1}
           onClick={(): void => setPage((prev): number => prev - 1)}
-          className="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400 disabled:bg-gray-200 cursor-pointer disabled:cursor-not-allowed"
+          className="px-4 py-2 rounded-md bg-red-700 hover:bg-red-600 disabled:bg-gray-700 cursor-pointer disabled:cursor-not-allowed text-white"
         >
           {"<"}
         </button>
-        <span className="text-lg font-semibold">{page} 페이지</span>
+        <span className="text- font-semibold">{page} 페이지</span>
         <button
           onClick={(): void => setPage((prev): number => prev + 1)}
-          className="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400 cursor-pointer"
+          className="px-4 py-2 rounded-md bg-red-700 hover:bg-red-600 cursor-pointer text-white"
         >
           {">"}
         </button>
@@ -83,6 +114,6 @@ export default function MoviePage(): JSX.Element {
           )}
         </div>
       )}
-    </>
+    </div>
   );
 }

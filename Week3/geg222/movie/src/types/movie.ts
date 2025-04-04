@@ -21,4 +21,27 @@ export type Movie = {
     total_pages: number;
     total_results: number;
   };
+
+  export type MovieDetail = {
+    title: string;
+    tagline: string;
+    release_date: string;
+    runtime: number;
+    vote_average: number;
+    overview: string;
+    poster_path: string;
+    backdrop_path: string;
+    genres: { id: number; name: string }[];
+    credits?: {
+      cast: MovieCast[];
+    };
+  };
   
+  export type MovieCast = {
+    id: number;
+    name: string;
+    original_name: string;
+    profile_path: string | null;
+    character: string;
+    job?: string;
+  };
