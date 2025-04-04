@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { JSX, useState } from "react";
 import { Movie } from "../types/movie";
 
 interface MovieCardProps {
