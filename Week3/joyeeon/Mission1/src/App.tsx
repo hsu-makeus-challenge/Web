@@ -1,14 +1,40 @@
-import { useState } from 'react'
-import MovieList from './components/MovieList'
-import './App.css'
+import MovieList from './components/moviescomp/MovieList'
+import RootLayout from './layout/Root-layout'
+
+import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import Notfound from './pages/Notfound'
+import Homepage from './pages/Homepage'
+import MoviePage from './pages/Moviepage'
+
+
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <RootLayout/>,
+    errorElement: <Notfound />,
+    children:[
+      {
+        index:true,
+        element:<Homepage />
+
+      },
+      {
+        path: '/movies/:category',
+        element:<MoviePage />
+        // children : [
+        //   {
+        //     path:'/popular',
+        //     element:<MoviePage />
+        //   }
+        // ]
+      }
+    ]
+  },
+])
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <MovieList />
-    </>
+    <RouterProvider router={router}/>
   )
 }
 

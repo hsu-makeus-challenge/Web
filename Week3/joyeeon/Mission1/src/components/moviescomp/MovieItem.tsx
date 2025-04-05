@@ -1,4 +1,4 @@
-import { Movie } from "../types/movie";
+import { Movie } from "../../types/movie";
 
 interface MovieItemProps {
     movie: Movie;
@@ -13,7 +13,7 @@ const MovieItem = ({movie} : MovieItemProps) =>{
             <img 
             src={`${imgURL}${movie.poster_path}`}
             alt="포스터" 
-            className="w-full block group-hover:blur-md"
+            className="w-full h-full object-cover block group-hover:blur-md"
             />
 
             
