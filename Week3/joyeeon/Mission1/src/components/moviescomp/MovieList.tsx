@@ -6,10 +6,10 @@ import useLoading from "../../hooks/UseLoading";
 import IsLoading from "../state/IsLoading";
 import IsError from "../state/IsError";
 
-//type Category = 'popular' | 'top_rated' | 'upcoming' | 'now_playing';
+type Category = 'popular' | 'top_rated' | 'upcoming' | 'now_playing';
 
 interface CategoryProps {
-    category?:string;
+    category:Category;
     page:number;
     setTotalPages:(total:number) =>void;
 }
