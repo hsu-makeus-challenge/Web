@@ -1,6 +1,6 @@
 import { MdError } from "react-icons/md";
 
-const isError = () =>{
+const IsError = () =>{
     return (
         <section className="flex flex-col items-center">
         <MdError   className="text-red-500 text-4xl"/>
@@ -9,4 +9,4 @@ const isError = () =>{
     )
 }
 
-export default isError;
+export default IsError;

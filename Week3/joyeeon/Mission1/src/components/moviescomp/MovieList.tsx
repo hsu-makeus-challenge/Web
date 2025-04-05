@@ -4,7 +4,7 @@ import MovieItem from "./MovieItem";
 import { Movie } from "../../types/movie";
 import useLoading from "../../hooks/UseLoading";
 import IsLoading from "../state/IsLoading";
-import IsError from "../state/isError";
+import IsError from "../state/IsError";
 
 //type Category = 'popular' | 'top_rated' | 'upcoming' | 'now_playing';
 

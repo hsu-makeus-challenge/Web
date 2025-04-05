@@ -1,4 +1,6 @@
 import { Movie } from "../../types/movie";
+import { useNavigate } from "react-router-dom";
+import { MouseEvent } from "react";
 
 interface MovieItemProps {
     movie: Movie;
@@ -6,9 +8,14 @@ interface MovieItemProps {
 
 const MovieItem = ({movie} : MovieItemProps) =>{
     const imgURL : string = 'https://image.tmdb.org/t/p/w500'
+    const navigate = useNavigate();
+
+    const handleNavigate = (id:number) => (e:MouseEvent<HTMLLIElement>) => {
+            navigate(`/movies/detail/${id}`);
+        };
 
     return(
-        <li key={movie.id} className="relative w-32 group aspect-[2/3] rounded-md overflow-hidden">
+        <li key={movie.id} onClick={handleNavigate(movie.id)} className="relative w-32 group aspect-[2/3] rounded-md overflow-hidden">
             {/* <h3>{movie.title}</h3> */}
             <img 
             src={`${imgURL}${movie.poster_path}`}

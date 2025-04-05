@@ -1,10 +1,10 @@
-import MovieList from './components/moviescomp/MovieList'
 import RootLayout from './layout/Root-layout'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import Notfound from './pages/Notfound'
 import Homepage from './pages/Homepage'
 import MoviePage from './pages/Moviepage'
+import DetailMoviePage from './pages/DetailMoviePage'
 
 
 const router = createBrowserRouter([
@@ -19,14 +19,17 @@ const router = createBrowserRouter([
 
       },
       {
-        path: '/movies/:category',
-        element:<MoviePage />
-        // children : [
-        //   {
-        //     path:'/popular',
-        //     element:<MoviePage />
-        //   }
-        // ]
+        path: '/movies',
+        children : [
+          {
+            path:':category',
+            element:<MoviePage />
+          },
+          {
+            path: 'detail/:id',
+            element: <DetailMoviePage />
+          }
+        ]
       }
     ]
   },
