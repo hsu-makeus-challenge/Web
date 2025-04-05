@@ -1,6 +1,6 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
-interface Todo {
+export interface Todo {
     id: number;
     text: string;
     isdone: boolean;

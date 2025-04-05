@@ -9,7 +9,7 @@ const Navbar = () =>{
 
     return (
         <nav className={`
-            w-full h-12 flex items-center justify-between px-10
+            w-full h-12 flex items-center justif px-10
             shadow
             ${isLightMode?
                 ' bg-gray-800' : 'bg-gray-200'
