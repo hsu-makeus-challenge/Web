@@ -13,7 +13,7 @@ const MoviePage = () => {
           'https://api.themoviedb.org/3/discover/movie?include_adult=false&include_video=false&language=en-US&page=1&sort_by=popularity.desc',
           {
             headers: {
-              Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwZDk0MzhhY2JmZWRhMGQ5ZWIyYjk3ODI4NzRjOTdlZCIsIm5iZiI6MTc0MzA0NzQwMC4zODcsInN1YiI6IjY3ZTRjYWU4NDIxZWI4YzMzMWJhMmYyNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lY6hn_pEOwUHsRjD8vBWKgcM93QNIPVUgsy-izcUcVw`, // 🔑 여기에 본인 토큰
+              Authorization: `Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIwZDk0MzhhY2JmZWRhMGQ5ZWIyYjk3ODI4NzRjOTdlZCIsIm5iZiI6MTc0MzA0NzQwMC4zODcsInN1YiI6IjY3ZTRjYWU4NDIxZWI4YzMzMWJhMmYyNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lY6hn_pEOwUHsRjD8vBWKgcM93QNIPVUgsy-izcUcVw`,
               accept: 'application/json',
             },
           }
