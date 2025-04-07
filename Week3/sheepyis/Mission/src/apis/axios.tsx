@@ -8,5 +8,6 @@ export const API = axios.create({
     headers: {
         accept: 'application/json',
         Authorization: `Bearer ${acessToken}`
-    }
+    },
+    withCredentials: true
 });
