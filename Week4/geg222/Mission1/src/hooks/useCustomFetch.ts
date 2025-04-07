@@ -5,6 +5,7 @@ interface ApiResponse<T> {
   data: T | null;
   isPending: boolean;
   isError: boolean;
+
 }
 
 function useCustomFetch<T>(url: string): ApiResponse<T> {
@@ -17,7 +18,7 @@ function useCustomFetch<T>(url: string): ApiResponse<T> {
       setIsPending(true);
       try {
         const response = await axios.get<T>(url, {
-          headers: {
+          headers: { 
             Authorization: `Bearer ${import.meta.env.VITE_TMDB_KEY}`,
           },
         });

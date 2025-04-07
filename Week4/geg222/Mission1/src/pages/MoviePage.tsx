@@ -13,6 +13,10 @@ export default function MoviePage(): JSX.Element {
   const { category } = useParams<{
     category: string;
   }>();
+
+  useEffect(() => {
+    setPage(1);
+  }, [category]);
   
   const categoryMap = {
     popular: "인기 영화",
@@ -78,9 +82,9 @@ export default function MoviePage(): JSX.Element {
         </div>
       )}
 
-      {!isPending && (
+      {!isPending && data && (
         <div className="p-10 grid gap-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
-          {(data?.results || []).map((movie): JSX.Element => (
+          {data.results.map((movie): JSX.Element => (
             <MovieCard key={movie.id} movie={movie} />
           ))}
         </div>
