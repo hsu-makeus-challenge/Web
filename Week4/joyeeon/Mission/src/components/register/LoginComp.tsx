@@ -69,7 +69,7 @@ const LoginComp = () => {
                 onSubmit={handleSubmit(onSubmit)}
                 className="w-50 flex flex-col items-center">
 
-                <AuthHeader path="로그인" />
+                <AuthHeader path="로그인" step={1} />
 
                 <EmailComp
                     register={register}
