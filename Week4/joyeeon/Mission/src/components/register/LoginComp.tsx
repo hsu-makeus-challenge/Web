@@ -1,61 +1,95 @@
-import Google from "./Google";
-import { SlArrowLeft } from "react-icons/sl";
-import { UserSigninInformation, validateSignin } from "../../utils/validate";
-import useForm from "../../hooks/UseForm";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
+import AuthHeader from "./AuthHeader";
+import EmailComp from "./EmailComp";
+import AbledButton from "./AbledButton";
+import PassComp from "./PassComp";
+import useLocalStorage from "../../hooks/useLocalStorage";
+
+const loginSchema = z.object({
+    email: z.string().email({ message: "올바른 이메일 형식이 아닙니다." }),
+    password: z.string().min(1, { message: "비밀번호를 입력해주세요." }),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
 
 const LoginComp = () => {
+    const navigate = useNavigate();
+    const [token, setToken] = useLocalStorage<string | null>("token", null);
 
-    const {values, errors, touched, getInputProps} = useForm<UserSigninInformation>({
-        initialValue: {
+    const methods = useForm<LoginFormValues>({
+        resolver: zodResolver(loginSchema),
+        mode: "onChange",
+        defaultValues: {
             email: "",
-            password:"",
+            password: "",
         },
-        validate: validateSignin,
     });
 
-    const handleSubmit = () =>{
-        console.log(values);
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors },
+    } = methods;
+
+    const onSubmit = async (data: LoginFormValues) => {
+        try {
+            console.log("로그인 요청 시작");
+            const response = await axios.post(`http://localhost:8000/v1/auth/signin`, {
+                email:data.email,
+                password:data.password,
+            });
+
+            console.log("로그인 성공", response.data);
+            const accessToken = response.data.accessToken;
+            const refreshToken = response.data.refreshToken;
+
+            setToken(accessToken);
+            setToken(refreshToken);
+            navigate("/");
+        } catch(error) {
+            console.error("로그인 실패", error);
+        }
     };
 
     const isDisabled =
-        Object.values (errors || {}).some((error) => error.length > 0) ||
-        Object.values(values).some((value) =>value === ""); 
+        !!errors.email ||
+        !!errors.password ||
+        watch("email") === "" ||
+        watch("password") === "";
+
     return (
-        <div className="w-50 flex flex-col items-center">
-            <button className="flex items-center justify-start w-full h-10 gap-15 font-bold">
-                <SlArrowLeft className="cursor-pointer"   style={{ fontWeight: 700 }} onClick={() => window.history.back()} />
-                로그인
-            </button>
-            
-            <Google />
+        <FormProvider {...methods}>
+            <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="w-50 flex flex-col items-center">
 
-            <div className="flex items-center w-full h-15">
-                <div className="customHr w-full"></div>
-                <span className="m-10">OR</span>
-                <div className="customHr w-full"></div>
-            </div>
-            
+                <AuthHeader path="로그인" />
 
-            <input type="email" className="input"
-                {...getInputProps("email")}
-                name="email"
-                placeholder="이메일을 입력해 주세요!"
-            />
-            {errors?.email && touched?.email && (
-                <div className="errorMSG">{errors.email}</div>
-            )}
+                <EmailComp
+                    register={register}
+                    error={errors.email?.message}
+                />
 
-            <input type="password" className="input mt-5" 
-                {...getInputProps("password")}
-                name="password"
-                placeholder="비밀번호를 입력해주세요!" />
-            {errors?.password && touched?.password &&(
-                <div className="errorMSG">{errors.password}</div>
-            )}
-            <button className={`btn mt-5 ${isDisabled ? 'bg-gray-500 text-white cursor-not-allowed' : 'bg-sky-300 cursor-pointer'}`}
-                disabled={isDisabled}
-            >로그인 </button>
-        </div>
+
+                <PassComp
+                    register={register}
+                    name="password"
+                    error={errors.password?.message}
+                />
+
+                <AbledButton
+                    label="로그인"
+                    type="submit"
+                    disabled={isDisabled}
+                />
+            </form>
+        </FormProvider>
 
     )
 }
