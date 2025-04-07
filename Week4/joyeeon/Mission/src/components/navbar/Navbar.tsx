@@ -1,5 +1,6 @@
 import { useNavigate , useParams} from "react-router-dom";
 import { MouseEvent } from "react";
+import NavSign from "./NavSigns";
 
 interface NavItem {
     label: string;
@@ -26,7 +27,7 @@ const Navbar = () =>{
 
 
     return (
-        <nav className="flex items-center bg-blue-100 h-10 top-0 pl-5">
+        <nav className="flex items-center justify-between bg-blue-100 h-10 top-0 pl-5 pr-5">
             <ul className="flex gap-4 ">
             {navItems.map(({ label, path, category: cat }) => (
                     <li
@@ -40,6 +41,7 @@ const Navbar = () =>{
                     </li>
                 ))}
             </ul>
+            <NavSign/>
         </nav>
     )
 }

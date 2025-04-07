@@ -17,7 +17,7 @@ const DetailMoviePage = () => {
 
     if (isLoading) {
         return (
-            <main className="bg-black text-gray-50 w-screen h-full">
+            <main className="bg-black text-gray-50 h-full">
                 <div className="h-screen flex items-center justify-center">
                     <IsLoading />
                 </div>
@@ -27,7 +27,7 @@ const DetailMoviePage = () => {
 
     if (error || !detail) {
         return (
-            <main className="bg-black text-gray-50 w-screen h-full">
+            <main className="bg-black text-gray-50 h-full">
                 <div className="h-screen flex items-center justify-center">
                     <IsError />
                 </div>
@@ -36,7 +36,7 @@ const DetailMoviePage = () => {
     }
 
     return (
-        <main className="bg-black text-gray-50 w-screen h-full">
+        <main className="bg-black text-gray-50 h-full">
             <DetailPanel detail={detail} />
             <CastingList />
         </main>

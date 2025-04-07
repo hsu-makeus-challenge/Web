@@ -3,7 +3,7 @@ import Navbar from "../components/navbar/Navbar";
 
 const RootLayout = () => {
     return (
-        <main className="flex flex-col min-h-screen">
+        <main className="flex flex-col">
         <Navbar />
         <Outlet/>
         </main>

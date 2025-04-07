@@ -5,6 +5,8 @@ import Notfound from './pages/Notfound'
 import Homepage from './pages/Homepage'
 import MoviePage from './pages/Moviepage'
 import DetailMoviePage from './pages/DetailMoviePage'
+import Loginpage from './pages/Loginpage'
+import Signuppage from './pages/SignupPage'
 
 
 const router = createBrowserRouter([
@@ -30,6 +32,15 @@ const router = createBrowserRouter([
             element: <DetailMoviePage />
           }
         ]
+      },
+      {
+        path: '/login',
+        element:<Loginpage />
+      },
+      
+      {
+        path: '/signup',
+        element: <Signuppage />
       }
     ]
   },
