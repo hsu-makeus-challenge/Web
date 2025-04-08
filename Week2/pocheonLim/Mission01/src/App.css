@@ -1,0 +1,114 @@
+/* 전체 화면 중앙 배치 */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: gainsboro;
+}
+
+.todo-container {
+  background-color: white;
+    width: 60%; 
+    min-height: 50%;
+    max-width: 800px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    border-radius: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+    padding-left: 20px;
+}
+
+.todo-container__header {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.todo-container__form {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.todo-container__input {
+  width: 300px;
+  height: 30px;
+  padding: 10px;
+  margin-right: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.todo-container__button {
+  background-color: green;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.todo-container__button:hover {
+  background-color: darkgreen;
+}
+
+.render-container {
+  display: flex;
+  justify-content: space-between; 
+  width: 100%;
+}
+
+.render-container__section {
+  width: 48%; 
+  padding: 20px;
+}
+
+.render-container__title {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.render-container__list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.render-container__item {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #f0f0f0; 
+  border-radius: 10px; 
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.todo-container__button--done {
+  background-color: green;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 5px; 
+  border: none;
+}
+
+.todo-container__button--delete {
+  background-color: red;
+  color: white;
+  padding: 6px 10px;
+  border-radius: 5px; 
+  border: none;
+}
