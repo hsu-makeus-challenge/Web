@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import ItemMovies from "./item-movies";
-import { Movie } from "../../types/movie";
+import type { Movie } from "../../types/movie";
 import { useGet } from "../../hooks/useGet";
 import Spinner from "../spinner/spinner";
 import Error from "../error/error";
