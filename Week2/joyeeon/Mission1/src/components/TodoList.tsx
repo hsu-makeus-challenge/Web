@@ -1,4 +1,5 @@
 import { useTodo } from "../context/TodoContext";
+import TodoItem from "./TodoItem";
 
 const TodoList = () => {
     const { todos, toggleTodo, deleteTodo } = useTodo();
@@ -9,13 +10,12 @@ const TodoList = () => {
                 {todos
                     .filter(todo => !todo.isdone)
                     .map(todo => (
-                        <li className='task-container'>
-                            <span className='tododiscript'>{todo.text}</span>
-                            <button className='btn'
-                                onClick={() => toggleTodo(todo.id)}>
-                                완료
-                            </button>
-                        </li>
+                        <TodoItem
+                            key={todo.id}
+                            todo={todo}
+                            onToggle={toggleTodo}
+                            onDelete={deleteTodo}
+                        />
                     ))
                 }
             </ul>
@@ -25,13 +25,12 @@ const TodoList = () => {
                 {todos
                     .filter(todo => todo.isdone)
                     .map(todo => (
-                        <li className='task-container'>
-                            <span className='tododiscript'>{todo.text}</span>
-                            <button className='btn delete'
-                                onClick={() => deleteTodo(todo.id)}>
-                                삭제
-                            </button>
-                        </li>
+                        <TodoItem
+                            key={todo.id}
+                            todo={todo}
+                            onToggle={toggleTodo}
+                            onDelete={deleteTodo}
+                        />
                     ))
                 }
             </ul>
