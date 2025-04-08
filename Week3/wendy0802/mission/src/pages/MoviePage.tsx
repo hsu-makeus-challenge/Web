@@ -2,8 +2,8 @@ import axios from "axios";
 import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import MovieCard from "../components/MovieCard";
-import LoadingSpinner from "../pages/LoadingSpinner";
-import NotFoundPage from "../pages/NotFoundPage";
+import LoadingSpinner from "./LoadingSpinner";
+import NotFoundPage from "./NotFoundPage";
 
 export default function MoviePage(): JSX.Element {
   const [movies, setMovies] = useState<any[]>([]);
@@ -39,12 +39,13 @@ export default function MoviePage(): JSX.Element {
     fetchMovies();
   }, [page, params.category]);
 
-  if (isError)
-    return <NotFoundPage />;
+  if (isError) return <NotFoundPage />;
 
   return (
     <div className="py-6">
-      <h1 className="text-2xl font-bold text-center mb-6">📜 {params.category} 📜</h1>
+      <h1 className="text-2xl font-bold text-center mb-6">
+        📜 {params.category} 📜
+      </h1>
 
       <div className="flex justify-center gap-4 mb-6">
         <button
@@ -63,7 +64,7 @@ export default function MoviePage(): JSX.Element {
         </button>
 
         {isPending && (
-          <div className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <LoadingSpinner />
           </div>
         )}
