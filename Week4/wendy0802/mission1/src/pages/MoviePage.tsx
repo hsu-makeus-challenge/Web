@@ -1,21 +1,25 @@
+// pages/MoviePage.tsx
 import { useParams } from "react-router-dom";
 import MovieCard from "../components/MovieCard";
 import LoadingSpinner from "./LoadingSpinner";
-import NotFoundPage from "./NotFoundPage"; // 추가
+import NotFoundPage from "./NotFoundPage";
 import { useState } from "react";
-import useFetchMovies from "./../hooks/useFecthMovies";
+import useFetchMovies from "../hooks/useFecthMovies";
+import Navbar from "../components/Navbar";
+import { Navigate } from "react-router-dom";
 
 export default function MoviePage(): JSX.Element {
   const [page, setPage] = useState(1);
   const { category } = useParams<{ category: string }>();
-  const { movies, isPending, isError } = useFetchMovies(category, page); // 커스텀 훅 사용
+  const { movies, isPending, isError } = useFetchMovies(category, page);
 
-  if (isError) return <NotFoundPage />;
+  if (!category || isError) return <NotFoundPage />;
 
   return (
+    <>
     <div className="py-6">
       <h1 className="text-2xl font-bold text-center mb-6">
-        📜 {category?.replace("_", " ")} 📜
+        📜 {category.replace("_", " ")} 📜
       </h1>
 
       <div className="flex justify-center gap-4 mb-6">
@@ -53,5 +57,6 @@ export default function MoviePage(): JSX.Element {
         )}
       </div>
     </div>
+    </>
   );
 }

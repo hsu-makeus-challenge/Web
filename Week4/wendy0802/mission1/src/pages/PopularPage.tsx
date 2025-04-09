@@ -1,8 +1,7 @@
-import React from 'react';
-import MoviePage from './MoviePage';
+import { Navigate } from "react-router-dom";
 
 const PopularPage = (): JSX.Element => {
-  return <MoviePage category="popular" />;
+  return <Navigate to="/movies/popular" />;
 };
 
 export default PopularPage;

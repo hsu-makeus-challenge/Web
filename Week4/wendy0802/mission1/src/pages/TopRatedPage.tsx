@@ -1,8 +1,7 @@
-import React from "react";
-import MoviePage from "./MoviePage";
+import { Navigate } from "react-router-dom";
 
 const TopRatedPage = (): JSX.Element => {
-  return <MoviePage category="top rated" />;
+  return <Navigate to="/movies/top-rated" />;
 };
 
 export default TopRatedPage;

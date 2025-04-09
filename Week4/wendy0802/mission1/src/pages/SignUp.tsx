@@ -1,67 +1,75 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Navbar from "../components/Navbar";
+
+// ✅ zod 스키마 정의
+const emailSchema = z.object({
+  email: z.string().email("올바른 이메일 형식이 아닙니다!"),
+});
+
+const passwordSchema = z
+  .object({
+    password: z.string().min(8, "비밀번호는 8자 이상이어야 합니다!"),
+    confirmPassword: z.string(),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "비밀번호가 일치하지 않습니다!",
+    path: ["confirmPassword"],
+  });
+
+const nicknameSchema = z.object({
+  nickname: z.string().min(1, "닉네임을 입력해주세요!"),
+});
+
+type EmailForm = z.infer<typeof emailSchema>;
+type PasswordForm = z.infer<typeof passwordSchema>;
+type NicknameForm = z.infer<typeof nicknameSchema>;
 
 const SignUp = () => {
   const navigate = useNavigate();
-  const [step, setStep] = useState(1); // 단계 구분
-  const [email, setEmail] = useState("");
-  const [emailError, setEmailError] = useState("");
-
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [confirmPasswordError, setConfirmPasswordError] = useState("");
-  const [passwordError, setPasswordError] = useState("");
+  const [step, setStep] = useState(1);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const validateEmail = (email: string) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
+  const {
+    register: registerEmail,
+    handleSubmit: handleEmailSubmit,
+    formState: { errors: emailErrors },
+  } = useForm<EmailForm>({ resolver: zodResolver(emailSchema) });
+
+  const {
+    register: registerPassword,
+    handleSubmit: handlePasswordSubmit,
+    formState: { errors: pwErrors },
+  } = useForm<PasswordForm>({ resolver: zodResolver(passwordSchema) });
+
+  const {
+    register: registerNickname,
+    handleSubmit: handleNicknameSubmit,
+    formState: { errors: nicknameErrors },
+  } = useForm<NicknameForm>({ resolver: zodResolver(nicknameSchema) });
+
+  const onEmailValid = () => {
+    setStep(2);
   };
 
-  const handleNext = (e: React.FormEvent) => {
-    e.preventDefault();
+  const onPasswordValid = () => {
+    setStep(3);
+  };
 
-    if (step === 1) {
-      if (!validateEmail(email)) {
-        setEmailError("올바른 이메일 형식을 입력해 주세요!");
-        return;
-      } else {
-        setEmailError("");
-        setStep(2);
-      }
-    } else if (step === 2) {
-      let valid = true;
-
-      if (password.length < 8) {
-        setPasswordError("비밀번호는 8자 이상이어야 합니다!");
-        valid = false;
-      } else {
-        setPasswordError("");
-      }
-
-      if (password !== confirmPassword) {
-        setConfirmPasswordError("비밀번호가 일치하지 않습니다!");
-        valid = false;
-      } else {
-        setConfirmPasswordError("");
-      }
-
-      if (!valid) return;
-
-      // 회원가입 최종 처리 로직 실행
-      console.log("회원가입 성공");
-    }
+  const onComplete = () => {
+    alert("회원가입 성공!");
+    navigate("/login");
   };
 
   return (
     <>
       <Navbar />
-
       <div className="min-h-screen bg-white text-black flex flex-col items-center justify-center px-4">
-        {/* 뒤로가기 & 타이틀 */}
         <div className="w-full max-w-sm mb-6 flex items-center justify-center relative">
           <button
             onClick={() => navigate(-1)}
@@ -74,141 +82,153 @@ const SignUp = () => {
           </h1>
         </div>
 
-        {/* 폼 */}
-        <form onSubmit={handleNext} className="w-full max-w-sm space-y-4">
-          {/* STEP 1: 이메일 입력 */}
-          {step === 1 && (
-            <>
-              <button className="w-full border border-gray-300 py-2 rounded flex items-center justify-center gap-2 bg-white text-gray-400">
-                <img src="./google.png" alt="google" className="w-5 h-5" />
-                <span>구글 로그인</span>
-              </button>
+        {/* STEP 1: 이메일 */}
+        {step === 1 && (
+          <form
+            onSubmit={handleEmailSubmit(onEmailValid)}
+            className="w-full max-w-sm space-y-4"
+          >
+            <button className="w-full border border-gray-300 py-2 rounded flex items-center justify-center gap-2 bg-white text-gray-400">
+              <img src="/google.png" alt="google" className="w-5 h-5" />
+              <span>구글 로그인</span>
+            </button>
 
-              <div className="flex items-center justify-between text-gray-400">
-                <hr className="w-1/3" />
-                <span>OR</span>
-                <hr className="w-1/3" />
-              </div>
+            <div className="flex items-center justify-between text-gray-400">
+              <hr className="w-1/3" />
+              <span>OR</span>
+              <hr className="w-1/3" />
+            </div>
 
+            <input
+              type="text"
+              placeholder="이메일을 입력해주세요!"
+              {...registerEmail("email")}
+              className={`w-full px-4 py-2 border rounded bg-white text-black ${
+                emailErrors.email ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {emailErrors.email && (
+              <p className="text-red-500 text-sm ml-1">
+                {emailErrors.email.message}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 rounded hover:opacity-80 transition"
+            >
+              다음
+            </button>
+          </form>
+        )}
+
+        {/* STEP 2: 비밀번호 */}
+        {step === 2 && (
+          <form
+            onSubmit={handlePasswordSubmit(onPasswordValid)}
+            className="w-full max-w-sm space-y-4"
+          >
+            {/* 비밀번호 */}
+            <div className="relative">
               <input
-                type="text"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                placeholder="이메일을 입력해주세요!"
-                className={`w-full px-4 py-2 border rounded bg-white text-black ${
-                  emailError ? "border-red-500" : "border-gray-300"
+                type={showPassword ? "text" : "password"}
+                placeholder="비밀번호를 입력해 주세요!"
+                {...registerPassword("password")}
+                className={`w-full px-4 py-2 border rounded bg-white text-black pr-10 ${
+                  pwErrors.password ? "border-red-500" : "border-gray-300"
                 }`}
               />
-              {emailError && (
-                <p className="text-red-500 text-sm ml-1">{emailError}</p>
-              )}
-
               <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded hover:opacity-80 transition"
+                type="button"
+                onClick={() => setShowPassword((prev) => !prev)}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2"
               >
-                다음
+                <img
+                  src={showPassword ? "/eye_1.png" : "/eye_2.png"}
+                  alt="비밀번호 보기"
+                  className="w-5 h-5"
+                />
               </button>
-            </>
-          )}
-
-          {/* STEP 2: 비밀번호 입력 */}
-          {step === 2 && (
-            <>
-              {/* 이메일 표시 */}
-              <div className="w-full flex items-center justify-center gap-2 text-gray-700">
-                <span className="text-sm ">✉️</span>
-                <span className="text-sm text-gray-500">{email}</span>
-              </div>
-
-              {/* 비밀번호 입력 */}
-              <div className="relative">
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="비밀번호를 입력해 주세요!"
-                  className="w-full px-4 py-2 border border-gray-300 rounded bg-white text-gray-700 pr-10 focus:outline-none focus:border-blue-400"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((prev) => !prev)}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                >
-                  <img
-                    src={showPassword ? "/eye_1.png" : "/eye_2.png"}
-                    alt="비밀번호 보기 전환"
-                    className="w-5 h-5"
-                  />
-                </button>
-              </div>
-
-              {/* 비밀번호 확인 입력 */}
-              <div className="relative">
-                <input
-                  type={showConfirmPassword ? "text" : "password"}
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                  placeholder="비밀번호를 다시 한 번 입력해 주세요!"
-                  className="w-full px-4 py-2 border border-gray-300 rounded bg-white text-gray-700 pr-10 focus:outline-none focus:border-blue-400"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowConfirmPassword((prev) => !prev)}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2"
-                >
-                  <img
-                    src={showConfirmPassword ? "/eye_1.png" : "/eye_2.png"}
-                    alt="비밀번호 보기 전환"
-                    className="w-5 h-5"
-                  />
-                </button>
-              </div>
-
-              {passwordError && (
-                <p className="text-red-500 text-sm ml-1 mt-1">
-                  {passwordError}
+              {pwErrors.password && (
+                <p className="text-red-500 text-sm ml-1">
+                  {pwErrors.password.message}
                 </p>
               )}
+            </div>
 
-              {/* 다음 버튼 */}
+            {/* 비밀번호 확인 */}
+            <div className="relative">
+              <input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="비밀번호를 다시 한 번 입력해 주세요!"
+                {...registerPassword("confirmPassword")}
+                className={`w-full px-4 py-2 border rounded bg-white text-black pr-10 ${
+                  pwErrors.confirmPassword ? "border-red-500" : "border-gray-300"
+                }`}
+              />
               <button
-                type="submit"
-                className="w-full bg-blue-500 text-white py-2 rounded hover:opacity-80 transition"
+                type="button"
+                onClick={() => setShowConfirmPassword((prev) => !prev)}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2"
               >
-                다음
+                <img
+                  src={showConfirmPassword ? "/eye_1.png" : "/eye_2.png"}
+                  alt="비밀번호 확인 보기"
+                  className="w-5 h-5"
+                />
               </button>
-            </>
-          )}
-        </form>
+              {pwErrors.confirmPassword && (
+                <p className="text-red-500 text-sm ml-1">
+                  {pwErrors.confirmPassword.message}
+                </p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-blue-500 text-white py-2 rounded hover:opacity-80 transition"
+            >
+              다음
+            </button>
+          </form>
+        )}
+
+        {/* STEP 3: 닉네임 */}
+        {step === 3 && (
+          <form
+            onSubmit={handleNicknameSubmit(onComplete)}
+            className="w-full max-w-sm space-y-4 flex flex-col items-center"
+          >
+            <img
+              src="/default_profile.png"
+              alt="기본 프로필"
+              className="w-24 h-24 rounded-full bg-gray-300"
+            />
+            <input
+              type="text"
+              placeholder="닉네임을 입력해 주세요!"
+              {...registerNickname("nickname")}
+              className={`w-full px-4 py-2 border rounded bg-white text-black ${
+                nicknameErrors.nickname ? "border-red-500" : "border-gray-300"
+              }`}
+            />
+            {nicknameErrors.nickname && (
+              <p className="text-red-500 text-sm ml-1">
+                {nicknameErrors.nickname.message}
+              </p>
+            )}
+
+            <button
+              type="submit"
+              className="w-full bg-gray-500 text-white py-2 rounded hover:opacity-80 transition"
+            >
+              가입 완료
+            </button>
+          </form>
+        )}
       </div>
     </>
   );
 };
 
 export default SignUp;
-
-{
-  /*비밀번호*/
-}
-{
-  /* <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="비밀번호를 입력해주세요!"
-              className="w-full px-4 py-2 border border-gray-300 rounded bg-white text-black"
-            /> */
-}
-{
-  /*비밀번호 확인*/
-}
-{
-  /* <input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              placeholder="비밀번호를 다시 한 번 입력해주세요!"
-              className="w-full px-4 py-2 border border-gray-300 rounded bg-white text-black"
-            /> */
-}
