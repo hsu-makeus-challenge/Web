@@ -144,7 +144,7 @@ const SignUp = () => {
                 className="absolute right-2 top-1/2 transform -translate-y-1/2"
               >
                 <img
-                  src={showPassword ? "/eye_1.png" : "/eye_2.png"}
+                   src={showPassword ? "/eye_1.png" : "/eye_2.png"}
                   alt="비밀번호 보기"
                   className="w-5 h-5"
                 />

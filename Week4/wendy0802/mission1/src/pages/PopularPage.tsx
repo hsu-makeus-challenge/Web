@@ -5,3 +5,4 @@ const PopularPage = (): JSX.Element => {
 };
 
 export default PopularPage;
+ 

@@ -6,3 +6,4 @@ const NowPlayingPage = (): JSX.Element => {
 };
 
 export default NowPlayingPage;
+ 

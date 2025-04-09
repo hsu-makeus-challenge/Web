@@ -5,3 +5,4 @@ const TopRatedPage = (): JSX.Element => {
 };
 
 export default TopRatedPage;
+ 

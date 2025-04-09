@@ -48,7 +48,7 @@ const MovieDetailPage = (): JSX.Element => {
   // 감독 정보 가져오기
   const director = movieDetails.credits?.crew?.find(
     (person: any) => person.job === "Director"
-  );
+  ); 
 
   return (
     <div className="movie-detail-container p-6 bg-black text-white">
