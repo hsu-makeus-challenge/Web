@@ -10,7 +10,8 @@ const MAIN_LINKS = [
 
 const AUTH_LINKS = [
     { to: '/login', label: '로그인' },
-    { to: '/signup', label: '회원가입' }
+    { to: '/signup', label: '회원가입' },
+    { to: '/my/', label: '마이페이지' }
 ];
 
 const Navbar = () => {
