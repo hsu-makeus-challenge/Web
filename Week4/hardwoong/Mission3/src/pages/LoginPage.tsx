@@ -1,100 +1,118 @@
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
+import { postSignin } from '../apis/auth';
+import { LOCAL_STORAGE_KEY } from '../constants/key';
+import useForm from '../hooks/useForm';
+import { useLocalStorage } from '../hooks/useLocalStorage';
+import { UserSigninInformation, validateSignin } from '../utils/validate';
+import { useNavigate } from "react-router-dom";
+import { useState } from 'react';
+import EyeToggleIcon from '../components/EyeToggleIcon';
 import ArrowButton from '../components/ArrowButton';
-
-const loginSchema = z.object({
-  email: z.string().email('올바른 이메일 형식을 입력해주세요.'),
-  password: z.string().min(8, '비밀번호는 8자 이상이어야 합니다.'),
-});
-
-type LoginForm = z.infer<typeof loginSchema>;
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const {
-    register,
-    formState: { errors, isValid },
-    handleSubmit,
-  } = useForm<LoginForm>({
-    resolver: zodResolver(loginSchema),
-    mode: 'onChange',
+  const [step, setStep] = useState(1);
+  const { setItem } = useLocalStorage(LOCAL_STORAGE_KEY.accessToken);
+  const { values, touched, errors, getInputProps } = useForm<UserSigninInformation>({
+    initialValue: {
+      email: "",
+      password: "",
+    },
+    validate: validateSignin,
   });
 
-  const onSubmit = (data: LoginForm) => {
-    console.log('로그인 데이터:', data);
-  };
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handleSubmit = async () => {
+    console.log(values);
+    try {
+      const response = await postSignin(values);
+      setItem(response.data.accessToken);
+      navigate('/');
+    } catch (error) {
+      alert(error);
+    }
+  }
+
+  const isDisabled: boolean =
+    Object.values(errors || {}).some((error) => error.length > 0) ||
+    Object.values(values).some((value) => value === "");
 
   return (
-    <div className="bg-white min-h-screen flex flex-col items-center justify-center px-4">
-      <div className="w-full max-w-md text-center">
-        <div className="relative mb-6">
+    <div className="flex justify-center items-center min-h-screen text-white">
+      <div className="w-full max-w-md px-4">
+        <div className="relative flex justify-center items-center mb-4">
+          <h1 className="text-xl font-bold text-black">로그인</h1>
           <div className="absolute left-0">
-            <ArrowButton direction="prev" onClick={() => {navigate(-1);}} label="이전" />
+            <ArrowButton
+              direction="prev"
+              onClick={() => {
+                if (step > 1) setStep(step - 1);
+                else navigate(-1);
+              }}
+              label="이전"
+            />
           </div>
-          <h1 className="text-2xl font-semibold text-center">로그인</h1>
         </div>
 
-        <button className="w-full border border-black py-2 mb-4 flex items-center justify-center gap-2">
-          <img
-            src="https://developers.google.com/identity/images/g-logo.png"
-            alt="google"
-            className="w-5 h-5"
-          />
+        <button className="w-full border rounded px-4 py-2 flex items-center justify-center mb-2 text-black">
+          <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/google/google-original.svg" alt="Google" className="w-5 h-5 mr-2" />
           구글 로그인
         </button>
 
-        <div className="flex items-center my-4">
-          <hr className="flex-1 border-gray-300" />
+        <div className="flex items-center my-2">
+          <hr className="flex-grow border-gray-600" />
           <span className="mx-2 text-sm text-gray-400">OR</span>
-          <hr className="flex-1 border-gray-300" />
+          <hr className="flex-grow border-gray-600" />
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div>
-            <input
-              type="email"
-              placeholder="이메일을 입력해주세요!"
-              {...register('email')}
-              className="w-full border px-3 py-2 rounded"
-            />
-            {errors.email && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.email.message}
-              </p>
-            )}
-          </div>
+        <div className="flex flex-col gap-3">
+          <input
+            {...getInputProps("email")}
+            name="email"
+            className={`border w-full p-[10px] focus:border-[#807bff] rounded-sm text-black
+              ${touched?.email && errors?.email ? "border-red-500 bg-red-200" : "border-gray-300"}`}
+            type="email"
+            placeholder="이메일"
+          />
+          {(touched?.email && errors?.email) && (
+            <div className="text-red-500 text-sm">{errors.email}</div>
+          )}
 
-          <div>
+          <div className="relative w-full">
             <input
-              type="password"
-              placeholder="비밀번호를 입력해주세요!"
-              {...register('password')}
-              className="w-full border px-3 py-2 rounded"
+              {...getInputProps("password")}
+              name="password"
+              className={`border p-[10px] focus:border-[#807bff] rounded-sm text-black w-full
+                ${touched?.password && errors?.password ? "border-red-500 bg-red-200" : "border-gray-300"}`}
+              type={showPassword ? "text" : "password"}
+              placeholder="비밀번호"
             />
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
-              </p>
-            )}
+            <button
+              type="button"
+              onClick={() => setShowPassword((prev) => !prev)}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-black"
+            >
+              <EyeToggleIcon visible={showPassword} />
+            </button>
           </div>
+          {(touched?.password && errors?.password) && (
+            <div className="text-red-500 text-sm">{errors.password}</div>
+          )}
 
           <button
-            type="submit"
-            disabled={!isValid}
-            className={`w-full py-2 rounded font-semibold transition ${
-              isValid
-                ? 'bg-green-600 text-white hover:bg-green-700'
-                : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+            type="button"
+            onClick={handleSubmit}
+            disabled={isDisabled}
+            className={`w-full h-[40px] px-4 rounded font-semibold transition ${
+              isDisabled ? "bg-gray-300 text-gray-500 cursor-not-allowed" : "bg-[#80ed99] text-white hover:bg-[#57c378]"
             }`}
           >
             로그인
           </button>
-        </form>
+        </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
 export default LoginPage;

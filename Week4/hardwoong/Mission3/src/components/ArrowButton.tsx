@@ -13,7 +13,7 @@ export default function ArrowButton({ direction, onClick, label, disabled = fals
       onClick={onClick}
       disabled={disabled}
       className={`relative min-w-[80px] h-10 px-2 py-1 font-bold text-white transition-all duration-300 rounded-md 
-        outline-none overflow-hidden border-none
+        outline-none overflow-hidden border-none hover:cursor-pointer
         ${disabled
           ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
           : `bg-[#80ed99] group ${isPrev ? 'hover:pl-6 hover:pr-2' : 'hover:pr-6 hover:pl-2'}`}
