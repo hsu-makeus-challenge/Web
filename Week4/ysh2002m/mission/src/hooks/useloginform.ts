@@ -1,6 +1,9 @@
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "../apis/axios";
+import { AxiosError }  from "axios"; 
+import { useNavigate } from "react-router-dom";
 
 const loginSchema = z.object({
   email: z.string().email("올바른 이메일 형식을 입력해주세요."),
@@ -10,6 +13,8 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export const useLoginForm = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -19,9 +24,19 @@ export const useLoginForm = () => {
     mode: "onChange",
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log("로그인 정보:", data);
-    alert("로그인 시도!");
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      const response = await axios.post("/v1/auth/signin", data);
+
+      localStorage.setItem("accessToken", response.data.accessToken);
+      sessionStorage.setItem("refreshToken", response.data.refreshToken);
+
+      console.log("로그인 성공:", response.data);
+      navigate("/home");
+    } catch (err: unknown) {
+        const error = err as AxiosError<{ message?: string }>;
+        console.error("로그인 실패:", error.response?.data || error.message);
+      }
   };
 
   return {

@@ -16,36 +16,22 @@ const SignUpPage = () => {
     handleEmailSubmit,
     emailErrors,
     isEmailValid,
-
     registerPassword,
     handlePasswordSubmit,
     pwErrors,
     isPasswordValid,
-    watch,
-
     registerNickname,
-    handleNicknameSubmit,
+    onNicknameSubmit,
     nicknameErrors,
     isNicknameValid,
-    resetStorage,
   } = useSignupForm();
 
   const onEmailSubmit = handleEmailSubmit((data) => {
-    setEmailValue(data.email); // 이메일 저장
+    setEmailValue(data.email);
     setStep(2);
   });
 
   const onPasswordSubmit = handlePasswordSubmit(() => setStep(3));
-
-  const onNicknameSubmit = handleNicknameSubmit((data) => {
-    console.log("최종 회원가입 정보:", {
-      email: emailValue,
-      password: watch("password"),
-      nickname: data.nickname,
-    });
-    alert("회원가입이 완료되었습니다!");
-    resetStorage();
-  });
 
   const goBack = () => {
     if (step === 1) navigate(-1);

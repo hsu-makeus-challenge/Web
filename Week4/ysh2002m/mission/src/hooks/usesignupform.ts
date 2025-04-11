@@ -1,9 +1,21 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { emailSchema, passwordSchema, nicknameSchema, EmailFormData, PasswordFormData, NicknameFormData, } from "../schema/signupschema";
+import {
+  emailSchema,
+  passwordSchema,
+  nicknameSchema,
+  EmailFormData,
+  PasswordFormData,
+  NicknameFormData,
+} from "../schema/signupschema";
 import { useLocalStorage } from "./uselocalstorage";
+import { AxiosError } from "axios"; 
+import { signUpUser } from "../apis/signup";
+import { useNavigate } from "react-router-dom";
 
 export const useSignupForm = () => {
+  const navigate = useNavigate();
+
   const [emailValue, setEmailValue] = useLocalStorage("signup-email", "");
   const [nicknameValue, setNicknameValue] = useLocalStorage("signup-nickname", "");
 
@@ -40,6 +52,24 @@ export const useSignupForm = () => {
     setNicknameValue("");
   };
 
+  const onNicknameSubmit = handleNicknameSubmit(async (data) => {
+    try {
+      const profileImage = null; 
+      const response = await signUpUser({
+        email: emailValue,
+        password: watch("password"),
+        nickname: data.nickname,
+        profileImage,
+      });
+      console.log("회원가입 성공:", response);
+      resetStorage();
+      navigate("/home");
+    } catch (err: unknown) {
+        const error = err as AxiosError<{ message?: string }>;
+        console.error("회원가입 실패:", error.response?.data || error.message);
+      }
+  });
+
   return {
     emailValue,
     nicknameValue,
@@ -54,6 +84,7 @@ export const useSignupForm = () => {
     watch,
     registerNickname,
     handleNicknameSubmit,
+    onNicknameSubmit,
     nicknameErrors,
     isNicknameValid,
     resetStorage,
