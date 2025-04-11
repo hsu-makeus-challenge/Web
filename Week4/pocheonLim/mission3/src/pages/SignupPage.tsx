@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom';
 import { SignupProvider } from '../contexts/SignupContext';
 import { useSignup } from '../contexts/SignupContext';
+import { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import EmailStep from '../components/EmailStep';
 import PasswordStep from '../components/PasswordStep';
 import NicknameStep from '../components/NicknameStep';
@@ -8,6 +10,15 @@ import CompletionStep from '../components/CompletionStep';
 
 const SignupContent = () => {
   const { step, setStep } = useSignup();
+  const location = useLocation();
+  const isFirstVisit = useRef(true);
+
+  useEffect(() => {
+    if (location.pathname === '/signup' && isFirstVisit.current) {
+      setStep(1); // 딱 첫 진입 시에만 초기화
+      isFirstVisit.current = false;
+    }
+  }, [location.pathname]);
 
   const handleBack = () => {
     if (step > 1) {

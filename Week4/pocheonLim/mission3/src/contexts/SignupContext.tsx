@@ -19,6 +19,7 @@ export const SignupProvider = ({ children }: { children: ReactNode }) => {
   const [password, setPassword] = useLocalStorage('signup_password', '');
   const [nickname, setNickname] = useLocalStorage('signup_nickname', '');
   const [step, setStep] = useLocalStorage('signup_step', 1);
+  
 
   return (
     <SignupContext.Provider 
@@ -41,7 +42,7 @@ export const SignupProvider = ({ children }: { children: ReactNode }) => {
 export const useSignup = () => {
   const context = useContext(SignupContext);
   if (context === undefined) {
-    throw new Error('useSignup must be used within a SignupProvider');
+    throw new Error('에러다...');
   }
   return context;
-}; 
+};

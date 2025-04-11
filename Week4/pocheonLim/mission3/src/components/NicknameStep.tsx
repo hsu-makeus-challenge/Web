@@ -2,9 +2,10 @@ import { useSignup } from '../contexts/SignupContext';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { nicknameSchema, type NicknameFormData } from '../schemas/signup.schema';
+import { signup } from '../apis/auth';
 
 const NicknameStep = () => {
-  const { setNickname, setStep } = useSignup();
+  const { email, password, setNickname, setStep } = useSignup();
   
   const {
     register,
@@ -15,10 +16,25 @@ const NicknameStep = () => {
     mode: 'onChange',
   });
 
-  const onSubmit = (data: NicknameFormData) => {
-    setNickname(data.nickname);
-    // 회원가입 완료 단계로 이동
-    setStep(4);
+  const onSubmit = async (data: NicknameFormData) => {
+    try {
+      setNickname(data.nickname);
+  
+      //API 요청하고 RESPONSE 받아오기
+      const response = await signup({
+        name: data.nickname,
+        email,
+        password,
+      });
+  
+      if (response.status) {
+        setStep(4);
+      } else {
+        console.warn('회원가입 실패:', response.message);
+      }
+    } catch (error) {
+      console.error('에러에러에러알에렁러:', error);
+    }
   };
 
   return (
@@ -52,7 +68,7 @@ const NicknameStep = () => {
               : 'bg-gray-800 cursor-not-allowed opacity-50'
           }`}
         >
-          다음
+          회원가입 완료
         </button>
       </form>
     </div>

@@ -1,7 +1,9 @@
 import { useSignup } from '../contexts/SignupContext';
+import { useNavigate } from 'react-router-dom';
 
 const CompletionStep = () => {
   const { email, nickname } = useSignup();
+  const navigate = useNavigate();
 
   return (
     <div className="space-y-8 text-center">
@@ -25,8 +27,7 @@ const CompletionStep = () => {
 
       <button
         onClick={() => {
-          // TODO: 로그인 페이지로 이동하는 로직 추가
-          console.log('로그인 페이지로 이동');
+          navigate('/login');
         }}
         className="w-full py-3 bg-pink-500 hover:bg-pink-600 rounded-lg transition-colors"
       >
@@ -36,4 +37,4 @@ const CompletionStep = () => {
   );
 };
 
-export default CompletionStep; 
+export default CompletionStep;

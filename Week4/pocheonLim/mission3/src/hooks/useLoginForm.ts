@@ -1,4 +1,6 @@
 import { useForm } from 'react-hook-form';
+import { login } from '../apis/auth'; 
+import { useNavigate } from 'react-router-dom';
 
 interface LoginFormData {
   email: string;
@@ -13,6 +15,8 @@ export const useLoginForm = () => {
   } = useForm<LoginFormData>({
     mode: 'onChange',
   });
+
+  const navigate = useNavigate();
 
   const emailRegister = register('email', {
     required: true,
@@ -30,8 +34,22 @@ export const useLoginForm = () => {
     },
   });
 
-  const onSubmit = (data: LoginFormData) => {
-    console.log('로그인 시도:', data);
+  const onSubmit = async (data: LoginFormData) => {
+    try {
+      const response = await login(data); // API 요청, 응답 받아서 로컬 스토리지 저장하기
+      if (response.status) {
+        
+        localStorage.setItem('accessToken', response.data.accessToken);
+        localStorage.setItem('refreshToken', response.data.refreshToken);
+
+        console.log('성공~~:', response.data);
+        navigate('/'); 
+      } else {
+        console.error('왜냐하면:', response.message);
+      }
+    } catch (error) {
+      console.error('제발', error);
+    }
   };
 
   return {
