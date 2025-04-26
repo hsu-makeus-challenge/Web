@@ -1,31 +1,33 @@
-export type UserSigninInformation = {
-  email: string;
-  password: string;
-};
+import { z } from 'zod';
 
-function validateUser(values: UserSigninInformation) {
-  const errors: { email: string; password: string } = {
-    email: '',
-    password: '',
-  };
+export const signupSchema = z
+  .object({
+    email: z.string().email({ message: '올바른 이메일 형식이 아닙니다.' }),
+    password: z
+      .string()
+      .min(8, { message: '비밀번호는 8자 이상이어야 합니다.' })
+      .max(20, { message: '비밀번호는 20자 이하여야 합니다.' }),
+    passwordCheck: z
+      .string()
+      .min(8, { message: '비밀번호는 8자 이상이어야 합니다.' })
+      .max(20, {
+        message: '비밀번호는 20자 이하여야 합니다.',
+      }),
+    name: z.string().min(1, { message: '이름을 입력해주세요.' }),
+  })
+  .refine((data) => data.password === data.passwordCheck, {
+    message: '비밀번호가 일치하지 않습니다.',
+    path: ['passwordCheck'],
+  });
 
-  if (
-    !/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i.test(
-      values.email
-    )
-  ) {
-    errors.email = '올바른 이메일 형식을 입력해주세요.';
-  }
+export type SignupFormFields = z.infer<typeof signupSchema>;
 
-  if (!(values.password.length >= 8 && values.password.length < 28)) {
-    errors.password = '비밀번호는 8~20자 사이로 입력해주세요.';
-  }
+export const signinSchema = z.object({
+  email: z.string().email({ message: '올바른 이메일 형식이 아닙니다.' }),
+  password: z
+    .string()
+    .min(8, { message: '비밀번호는 8자 이상이어야 합니다.' })
+    .max(20, { message: '비밀번호는 20자 이하여야 합니다.' }),
+});
 
-  return errors;
-}
-
-function validateSignin(values: UserSigninInformation) {
-  return validateUser(values);
-}
-
-export { validateSignin };
+export type SigninFormFields = z.infer<typeof signinSchema>;

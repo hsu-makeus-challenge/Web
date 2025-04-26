@@ -8,7 +8,6 @@ const DetailPage = () => {
   const { movieId } = useParams<{ movieId: string }>();
   const [backdropUrl, setBackdropUrl] = useState<string | null>(null);
 
-  // 영화 상세 정보 가져오기
   const {
     data: movie,
     isLoading: isLoadingMovie,
@@ -19,7 +18,6 @@ const DetailPage = () => {
     [movieId]
   );
 
-  // 출연진 정보 가져오기
   const {
     data: credits,
     isLoading: isLoadingCredits,
@@ -30,7 +28,6 @@ const DetailPage = () => {
     [movieId]
   );
 
-  // 백드롭 URL 설정
   useEffect(() => {
     if (movie?.backdrop_path) {
       const imageUrl = `https://image.tmdb.org/t/p/original${movie.backdrop_path}`;
@@ -67,7 +64,6 @@ const DetailPage = () => {
 
   return (
     <div className="bg-gray-900 text-white min-h-screen">
-      {/* 배경 이미지 */}
       <div className="relative h-[50vh]">
         <div className="absolute inset-0">
           {backdropUrl ? (
@@ -82,7 +78,6 @@ const DetailPage = () => {
           <div className="absolute inset-0 bg-black/50"></div>
         </div>
 
-        {/* 영화 정보 */}
         <div className="relative container mx-auto px-4 py-10 flex flex-col justify-end h-full text-gray-400">
           <h1 className="text-4xl font-bold text-white">{movie.title}</h1>
           <p className="mt-4">평균 {movie.vote_average.toFixed(1)}</p>
@@ -99,7 +94,6 @@ const DetailPage = () => {
 
       <hr className="w-240" />
 
-      {/* 출연진 정보 */}
       <div className="container mx-auto px-4 py-10">
         <h2 className="text-2xl font-bold mb-6">출연진</h2>
         <div className="grid grid-cols-10 gap-6">

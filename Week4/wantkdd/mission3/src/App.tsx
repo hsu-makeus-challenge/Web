@@ -9,7 +9,6 @@ import NowPlayingMoviesPage from './pages/now-playing-movies';
 import DetailPage from './pages/detail-page';
 import LoginPage from './pages/login-page';
 import SignupPage from './pages/signup-page';
-import MyPage from './pages/my-page';
 
 const router = createBrowserRouter([
   {
@@ -47,10 +46,6 @@ const router = createBrowserRouter([
       {
         path: '/signup-page',
         element: <SignupPage />,
-      },
-      {
-        path: '/my-page',
-        element: <MyPage />,
       },
     ],
   },
