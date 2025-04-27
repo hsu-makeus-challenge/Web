@@ -35,3 +35,14 @@ export type Credits = {
 	cast: Member[];
 	crew: Member[];
 };
+
+export interface VideoResponse {
+	id: number;
+	results: {
+		id: string;
+		key: string;
+		name: string;
+		site: string;
+		type: string;
+	}[];
+}
