@@ -11,6 +11,7 @@ import useLocalStorage from "../../hooks/useLocalStorage";
 
 import { useAuth } from "../../context/AuthContext";
 import { loginApi } from "../../apis/auth";
+import { api } from "../../apis/api";
 
 const loginSchema = z.object({
     email: z.string().email({ message: "올바른 이메일 형식이 아닙니다." }),
@@ -50,6 +51,9 @@ const LoginComp = () => {
             const refreshToken = response.data.refreshToken;
 
             login(accessToken, refreshToken); 
+
+            api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
             navigate("/");
         } catch(error) {
             console.error("로그인 실패", error);

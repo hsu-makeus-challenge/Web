@@ -1,10 +1,9 @@
-import axios from "axios";
-
-const BASE_URL = "http://localhost:8000/v1/auth";
+import {api} from './api';
+const BASE_URL = "/auth";
 
 //로그인
 export const loginApi = async (email: string, password: string) => {
-    const response = await axios.post(`${BASE_URL}/signin`, {
+    const response = await api.post(`${BASE_URL}/signin`, {
         email,
         password,
     });
@@ -19,6 +18,6 @@ export const signupApi = async (userData: {
     bio?: string;
     avatar?: string;
 }) => {
-    const response = await axios.post(`${BASE_URL}/signup`, userData);
+    const response = await api.post(`${BASE_URL}/signup`, userData);
     return response.data;
 };

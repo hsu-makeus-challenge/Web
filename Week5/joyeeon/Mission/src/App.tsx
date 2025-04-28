@@ -11,6 +11,9 @@ import ProtectedRoute from './components/ProtectedRoute'
 import Logoutpage from './pages/Logout'
 import Mypage from './pages/Mypage'
 
+import { setupInterceptors } from './apis/interceptor'
+import { useEffect } from 'react'
+
 
 const router = createBrowserRouter([
   {
@@ -62,6 +65,9 @@ const router = createBrowserRouter([
 ])
 
 function App() {
+  useEffect(() =>{
+    setupInterceptors();
+  }, []);
   return (
     <RouterProvider router={router}/>
   )
