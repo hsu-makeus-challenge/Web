@@ -2,7 +2,7 @@ import { NavLink } from "react-router-dom";
 import { authItems, navItems } from "@constants/nav";
 import { useAuth } from "@context/AuthContext";
 
-const navbar = () => {
+const Navbar = () => {
 	const { isAuthenticated, logout } = useAuth();
 
 	return (
@@ -59,4 +59,4 @@ const navbar = () => {
 	);
 };
 
-export default navbar;
+export default Navbar;
