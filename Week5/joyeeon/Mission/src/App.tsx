@@ -13,6 +13,7 @@ import Mypage from './pages/Mypage'
 
 import { setupInterceptors } from './apis/interceptor'
 import { useEffect } from 'react'
+import GoogleLoginRedirectPage from './pages/GoogleLoginRedirectPage'
 
 
 const router = createBrowserRouter([
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
         element: <ProtectedRoute>
           <Logoutpage />
         </ProtectedRoute>
+      },
+      {
+        path:'/v1/auth/google/callback',
+        element: <GoogleLoginRedirectPage />
       },
 
       {
