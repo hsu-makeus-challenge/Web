@@ -9,6 +9,7 @@ import Loginpage from './pages/Loginpage'
 import Signuppage from './pages/SignupPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import Logoutpage from './pages/Logout'
+import Mypage from './pages/Mypage'
 
 
 const router = createBrowserRouter([
@@ -50,11 +51,11 @@ const router = createBrowserRouter([
         element: <ProtectedRoute>
           <Logoutpage />
         </ProtectedRoute>
-        
       },
 
       {
-        
+        path:'/mypage',
+        element: <ProtectedRoute><Mypage/> </ProtectedRoute>
       }
     ]
   },
