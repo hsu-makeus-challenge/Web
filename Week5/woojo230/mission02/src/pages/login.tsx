@@ -4,11 +4,17 @@ import { UserSigninInformation, validateSignin } from '../utils/validate';
 import axios from '../apis/auth/axios';
 import { useLocalStorage, useSessionStorage } from '../hooks/useLocalStorage';
 import { useNavigate } from 'react-router-dom';
+import { setupInterceptors } from '../apis/auth/tokenRefresher';
+import { useEffect } from 'react';
 
 const Login = () => {
   const navigate = useNavigate();
   const { set: setLocal } = useLocalStorage();
   const { set: setSession } = useSessionStorage();
+
+  useEffect(() => {
+    setupInterceptors(navigate);
+  }, [navigate]);
 
   const { errors, touched, getInputProps, isValid } =
     useForm<UserSigninInformation>({
@@ -26,17 +32,10 @@ const Login = () => {
     const password = getInputProps('password').value;
 
     try {
-      const response = await axios.post('/v1/auth/signin', {
-        email,
-        password,
-      });
-
-      console.log('로그인 성공:', response.data);
-
+      const response = await axios.post('/v1/auth/signin', { email, password });
       setLocal('accessToken', response.data.data.accessToken);
       setLocal('name', response.data.data.name);
       setSession('refreshToken', response.data.data.refreshToken);
-
       navigate('/home');
     } catch (error: any) {
       console.error('로그인 에러:', error);
