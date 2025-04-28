@@ -7,6 +7,8 @@ import MoviePage from './pages/Moviepage'
 import DetailMoviePage from './pages/DetailMoviePage'
 import Loginpage from './pages/Loginpage'
 import Signuppage from './pages/SignupPage'
+import ProtectedRoute from './components/ProtectedRoute'
+import Logoutpage from './pages/Logout'
 
 
 const router = createBrowserRouter([
@@ -41,6 +43,18 @@ const router = createBrowserRouter([
       {
         path: '/signup',
         element: <Signuppage />
+      },
+
+      {
+        path:'/signout',
+        element: <ProtectedRoute>
+          <Logoutpage />
+        </ProtectedRoute>
+        
+      },
+
+      {
+        
       }
     ]
   },

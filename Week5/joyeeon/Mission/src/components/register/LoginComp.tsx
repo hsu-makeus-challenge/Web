@@ -9,6 +9,7 @@ import AbledButton from "./AbledButton";
 import PassComp from "./PassComp";
 import useLocalStorage from "../../hooks/useLocalStorage";
 
+import { useAuth } from "../../context/AuthContext";
 import { loginApi } from "../../apis/auth";
 
 const loginSchema = z.object({
@@ -20,7 +21,8 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 const LoginComp = () => {
     const navigate = useNavigate();
-    const [token, setToken] = useLocalStorage<string | null>("token", null);
+    //const [token, setToken] = useLocalStorage<string | null>("token", null);
+    const {login} = useAuth();
 
     const methods = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),
@@ -47,8 +49,7 @@ const LoginComp = () => {
             const accessToken = response.data.accessToken;
             const refreshToken = response.data.refreshToken;
 
-            setToken(accessToken);
-            setToken(refreshToken);
+            login(accessToken, refreshToken); 
             navigate("/");
         } catch(error) {
             console.error("로그인 실패", error);
