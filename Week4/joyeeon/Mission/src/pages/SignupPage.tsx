@@ -1,7 +1,9 @@
+import SignupComp from "../components/register/SignupComp"
+
 const Signuppage = () =>{
     return (
-        <main className="bg-sky-900 text-white h-screen">
-            회원가입 페이지
+        <main className="flex bg-gray-400 text-white h-screen w-full justify-center items-center">
+            <SignupComp />
         </main>
     )
 }
