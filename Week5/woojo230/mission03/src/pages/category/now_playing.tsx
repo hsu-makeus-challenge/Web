@@ -5,8 +5,9 @@ import MovieList from '../../components/movie/movieList';
 import LoadingSpinner from '../../components/loading';
 import Error from '../../components/error';
 import useFetch from '../../hooks/useFetch';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import PageBtn from '../../components/pageBtn';
+import axios from 'axios';
 
 const NowPlayingPage = () => {
   // const {

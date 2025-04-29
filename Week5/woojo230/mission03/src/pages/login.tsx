@@ -4,17 +4,11 @@ import { UserSigninInformation, validateSignin } from '../utils/validate';
 import axios from '../apis/auth/axios';
 import { useLocalStorage, useSessionStorage } from '../hooks/useLocalStorage';
 import { useNavigate } from 'react-router-dom';
-import { setupInterceptors } from '../apis/auth/tokenRefresher';
-import { useEffect } from 'react';
 
 const Login = () => {
   const navigate = useNavigate();
   const { set: setLocal } = useLocalStorage();
   const { set: setSession } = useSessionStorage();
-
-  useEffect(() => {
-    setupInterceptors(navigate);
-  }, [navigate]);
 
   const { errors, touched, getInputProps, isValid } =
     useForm<UserSigninInformation>({
@@ -42,17 +36,9 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = () => {
-    window.location.href =
-      import.meta.env.VITE_SERVER_URL + '/v1/auth/google/login';
-  };
-
   return (
     <div className="flex justify-center items-center min-h-screen bg-white">
-      <div
-        className="bg-white p-8 md:p-10 rounded-2xl w-[350px] md:w-[400px] border-2 border-lime-700"
-        onClick={handleGoogleLogin}
-      >
+      <div className="bg-white p-8 md:p-10 rounded-2xl w-[350px] md:w-[400px] border-2 border-lime-700">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-8 relative">
           로그인
         </h2>

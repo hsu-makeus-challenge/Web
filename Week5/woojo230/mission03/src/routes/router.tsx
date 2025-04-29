@@ -11,6 +11,7 @@ import Login from '../pages/login';
 import SignUp from '../pages/signup';
 import { requiresAuth } from './loaders/requiresAuth';
 import { GoogleRedirect } from '../pages/socialLogin/googleRedirect';
+import MyPage from '../pages/myPage';
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,13 @@ const router = createBrowserRouter([
       {
         path: 'home',
         element: <Home />,
+        loader: requiresAuth,
+        children: [
+          {
+            path: 'mypage',
+            element: <MyPage />,
+          },
+        ],
       },
       {
         path: 'login',

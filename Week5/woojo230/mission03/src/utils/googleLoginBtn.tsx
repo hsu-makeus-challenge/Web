@@ -1,6 +1,13 @@
 const GoogleLoginButton = () => {
+  const handleGoogleLogin = () => {
+    window.location.href =
+      import.meta.env.VITE_SERVER_URL + '/v1/auth/google/login';
+  };
   return (
-    <button className="w-full bg-lime-500 hover:bg-lime-700 active:bg-red-700 text-white py-3 rounded-lg transition duration-300 mb-6 flex justify-center items-center gap-2 shadow-md hover:shadow-lg cursor-pointer">
+    <button
+      className="w-full bg-lime-500 hover:bg-lime-700 active:bg-red-700 text-white py-3 rounded-lg transition duration-300 mb-6 flex justify-center items-center gap-2 shadow-md hover:shadow-lg cursor-pointer"
+      onClick={handleGoogleLogin}
+    >
       <svg
         xmlns="http://www.w3.org/2000/svg"
         className="h-5 w-5"
