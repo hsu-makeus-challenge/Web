@@ -6,13 +6,16 @@
     "build": "vite build",
     "preview": "vite preview",
     "start": "dev",
-    "start:dev": "nest start --watch"
+    "start:dev": "nest start --watch",
+    "prisma:generate": "prisma generate",
+    "prisma:db:push": "prisma db push",
+    "prisma:db:seed": "prisma db seed"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
     "@prisma/client": "^6.6.0",
     "axios": "^1.8.4",
-    "react": "^18.2.0",
+    "react": "^18.2.0",cd 
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.55.0",
     "react-router-dom": "^7.4.1",
