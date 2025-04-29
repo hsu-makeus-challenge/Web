@@ -1,27 +1,26 @@
+// src/context/AuthContext.tsx
 import { createContext, useContext, useState, PropsWithChildren } from "react";
-import { useNavigate, NavigateFunction } from "react-router-dom";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { loginApi, logoutApi } from "../api/auth";
 import { LOCAL_STORAGE_KEY } from "../constants/storage";
 import { LoginRequest } from "../api/auth";
+import { NavigateFunction } from "react-router-dom";
 
 interface AuthContextType {
   accessToken: string | null;
   refreshToken: string | null;
   login: (signData: LoginRequest) => Promise<void>;
-  logout: () => Promise<void>;
+  logout: (navigate: NavigateFunction) => Promise<void>; 
 }
 
 export const AuthContext = createContext<AuthContextType>({
   accessToken: null,
   refreshToken: null,
   login: async () => {},
-  logout: async () => {},
+  logout: async () => {}, 
 });
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
-  const navigate: NavigateFunction = useNavigate();
-
   const {
     getItem: getAccessTokenFromStorage,
     setItem: setAccessTokenInStorage,
@@ -44,14 +43,12 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const login = async (signinData: LoginRequest) => {
     try {
       const { data } = await loginApi(signinData);
-
       if (data) {
-        const newAccessToken: string = data.accessToken;
-        const newRefreshToken: string = data.refreshToken;
+        const newAccessToken = data.accessToken;
+        const newRefreshToken = data.refreshToken;
 
         setAccessTokenInStorage(newAccessToken);
         setRefreshTokenInStorage(newRefreshToken);
-
         setAccessToken(newAccessToken);
         setRefreshToken(newRefreshToken);
       }
@@ -61,17 +58,15 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     }
   };
 
-  const logout = async () => {
+  const logout = async (navigate: NavigateFunction) => {
     try {
       await logoutApi();
       removeAccessTokenFromStorage();
       removeRefreshTokenFromStorage();
-
       setAccessToken(null);
       setRefreshToken(null);
-
       alert("로그아웃 성공");
-      navigate("/my");
+      navigate("/login");
     } catch (error) {
       console.error("로그아웃 오류", error);
       alert("로그아웃 실패");
@@ -85,6 +80,4 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   );
 };
 
-export const useAuth = () => {
-  return useContext(AuthContext);
-};
+export const useAuth = () => useContext(AuthContext);

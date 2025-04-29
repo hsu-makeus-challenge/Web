@@ -3,6 +3,7 @@ import {
   createBrowserRouter,
   redirect,
 } from "react-router-dom";
+import HomeLayout from "./pages/HomeLayout"; // ✅ 추가
 import MoviePage from "./pages/MoviePage";
 import HomePage from "./pages/HomePage";
 import NotFoundPage from "./pages/NotFoundPage";
@@ -17,9 +18,13 @@ import { AuthProvider } from "./context/AuthContext";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <HomePage />,
+    element: <HomeLayout />, // ✅ Navbar 포함 레이아웃
     errorElement: <NotFoundPage />,
     children: [
+      {
+        index: true,
+        element: <HomePage />,
+      },
       {
         path: "movies/:category",
         element: (
@@ -27,7 +32,6 @@ const router = createBrowserRouter([
             <MoviePage />
           </ProtectedRoute>
         ),
-        index: true,
       },
       {
         path: "movies/:category/:movieId",
@@ -61,7 +65,6 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <ProtectedLayout />,
-    errorElement: <NotFoundPage />,
     children: [
       {
         path: "my",
