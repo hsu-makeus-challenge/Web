@@ -1,41 +1,48 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const MyPage = () => {
-  const [data, setData] = useState<any>(null);
+  const [email, setEmail] = useState("");
+  const [nickname, setNickname] = useState("");
+  const navigate = useNavigate();
 
-  const getMyInfo = async () => {
-    return {
-      data: {
-        name: '홍길동',
-        avatar: 'https://example.com/avatar.png',
-        email: 'hong@example.com',
-      }
-    };
-  };
-
-  const logout = async () => {
-    console.log("로그아웃 되었습니다.");
-  };
-
+  // localStorage에서 유저 정보 로드
   useEffect(() => {
-    const getData = async () => {
-      const response = await getMyInfo();
-      console.log(response);
-      setData(response);
-    };
-    getData();
+    const storedEmail = localStorage.getItem("signup_email") || "";
+    const storedNickname = localStorage.getItem("signup_nickname") || "";
+    setEmail(storedEmail);
+    setNickname(storedNickname);
   }, []);
 
-  const handleLogout = async () => {
-    await logout();
+  const handleLogout = () => {
+    localStorage.removeItem("signup_email");
+    localStorage.removeItem("signup_password");
+    localStorage.removeItem("signup_nickname");
+    localStorage.removeItem("signup_step");
+    localStorage.removeItem("accessToken");
+    localStorage.removeItem("refreshToken");
+
+    alert("로그아웃 되었습니다.");
+    navigate("/login");
   };
 
   return (
-    <div>
-      <h1>{data?.data?.name}님 환영합니다.</h1>
-      <img src={data?.data?.avatar as string} alt={"구글 로그인"} />
-      <h1>{data?.data?.email}</h1>
-      <button onClick={handleLogout}>로그아웃</button>
+    <div className="min-h-screen bg-[#dbdcdd] flex items-center justify-center text-white">
+      <div className="w-[90%] max-w-md bg-[#2f9ec3] rounded-lg shadow-lg p-6 text-left space-y-4">
+        <h1 className="text-2xl font-bold text-center mb-4" >마이페이지</h1>
+        <p className="text-sm">
+          <span className="font-semibold">이메일:</span> {email}
+        </p>
+        <p className="text-sm">
+          <span className="font-semibold">닉네임:</span> {nickname}
+        </p>
+        <button
+          onClick={handleLogout}
+          className="mt-4 w-full bg-gray-600 text-white py-2 rounded hover:bg-[skyblue] transition"
+        >
+          로그아웃
+        </button>
+      </div>
     </div>
   );
 };

@@ -13,7 +13,9 @@ import SignUp from "./pages/SignUp";
 import MyPage from "./pages/MyPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import ProtectedLayout from "./pages/ProtectedLayout";
+
 import { AuthProvider } from "./context/AuthContext";
+
 
 const router = createBrowserRouter([
   {

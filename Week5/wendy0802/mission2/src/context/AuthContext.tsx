@@ -1,23 +1,30 @@
-// src/context/AuthContext.tsx
 import { createContext, useContext, useState, PropsWithChildren } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { loginApi, logoutApi } from "../api/auth";
 import { LOCAL_STORAGE_KEY } from "../constants/storage";
 import { LoginRequest } from "../api/auth";
-import { NavigateFunction } from "react-router-dom";
 
 interface AuthContextType {
   accessToken: string | null;
   refreshToken: string | null;
   login: (signData: LoginRequest) => Promise<void>;
-  logout: (navigate: NavigateFunction) => Promise<void>; 
+  logout: () => Promise<void>;
+
+  setAccessToken: (token: string | null) => void;
+  setRefreshToken: (token: string | null) => void;
 }
 
 export const AuthContext = createContext<AuthContextType>({
   accessToken: null,
   refreshToken: null,
-  login: async () => {},
-  logout: async () => {}, 
+  login: async () => { },
+  logout: async () => { },
+  setAccessToken: function (token: string | null): void {
+    throw new Error("Function not implemented.");
+  },
+  setRefreshToken: function (token: string | null): void {
+    throw new Error("Function not implemented.");
+  }
 });
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
@@ -43,30 +50,33 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   const login = async (signinData: LoginRequest) => {
     try {
       const { data } = await loginApi(signinData);
-      if (data) {
-        const newAccessToken = data.accessToken;
-        const newRefreshToken = data.refreshToken;
 
-        setAccessTokenInStorage(newAccessToken);
-        setRefreshTokenInStorage(newRefreshToken);
-        setAccessToken(newAccessToken);
-        setRefreshToken(newRefreshToken);
-      }
+      const newAccessToken = data.accessToken;
+      const newRefreshToken = data.refreshToken;
+
+      setAccessTokenInStorage(newAccessToken);
+      setRefreshTokenInStorage(newRefreshToken);
+
+      setAccessToken(newAccessToken);
+      setRefreshToken(newRefreshToken);
+
+      alert("로그인 성공!");
     } catch (error) {
-      console.log("로그인 오류", error);
+      console.error("로그인 오류", error);
       alert("로그인 실패");
     }
   };
 
-  const logout = async (navigate: NavigateFunction) => {
+  const logout = async () => {
     try {
       await logoutApi();
       removeAccessTokenFromStorage();
       removeRefreshTokenFromStorage();
+
       setAccessToken(null);
       setRefreshToken(null);
-      alert("로그아웃 성공");
-      navigate("/login");
+
+      alert("로그아웃 성공!");
     } catch (error) {
       console.error("로그아웃 오류", error);
       alert("로그아웃 실패");
@@ -74,10 +84,14 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   };
 
   return (
-    <AuthContext.Provider value={{ accessToken, refreshToken, login, logout }}>
+    <AuthContext.Provider value={{ accessToken, refreshToken, login, logout,setAccessToken,
+      setRefreshToken  }}>
       {children}
     </AuthContext.Provider>
   );
 };
 
-export const useAuth = () => useContext(AuthContext);
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+

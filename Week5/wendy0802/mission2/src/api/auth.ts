@@ -1,7 +1,7 @@
 
 // src/api/auth.ts
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from "axios";
-
+ 
 const api = axios.create({
 baseURL: "http://localhost:8000",
 withCredentials: true,
