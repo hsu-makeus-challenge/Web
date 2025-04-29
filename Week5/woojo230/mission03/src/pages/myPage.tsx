@@ -15,9 +15,8 @@ const MyPage = () => {
   };
 
   useEffect(() => {
-    if (user) {
-      console.log(user);
-    }
+    userData();
+    console.log(user);
   }, [user]);
 
   return (
