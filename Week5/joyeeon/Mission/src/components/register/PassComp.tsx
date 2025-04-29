@@ -34,7 +34,7 @@ const PassComp = <T extends Record<string, any>>({
                     {...register(name)}
                     name={name}
                     placeholder={placeholder || "비밀번호를 입력해주세요!"} />
-                <button onClick={handleTogglePassword}>
+                <button type="button" onClick={handleTogglePassword}>
                     {passwordIcon}
                 </button>
             </div>
