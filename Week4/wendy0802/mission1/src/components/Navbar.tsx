@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -6,10 +6,10 @@ const Navbar = () => {
       {/* 왼쪽 메뉴들 */}
       <div className="flex space-x-4 text-gray-600 font-semibold">
         <Link to="/">홈</Link>
-        <Link to="/popular">인기 영화</Link>
-        <Link to="/now-playing">상영 중</Link>
-        <Link to="/top-rated">평점 높은</Link>
-        <Link to="/upcoming">개봉 예정</Link>
+        <Link to="/movies/popular">인기 영화</Link>
+        <Link to="/movies/now-playing">상영 중</Link>
+        <Link to="/movies/top-rated">평점 높은</Link>
+        <Link to="/movies/upcoming">개봉 예정</Link>
       </div>
 
       {/* 오른쪽 버튼들 */}
