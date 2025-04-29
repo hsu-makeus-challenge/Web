@@ -1,4 +1,4 @@
-import { Detail } from "../../types/details"
+import type { Detail } from "../../types/details"
 
 interface DetailItemProps {
     detail: Detail;

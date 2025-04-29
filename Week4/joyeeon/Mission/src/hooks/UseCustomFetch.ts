@@ -24,7 +24,7 @@ const useCustomFetch = <T>(endpoint: string | null): UseCustomFetchResult<T> => 
             try {
                 const response = await axios.get(defaultURL+endpoint, {
                     headers: {
-                        Authorization: token,
+                        Authorization: `Bearer ${token}`,
                     },
                 });
                 setData(response.data);

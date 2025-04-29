@@ -1,5 +1,5 @@
 
-import { Detail } from "../types/details";
+import type { Detail } from "../types/details";
 import { useParams } from "react-router-dom";
 import DetailPanel from "../components/details/DetailPanel";
 import CastingList from "../components/details/CastingList";

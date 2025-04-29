@@ -1,4 +1,4 @@
-import { Credit } from "../../types/credit";
+import type { Credit } from "../../types/credit";
 import { useParams } from "react-router-dom";
 import CreditItem from "./CreditItem";
 import useCustomFetch from "../../hooks/UseCustomFetch";
