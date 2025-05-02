@@ -8,7 +8,7 @@ const LoadingSpinner = (): JSX.Element => {
         ></div>
         <p className="mt-4 text-xl text-blue-300 font-bold">🔵🔵🔵</p>
       </div>
-    </div>
+    </div> 
   );
 };
 

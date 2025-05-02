@@ -6,6 +6,10 @@
     @apply w-full border-1 rounded-lg h-10 p-3 text-sm box-border placeholder:text-xs
 }
 
+.inputpass {
+    @apply w-full border-1 rounded-lg h-10 p-3 text-sm box-border placeholder:text-xs flex items-center justify-between
+}
+
 .customHr {
     @apply h-0.5 bg-white mt-1 mb-1
 }

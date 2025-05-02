@@ -1,8 +1,9 @@
-import React from 'react';
-import MoviePage from './MoviePage'; 
+// NowPlayingPage.tsx
+import { Navigate } from "react-router-dom";
 
 const NowPlayingPage = (): JSX.Element => {
-  return <MoviePage category="now playing" />;
+  return <Navigate to="/movies/now-playing" />;
 };
 
 export default NowPlayingPage;
+ 
