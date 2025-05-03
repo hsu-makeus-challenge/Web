@@ -2,9 +2,11 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Navbar from "../components/Navbar";
 import { loginApi } from "../api/auth";
-import { useAuth } from "../context/AuthContext"; // ✅ AuthContext 가져오기
+import Navbar from "../components/Navbar";
+import { useAuth } from "../context/AuthContext";
+import { useEffect, useCallback } from "react";
+import { useLocation } from "react-router-dom";
 
 // 로그인 스키마 정의
 const loginSchema = z.object({
@@ -14,12 +16,42 @@ const loginSchema = z.object({
 
 type LoginForm = z.infer<typeof loginSchema>;
 
-const SERVER_API_URL =
-  import.meta.env.VITE_SERVER_API_URL || "http://localhost:8000";
-
 const Login = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { setAccessToken, setRefreshToken } = useAuth();
+
+  // 구글 인증 후 리다이렉트 시 토큰 저장
+  const handleGoogleAuth = useCallback(() => {
+    const query = new URLSearchParams(location.search);
+    const accessToken = query.get("accessToken");
+    const refreshToken = query.get("refreshToken");
+    const email = query.get("email");
+    const name = query.get("name");
+    const error = query.get("error");
+
+    if (error) {
+      alert("구글 로그인에 실패했습니다. 다시 시도해주세요.");
+      return;
+    }
+
+    if (accessToken && refreshToken) {
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("signup_email", email || "");
+      localStorage.setItem("signup_nickname", name || "");
+
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+
+      alert(`${name}님 환영합니다!`);
+      navigate("/my");
+    }
+  }, [location, navigate, setAccessToken, setRefreshToken]);
+
+  useEffect(() => {
+    handleGoogleAuth();
+  }, [handleGoogleAuth]);
 
   const {
     register,
@@ -29,8 +61,10 @@ const Login = () => {
     resolver: zodResolver(loginSchema),
   });
 
+  // 구글 로그인 버튼 클릭 시에만 리다이렉트
   const handleGoogleLogin = () => {
-    window.location.href = `${SERVER_API_URL}/v1/auth/google/login`;
+    const apiUrl = import.meta.env.VITE_SERVER_API_URL;
+    window.location.href = apiUrl + "/v1/auth/google/login";
   };
 
   const onValid = async (data: LoginForm) => {
@@ -38,7 +72,6 @@ const Login = () => {
       const res = await loginApi(data);
       const { name, accessToken, refreshToken } = res.data.data;
 
-      // ✅ 로컬스토리지에 저장
       localStorage.setItem("signup_email", data.email);
       localStorage.setItem("signup_password", data.password);
       localStorage.setItem("signup_nickname", name || "");
@@ -46,12 +79,11 @@ const Login = () => {
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
 
-      // ✅ 전역 상태 저장
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
 
       alert(`${name}님 환영합니다!`);
-      navigate("/my"); // ✅ 마이페이지로 이동
+      navigate("/my");
     } catch (err) {
       console.error(err);
       alert("로그인에 실패했습니다. 이메일 또는 비밀번호를 확인해주세요.");
@@ -60,7 +92,7 @@ const Login = () => {
 
   return (
     <>
-      <Navbar />
+    <Navbar />
       <div className="min-h-screen bg-white flex flex-col justify-center items-center px-4">
         <div className="w-full max-w-sm mb-6 flex items-center justify-center relative">
           <button
@@ -97,6 +129,7 @@ const Login = () => {
             type="text"
             placeholder="이메일을 입력해주세요!"
             {...register("email")}
+            autoComplete="email"
             className={`w-full px-4 py-2 border rounded bg-white text-black ${
               errors.email ? "border-red-500" : "border-gray-300"
             }`}
@@ -109,6 +142,7 @@ const Login = () => {
             type="password"
             placeholder="비밀번호를 입력해주세요!"
             {...register("password")}
+            autoComplete="current-password"
             className={`w-full px-4 py-2 border rounded bg-white text-black ${
               errors.password ? "border-red-500" : "border-gray-300"
             }`}

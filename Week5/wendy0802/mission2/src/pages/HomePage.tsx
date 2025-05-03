@@ -1,12 +1,10 @@
 import { Outlet } from "react-router-dom";
-import  Navbar  from "../components/Navbar"
+// import  Navbar  from "../components/Navbar"
 
 const HomePage = (): JSX.Element => {
   return <div>
-    <>
-    <Navbar />
+    {/* <Navbar /> 제거 */}
     <Outlet /> 
-    </>
   </div>;
 };
 

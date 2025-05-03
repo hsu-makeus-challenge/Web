@@ -14,9 +14,11 @@
   "dependencies": {
     "@hookform/resolvers": "^5.0.1",
     "@nestjs/config": "^4.0.2",
+    "@nestjs/jwt": "^11.0.0",
     "@nestjs/passport": "^11.0.5",
     "@prisma/client": "^6.6.0",
     "axios": "^1.8.4",
+    "jsonwebtoken": "^9.0.2",
     "passport": "^0.7.0",
     "passport-google-oauth2": "^0.2.0",
     "passport-google-oauth20": "^2.0.0",
