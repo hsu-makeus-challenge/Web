@@ -5,7 +5,7 @@ const HomePage = (): JSX.Element => {
   return <div>
     <>
     <Navbar />
-    <Outlet />
+    <Outlet /> 
     </>
   </div>;
 };

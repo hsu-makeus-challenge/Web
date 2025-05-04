@@ -3,9 +3,10 @@ import { ChangeEvent, useState , useEffect} from "react";
 interface UseFormProps<T> {
     initialValue : T; //이메일. 패스워드 등 
     validate:(values:T) => Record<keyof T, string>;
+    deps?: any[];
 }
 
-function useForm<T>({initialValue, validate} : UseFormProps<T>) {
+function useForm<T  extends Record<string, any>>({initialValue, validate, deps = []} : UseFormProps<T>) {
     const [values , setValues] = useState(initialValue);
     const [touched, setTouched] = useState<Record<string, boolean>>();
     const [errors, setErrors] = useState<Record<string, string>>();
@@ -38,7 +39,7 @@ function useForm<T>({initialValue, validate} : UseFormProps<T>) {
     useEffect( () =>{
         const newErrors = validate(values);
         setErrors(newErrors);
-    }, [validate, values]);
+    }, [validate, values, ...(deps || [])]);
 
     return {values, errors, touched, getInputProps} ;
 

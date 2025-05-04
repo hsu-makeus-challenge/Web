@@ -7,4 +7,4 @@ export default function NotFoundPage(): JSX.Element {
       </div>
     );
   }
-  
+   

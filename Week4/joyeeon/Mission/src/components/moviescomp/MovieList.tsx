@@ -1,7 +1,7 @@
 
 import { useEffect, useState } from "react";
 import MovieItem from "./MovieItem";
-import { Movie } from "../../types/movie";
+import type { Movie } from "../../types/movie";
 import IsLoading from "../state/IsLoading";
 import IsError from "../state/IsError";
 import useCustomFetch from "../../hooks/UseCustomFetch";

@@ -1,4 +1,4 @@
-import { Credit } from "../../types/credit"
+import type { Credit } from "../../types/credit"
 
 interface CreditItemProps {
     credit:Credit;
