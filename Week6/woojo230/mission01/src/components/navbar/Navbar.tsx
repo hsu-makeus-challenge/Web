@@ -7,7 +7,7 @@ import {
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { isLogin } = useLoginStore();
+  const { isLogin, toggleLogin } = useLoginStore();
   const nickname = localStorage.getItem('name');
   const { remove: localRemove } = useLocalStorage();
   const { remove: sessionRemove } = useSessionStorage();
@@ -28,6 +28,7 @@ const Navbar = () => {
     localRemove('name');
     localRemove('accessToken');
     sessionRemove('refreshToken');
+    toggleLogin();
     navigate('/login');
   };
 

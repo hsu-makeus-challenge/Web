@@ -1,34 +1,4 @@
-// export interface MovieDataType {
-//   id: number;
-//   poster_path: string;
-//   title: string;
-//   overview: string;
-//   vote_average: number;
-// }
-
-import { string } from 'zod';
-
-// export interface MovieDetailDataType {
-//   id: number;
-//   runtime: number;
-//   vote_average: number;
-//   backdrop_path: string;
-//   title: string;
-//   overview: string;
-//   release_date: string;
-// }
-
-// export interface CastDataType {
-//   id: number;
-//   name: string;
-//   profile_path: string;
-//   original_name: string;
-// }
-
-// export interface categoryPageProps {
-//   moviesData: MovieDataType[] | undefined;
-// }
-
+// Lp 조회회
 export interface LpDataType {
   id: number;
   title: string;
@@ -46,4 +16,43 @@ export interface LpDataProps {
   data: LpDataType[] | undefined;
 }
 
+// Lp 상세조회
+export interface LpDetailDataType {
+  id: number;
+  title: string;
+  content: string;
+  thumbnail: string;
+  published: boolean;
+  authorId: number;
+  createdAt: string;
+  updatedAt: string;
+  author: AuthorType;
+  tags: TagType[];
+  likes: LikeType[];
+}
+
+export interface TagType {
+  id: number;
+  name: string;
+}
+
+// 좋아요 타입 정의
+export interface LikeType {
+  id: number;
+  userId: number;
+  lpId: number;
+}
+
+// 작가 타입 정의
+export interface AuthorType {
+  id: number;
+  name: string;
+  email: string;
+  bio: string | null;
+  avatar: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// 회원가입 3단계
 export type ProfileSteps = 'email' | 'password' | 'profile';

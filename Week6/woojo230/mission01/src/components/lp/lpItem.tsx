@@ -13,7 +13,7 @@ const LpItem = ({ id: lpId, title, thumbnail }: LpItemProps) => {
 
   const gotoLpDetailPage = (lpId: number) => {
     if (!lpId) return;
-    navigate(`/home/lp/${lpId}`);
+    navigate(`/lp/${lpId}`);
   };
 
   return (

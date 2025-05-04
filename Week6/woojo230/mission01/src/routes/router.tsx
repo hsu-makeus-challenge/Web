@@ -27,20 +27,10 @@ const router = createBrowserRouter([
       {
         path: 'home',
         element: <Home />,
-        loader: requiresAuth,
         children: [
           {
             path: 'mypage',
             element: <MyPage />,
-          },
-          {
-            path: 'lp',
-            children: [
-              {
-                path: ':Lpid',
-                element: <LpDetailPage />,
-              },
-            ],
           },
         ],
       },
@@ -57,32 +47,42 @@ const router = createBrowserRouter([
         element: <GoogleRedirect />,
       },
       {
-        path: 'movies',
-        errorElement: <NotFound />,
+        path: 'lp',
         loader: requiresAuth,
         children: [
           {
-            path: 'now-playing',
-            element: <NowPlayingPage />,
-          },
-          {
-            path: 'popular',
-            element: <PopularPage />,
-          },
-          {
-            path: 'top-rated',
-            element: <TopRatedPage />,
-          },
-          {
-            path: 'up-coming',
-            element: <UpComingPage />,
-          },
-          {
-            path: ':movieId',
-            element: <MovieDetailPage />,
+            path: ':Lpid',
+            element: <LpDetailPage />,
           },
         ],
       },
+      // {
+      //   path: 'movies',
+      //   errorElement: <NotFound />,
+      //   loader: requiresAuth,
+      //   children: [
+      //     {
+      //       path: 'now-playing',
+      //       element: <NowPlayingPage />,
+      //     },
+      //     {
+      //       path: 'popular',
+      //       element: <PopularPage />,
+      //     },
+      //     {
+      //       path: 'top-rated',
+      //       element: <TopRatedPage />,
+      //     },
+      //     {
+      //       path: 'up-coming',
+      //       element: <UpComingPage />,
+      //     },
+      //     {
+      //       path: ':movieId',
+      //       element: <MovieDetailPage />,
+      //     },
+      //   ],
+      // },
     ],
   },
 ]);
