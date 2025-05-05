@@ -1,4 +1,6 @@
 import axios from 'axios';
+import { LoginRequest, LoginResponse, SignupRequest, SignupResponse, RefreshTokenResponse } from '../types/auth';
+import { UserInfoResponse } from '../types/user';
 
 const API_BASE_URL = import.meta.env.VITE_SERVER_API_URL;
 
@@ -78,55 +80,11 @@ axiosInstance.interceptors.response.use(
   }
 );
 
-//회원가입 요청
-export interface SignupRequest {
-  name: string;
-  email: string;
-  password: string;
-  bio?: string;
-  avatar?: string;
-}
-
-//회원가입 응답
-export interface SignupResponse {
-  status: boolean;
-  statusCode: number;
-  message: string;
-  data: {
-    id: number;
-    name: string;
-    email: string;
-    bio: string | null;
-    avatar: string | null;
-    createdAt: string;
-    updatedAt: string;
-  };
-}
-
 //회원가입 요청 함수
 export const signup = async (data: SignupRequest): Promise<SignupResponse> => {
   const response = await axios.post(`${API_BASE_URL}/v1/auth/signup`, data);
   return response.data;
 };
-
-//로그인 요청
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-//로그인 응답
-export interface LoginResponse {
-  status: boolean;
-  message: string;
-  statusCode: number;
-  data: {
-    id: number;
-    name: string;
-    accessToken: string; 
-    refreshToken: string; 
-  }
-}
 
 //로그인 요청 함수
 export const login = async (data: LoginRequest): Promise<LoginResponse> => {
@@ -134,40 +92,11 @@ export const login = async (data: LoginRequest): Promise<LoginResponse> => {
   return response.data;
 };
 
-//사용자 정보 응답
-export interface UserInfoResponse {
-  status: boolean;
-  message: string;
-  statusCode: number;
-  data: {
-    id: number;
-    name: string;
-    email: string;
-    bio: string | null;
-    avatar: string | null;
-    createdAt: string;
-    updatedAt: string;
-  }
-}
-
 //사용자 정보 요청 함수
 export const getUserInfo = async (): Promise<UserInfoResponse> => {
   const response = await axiosInstance.get('/v1/users/me');
   return response.data;
 };
-
-// 토큰 재발급 응답
-export interface RefreshTokenResponse {
-  status: boolean;
-  statusCode: number;
-  message: string;
-  data: {
-    id: number;
-    name: string;
-    accessToken: string;
-    refreshToken: string;
-  }
-}
 
 // 토큰 재발급 요청 함수
 export const refreshToken = async (): Promise<RefreshTokenResponse> => {

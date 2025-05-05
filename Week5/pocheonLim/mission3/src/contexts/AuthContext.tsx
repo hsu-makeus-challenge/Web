@@ -1,12 +1,7 @@
 import { createContext, useContext, ReactNode, useState, useEffect } from 'react';
-import { getUserInfo, UserInfoResponse } from '../apis/auth';
-
-interface AuthContextType {
-  isLoggedIn: boolean;
-  user: UserInfoResponse['data'] | null;
-  login: (accessToken: string, refreshToken: string) => void;
-  logout: () => void;
-}
+import { getUserInfo } from '../apis/auth';
+import { AuthContextType } from '../types/context';
+import { UserInfoResponse } from '../types/user';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
