@@ -1,8 +1,9 @@
-import LpList from '../components/lp/lpList';
 import { useEffect, useRef, useState } from 'react';
 import LoadingSpinner from '../components/loading';
 import Error from '../components/error';
 import useGetInfiniteScroll from '../hooks/queries/useGetInfiniteScroll';
+import SkeletonLpItem from '../components/skeleton/skeletonLpItem'; // 스켈레톤 아이템 컴포넌트 import
+import LpItem from '../components/lp/lpItem'; // LpItem 컴포넌트도 직접 import
 
 function Home() {
   const [order, setOrder] = useState<string>('desc');
@@ -33,9 +34,6 @@ function Home() {
   const observer = useRef<IntersectionObserver | null>(null);
 
   const allLpData = lpData?.pages.flatMap((page) => page.data) ?? [];
-
-  // console.log('엘피데이터', lpData);
-  // console.log(isLogin);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -72,9 +70,11 @@ function Home() {
     };
   }, [hasNextPage, isFetching, fetchNextPage]);
 
+  const skeletonCount = 12;
+  const skeletonItems = Array.from({ length: skeletonCount }, (_, i) => i);
+
   if (isLoading) return <LoadingSpinner />;
   if (error) return <Error />;
-  if (isFetching) return <LoadingSpinner />;
 
   return (
     <>
@@ -100,7 +100,24 @@ function Home() {
           </button>
         </div>
       </div>
-      {lpData && <LpList lpData={allLpData} />}
+
+      <div className="p-10 grid gap-1 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
+        {allLpData.map((lp) => (
+          <LpItem
+            key={lp.id}
+            id={lp.id}
+            title={lp.title}
+            thumbnail={lp.thumbnail}
+          />
+        ))}
+
+        {isFetching &&
+          !isLoading &&
+          skeletonItems.map((item) => (
+            <SkeletonLpItem key={`skeleton-${item}`} />
+          ))}
+      </div>
+
       <div ref={observerRef} className="h-10" />
     </>
   );
