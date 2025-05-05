@@ -31,6 +31,16 @@ export interface LpDetailDataType {
   likes: LikeType[];
 }
 
+// Lp 댓글조회
+export interface LpCommentType {
+  id: number;
+  content: string;
+  authorId: number;
+  createdAt: string;
+  updatedAt: string;
+  author: AuthorType;
+}
+
 export interface TagType {
   id: number;
   name: string;

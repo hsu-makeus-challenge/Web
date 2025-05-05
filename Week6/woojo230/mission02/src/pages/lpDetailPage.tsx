@@ -6,10 +6,14 @@ import Error from '../components/error';
 import type { LpDetailDataType } from '../type/type';
 import { HeartIcon } from '../utils/lp/icons';
 import { LpHeader, LpRecord, LpTags, LpTitle } from '../utils/lp/LpComponents';
+import LpCommentsList from '../components/lpComment/LpcommentsList';
+import { useRef } from 'react';
 
 const LpDetailPage = () => {
   const { Lpid } = useParams<{ Lpid: string }>();
   const lpId: number = Number(Lpid);
+
+  const observerRef = useRef(null);
 
   const {
     data: lpDetailData,
@@ -26,8 +30,8 @@ const LpDetailPage = () => {
   if (isFetching) return <LoadingSpinner />;
 
   return (
-    <div className="flex justify-center items-center bg-lime-700 p-6 rounded-2xl max-w-md mx-auto my-8">
-      <div className="max-w-md w-full">
+    <div className="flex justify-center items-center bg-lime-700 p-6 rounded-2xl max-w-2xl mx-auto my-8">
+      <div className="max-w-xl w-full">
         {/* header */}
         <LpHeader
           avatar={lpDetailData?.author.avatar}
@@ -59,6 +63,8 @@ const LpDetailPage = () => {
             <span>{lpDetailData?.likes?.length || 0}</span>
           </button>
         </div>
+        <LpCommentsList observerRef={observerRef} />
+        <div ref={observerRef} className="h-20" />
       </div>
     </div>
   );

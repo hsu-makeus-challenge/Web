@@ -17,5 +17,7 @@ export const LpDetailFetch = async (Lpid: number) => {
 
     const data = await response.json();
     return data.data || null;
-  } catch {}
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
 };

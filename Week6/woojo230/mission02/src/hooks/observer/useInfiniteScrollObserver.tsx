@@ -3,9 +3,12 @@ import { useEffect, useRef } from 'react';
 function useInfiniteScrollObserver(
   hasNextPage: boolean | undefined,
   isFetching: boolean,
-  fetchNextPage: () => Promise<any>
+  fetchNextPage: () => Promise<any>,
+  externalRef?: React.RefObject<HTMLDivElement>
 ): React.RefObject<HTMLDivElement> {
-  const observerRef = useRef<HTMLDivElement | null>(null);
+  const internalRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = externalRef ?? internalRef;
+
   const observer = useRef<IntersectionObserver | null>(null);
   const scrollPosition = useRef<number>(0);
 
@@ -42,7 +45,7 @@ function useInfiniteScrollObserver(
         observer.current.unobserve(observerRef.current);
       }
     };
-  }, [hasNextPage, isFetching, fetchNextPage]);
+  }, [hasNextPage, isFetching, fetchNextPage, observerRef]);
 
   return observerRef;
 }

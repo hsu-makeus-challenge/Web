@@ -11,7 +11,7 @@ export const OrderButtons = ({
 }: OrderBtnProps) => {
   return (
     <div className="flex justify-end w-full mb-1">
-      <div className="inline-flex rounded-md overflow-hidden mr-7 border-2 border-lime-500">
+      <div className="inline-flex rounded-md overflow-hidden border-2 border-lime-500">
         <button
           onClick={onAscClick}
           className={`px-4 py-2 text-sm font-medium cursor-pointer ${
