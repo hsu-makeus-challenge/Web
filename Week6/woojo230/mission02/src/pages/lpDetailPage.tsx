@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { LpDetailFetch } from '../apis/lp/lpDetailFetch';
 import LoadingSpinner from '../components/loading';
 import Error from '../components/error';
-import { LpDetailDataType } from '../type/type';
+import type { LpDetailDataType } from '../type/type';
 import { HeartIcon } from '../utils/lp/icons';
 import { LpHeader, LpRecord, LpTags, LpTitle } from '../utils/lp/LpComponents';
 

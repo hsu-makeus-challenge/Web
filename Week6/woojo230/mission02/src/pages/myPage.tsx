@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import useFetch from '../hooks/useFetch';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const MyPage = () => {

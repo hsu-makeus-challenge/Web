@@ -8,8 +8,8 @@ export interface LpDataType {
   authorId: number;
   createdAt: number;
   updatedAt: number;
-  tags: object[];
-  likes: object[];
+  tags: TagType[];
+  likes: LikeType[];
 }
 
 export interface LpDataProps {
