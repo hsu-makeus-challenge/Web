@@ -1,6 +1,12 @@
 import { useNavigate , useParams} from "react-router-dom";
 import { MouseEvent } from "react";
 import NavSign from "./NavSigns";
+import { FaSearch } from "react-icons/fa";
+import { useAuth } from "../../context/AuthContext";
+import SignOutBtn from "./SignoutBtn";
+import { GiHamburgerMenu } from "react-icons/gi";
+import { useSidebar } from "../../context/SidebarContext";
+import { useMediaQuery } from "react-responsive";
 
 interface NavItem {
     label: string;
@@ -9,9 +15,12 @@ interface NavItem {
 }
 
 const Navbar = () =>{
+    const {accessToken} = useAuth();
     const {category} = useParams(); 
     //console.log(`params 값: ${category}`);
     const navigate = useNavigate();
+    const isMobile = useMediaQuery({ maxWidth: 767 });
+    const {toggleSidebar} = useSidebar();
 
     const navItems: NavItem[] = [
         { label: '홈', path: '/', category: undefined },
@@ -27,8 +36,8 @@ const Navbar = () =>{
 
 
     return (
-        <nav className="flex items-center justify-between bg-blue-100 h-10 top-0 pl-5 pr-5">
-            <ul className="flex gap-4 ">
+        <nav className="flex items-center justify-between bg-blue-100 min-h-10 h-10 top-0 pl-5 pr-5 px-5">
+            {/* <ul className="flex gap-4 ">
             {navItems.map(({ label, path, category: cat }) => (
                     <li
                         key={path}
@@ -40,8 +49,15 @@ const Navbar = () =>{
                         {label}
                     </li>
                 ))}
-            </ul>
-            <NavSign/>
+            </ul> */}
+            <div className="flex flex-row gap-2 font-bold items-center text-amber-700">
+                <GiHamburgerMenu className="text-[20px] cursor-pointer"
+                onClick={() => isMobile && toggleSidebar()}/>
+                JOY-LP판</div>
+            <div className="flex flex-row items-center gap-5">
+            <FaSearch />
+            {accessToken ?<SignOutBtn />: <NavSign/>}
+            </div> 
         </nav>
     )
 }

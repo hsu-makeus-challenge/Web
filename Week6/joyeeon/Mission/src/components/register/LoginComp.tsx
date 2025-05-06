@@ -49,8 +49,9 @@ const LoginComp = () => {
             console.log("로그인 성공", response.data);
             const accessToken = response.data.accessToken;
             const refreshToken = response.data.refreshToken;
+            const name = response.data.name;
 
-            login(accessToken, refreshToken); 
+            login(accessToken, refreshToken, name); 
 
             api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 

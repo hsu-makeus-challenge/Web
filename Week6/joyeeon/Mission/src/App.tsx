@@ -1,6 +1,7 @@
 import RootLayout from './layout/Root-layout'
 
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+
 import Notfound from './pages/Notfound'
 import Homepage from './pages/Homepage'
 import MoviePage from './pages/Moviepage'
@@ -14,6 +15,8 @@ import Mypage from './pages/Mypage'
 import { setupInterceptors } from './apis/interceptor'
 import { useEffect } from 'react'
 import GoogleLoginRedirectPage from './pages/GoogleLoginRedirectPage'
+import LPpage from './pages/LPpage'
+import LPDetailPage from './pages/LpDetailPage'
 
 
 const router = createBrowserRouter([
@@ -24,7 +27,7 @@ const router = createBrowserRouter([
     children:[
       {
         index:true,
-        element:<Homepage />
+        element:<LPpage />
 
       },
       {
@@ -64,7 +67,16 @@ const router = createBrowserRouter([
       {
         path:'/mypage',
         element: <ProtectedRoute><Mypage/> </ProtectedRoute>
-      }
+      },
+      {
+        path: '/lp',
+        children : [
+          {
+            path: ':id',
+            element: <ProtectedRoute><LPDetailPage /></ProtectedRoute>
+          }
+        ]
+      },
     ]
   },
 ])
