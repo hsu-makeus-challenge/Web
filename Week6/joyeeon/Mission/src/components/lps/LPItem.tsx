@@ -3,6 +3,7 @@ import { FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { MouseEvent } from "react";
 
+
 interface LpItemProps {
     lp: LP;
 }
@@ -14,7 +15,7 @@ const LpItem = ({lp} : LpItemProps) =>{
             };
 
     return(
-        <li key={lp.id} onClick={handleNavigate(lp.id)} 
+        <li  onClick={handleNavigate(lp.id)} 
         className="relative w-32 group aspect-square overflow-hidden  hover:scale-120">
 
             <img src={lp.thumbnail} 

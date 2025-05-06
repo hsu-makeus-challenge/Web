@@ -1,14 +1,17 @@
 import type { LpDetail } from "../../types/lpdetails";
 import { FaEdit } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
+import LpCommentList from "./LPCommentList";
+import { useParams } from "react-router-dom";
 
 interface DetailItemProps {
     detail: LpDetail;
 }
 
 const LpDetailComp = ({ detail }: DetailItemProps) =>{
+    
     return(
-        <main className="bg-emerald-100 w-[90%] h-[90%] px-5 py-5 rounded-md">
+        <main className="bg-emerald-100 w-[90%]  min-h-[90%] px-5 py-5 rounded-md">
             <header className="flex justify-between">
                 <div className="flex gap-5">
                     <img className="w-[30px] rounded-2xl" src={detail.author?.avatar} alt="프로필" />
@@ -33,6 +36,7 @@ const LpDetailComp = ({ detail }: DetailItemProps) =>{
             {/* <div>
                 {detail.content}
             </div> */}
+            <LpCommentList lpId={detail.id} />
         </main>
     )
 }

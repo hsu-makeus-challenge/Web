@@ -1,5 +1,5 @@
 import { api } from "./api";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 
 export interface LP {
@@ -16,7 +16,6 @@ export interface LP {
 }
 
 interface UseLpListParams {
-    cursor?: number;
     limit?: number;
     search?: string;
     order?: "asc" | "desc";
@@ -24,19 +23,37 @@ interface UseLpListParams {
 
 
 export const useLpList = ({
-    cursor = 0,
     limit = 10,
     search = "",
     order = "desc",
-}: UseLpListParams) =>{
-    return useQuery({
-        queryKey: ["lpList", cursor, limit, search, order],
-        queryFn: async() =>{
+}: UseLpListParams) => {
+    return useInfiniteQuery({
+        queryKey: ["lpList", limit, search, order],
+        queryFn: async ({ pageParam = 0 }) => {
             const response = await api.get(`/lps`, {
-                params: { cursor, limit, search, order },
+                params: {
+                    cursor: pageParam,
+                    limit,
+                    search,
+                    order,
+                },
             });
-            console.log("lp 데이터 호출", response.data.data.data);
-            return response.data.data.data;
-        }
-    })
-}
+
+            const lpList = response.data.data.data;
+            const nextCursor = response.data.data.nextCursor;
+
+            console.log("불러온 LP 목록:", lpList);
+
+            //스켈레톤 확인 용 딜레이 
+            await new Promise((resolve) => setTimeout(resolve, 500));
+            return {
+                items: lpList,
+                nextCursor,
+            };
+        },
+        initialPageParam: 0,
+        getNextPageParam: (lastPage) => {
+            return lastPage.nextCursor ?? undefined; 
+        },
+    });
+};
