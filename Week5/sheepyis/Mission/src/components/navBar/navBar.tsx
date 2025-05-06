@@ -7,8 +7,8 @@ const NavBar = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        const loginStatus = localStorage.getItem('isLoggedIn') === 'true';
-        setIsLoggedIn(loginStatus);
+        const token = localStorage.getItem('accessToken');
+        setIsLoggedIn(!!token);
     }, []);
 
     const handleLoginClick = () => {
@@ -24,7 +24,6 @@ const NavBar = () => {
     };
 
     const handleLogoutClick = () => {
-        localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         alert('로그아웃 되었습니다.');

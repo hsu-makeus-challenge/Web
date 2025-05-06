@@ -7,10 +7,9 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
     const accessToken = localStorage.getItem("accessToken");
 
-    if (isLoggedIn && accessToken) {
+    if (accessToken) {
       setIsAuthenticated(true);
     }
     setChecking(false);

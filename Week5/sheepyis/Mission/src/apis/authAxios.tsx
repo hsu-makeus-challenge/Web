@@ -38,7 +38,9 @@ AuthAPI.interceptors.response.use(
         return AuthAPI(originalRequest);
       } catch (refreshError) {
         alert('로그인 세션이 만료되었습니다. 다시 로그인해주세요.');
-        localStorage.clear();
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+
         window.location.href = '/login';
         return Promise.reject(refreshError);
       }

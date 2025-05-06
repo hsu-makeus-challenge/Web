@@ -15,7 +15,6 @@ const LoginForm = () => {
             const { accessToken, refreshToken } = response.data.data;
 
             if (accessToken && refreshToken) {
-                localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('accessToken', accessToken);
                 localStorage.setItem('refreshToken', refreshToken);
             } else {
