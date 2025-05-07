@@ -1,6 +1,10 @@
 import { FaSearch, FaUser } from 'react-icons/fa';
+import useSideBarStore from '../../stores/sideBar';
 
 const SideBar = () => {
+  const { isSidebarOpen } = useSideBarStore();
+  // console.log(isSidebarOpen);
+
   return (
     <div className="h-full w-50 bg-lime-500 shadow-lg p-6 flex flex-col gap-4">
       <div className="flex items-center gap-2 cursor-pointer text-lime-900 hover:text-lime-700">

@@ -4,6 +4,8 @@ import {
   useLocalStorage,
   useSessionStorage,
 } from '../../hooks/useLocalStorage';
+import { FaBars } from 'react-icons/fa';
+import useSideBarStore from '../../stores/sideBar';
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -11,6 +13,8 @@ const Navbar = () => {
   const nickname = localStorage.getItem('name');
   const { remove: localRemove } = useLocalStorage();
   const { remove: sessionRemove } = useSessionStorage();
+
+  const { toggleSidebar } = useSideBarStore();
 
   const gotoHome = (): void => {
     navigate('/');
@@ -35,6 +39,10 @@ const Navbar = () => {
   return (
     <nav className="flex gap-4 place-content-between bg-lime-500">
       <div className="flex gap-4 items-center bg-white-900 text-white p-4">
+        <FaBars
+          className="text-2xl text-lime-800 cursor-pointer"
+          onClick={toggleSidebar}
+        />
         <div
           className="font-bold text-2xl text-lime-800 cursor-pointer"
           onClick={gotoHome}
