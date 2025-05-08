@@ -13,26 +13,23 @@ export const lpFetchData = async ({
   limit,
   search,
 }: LpFetchProps) => {
-  const token = localStorage.getItem('accessToken');
   try {
-    const response = await fetch(
-      `${
-        import.meta.env.VITE_SERVER_URL
-      }/v1/lps?limit=${limit}&order=${orderProps}&cursor=${cursor}&search=${search}`,
+    const response = await axios.get(
+      `${import.meta.env.VITE_SERVER_URL}/v1/lps`,
       {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
+        params: {
+          limit,
+          order: orderProps,
+          cursor,
+          search,
         },
+        headers: {
+          skipAuth: true
+        }
       }
     );
 
-    if (!response.ok) {
-      throw new Error('API 요청 실패');
-    }
-
-    const data = await response.json();
-    return data.data || [];
+    return response.data.data || [];
   } catch (error) {
     console.error('Error fetching data:', error);
     return { data: [], nextCursor: null, hasNext: false };

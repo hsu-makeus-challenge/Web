@@ -20,7 +20,14 @@ function addRefreshSubscriber(callback: (token: string) => void) {
 }
 
 instance.interceptors.request.use(
+  // skipAuth 헤더가 있는 경우 토큰을 추가하지 않음
   (config) => {
+    if (config.headers?.skipAuth) {
+      delete config.headers.skipAuth;
+      return config;
+    }
+
+    // skipAuth 헤더가 없는 경우 토큰을 추가
     const token = localStorage.getItem('accessToken');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
@@ -47,7 +54,7 @@ instance.interceptors.response.use(
         const refreshToken = localStorage.getItem('refreshToken');
         try {
           const { data } = await axios.post(
-            'http://localhost:8000/v1/auth/refresh',
+            `${import.meta.env.VITE_SERVER_URL}/v1/auth/refresh`,
             {
               refreshToken,
             }

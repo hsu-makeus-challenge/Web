@@ -18,8 +18,10 @@ export const LpGrid = ({ lpData, isFetching, isLoading }: LpGridProps) => {
         <LpItem
           key={lp.id}
           id={lp.id}
+          createdAt={lp.createdAt}
           title={lp.title}
           thumbnail={lp.thumbnail}
+          likes={lp.likes}
         />
       ))}
 
