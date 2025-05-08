@@ -1,0 +1,35 @@
+{
+  "name": "tailwind-react-starter",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "dev",
+    "start:dev": "nest start --watch"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^5.0.1",
+    "@prisma/client": "^6.6.0",
+    "axios": "^1.8.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-hook-form": "^7.55.0",
+    "react-router-dom": "^7.4.1",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.6",
+    "@tailwindcss/line-clamp": "^0.4.4",
+    "@types/react": "18.2.21",
+    "@types/react-dom": "18.2.7",
+    "@types/react-router-dom": "^5.3.3",
+    "@vitejs/plugin-react-swc": "^3.8.1",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "prisma": "^6.6.0",
+    "tailwindcss": "^3.4.17",
+    "typescript": "^5.8.2",
+    "vite": "^5.4.17"
+  }
+}

@@ -1,0 +1,56 @@
+import { createBrowserRouter, Outlet } from "react-router-dom";
+import RootLayout from "@layout/root-layout";
+import {
+	NotFound,
+	LoginPage,
+	SignupPage,
+	MyPage,
+	HomePage,
+} from "@pages/index";
+import ProtectedRoute from "@components/protected-route";
+import { AuthProvider } from "@context/AuthProvider";
+
+const AuthLayout = () => {
+	return (
+		<AuthProvider>
+			<Outlet />
+		</AuthProvider>
+	);
+};
+
+const router = createBrowserRouter([
+	{
+		element: <AuthLayout />,
+		children: [
+			{
+				path: "/",
+				element: <RootLayout />,
+				errorElement: <NotFound />,
+				children: [
+					{
+						index: true,
+						element: <HomePage />,
+					},
+					{
+						path: "login/",
+						element: <LoginPage />,
+					},
+					{
+						path: "signup/",
+						element: <SignupPage />,
+					},
+					{
+						path: "mypage/",
+						element: (
+							<ProtectedRoute>
+								<MyPage />
+							</ProtectedRoute>
+						),
+					},
+				],
+			},
+		],
+	},
+]);
+
+export default router;
