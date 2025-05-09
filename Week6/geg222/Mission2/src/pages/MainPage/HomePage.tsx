@@ -27,20 +27,14 @@ const HomePage = () => {
   });
 
   useEffect(() => {
-    if (inView) {
-      isFetching && hasNextPage && fetchNextPage();
-    }
-  }, [inView, isFetching, hasNextPage, fetchNextPage]);
-
-  useEffect(() => {
-    refetch();
-  }, [order, refetch]);
-
-  useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    refetch();
+  }, [order, refetch]);
 
   if (isPending) return <p>Loading...</p>;
   if (isError) return <p>Error occurred</p>;
@@ -59,32 +53,5 @@ const HomePage = () => {
     </div>
   );
 };
-
-//   return (
-//     <div className="grid grid-cols-5 gap-4">
-//       {lps?.pages
-//         ?.map((page) => page.data.data)
-//         ?.flat()
-//         ?.map((lp) => (
-//           <div key={lp.id} className="relative">
-//             <img
-//               src={lp.thumbnail}
-//               alt={lp.title}
-//               className="w-full h-auto rounded"
-//             />
-//             <div className="absolute inset-0 bg-black/30 backdrop-blur-sm text-white opacity-0 hover:opacity-100 transition-opacity duration-200 flex flex-col justify-end p-4">
-//               <h3 className="font-bold text-base leading-tight">{lp.title}</h3>
-//             </div>
-//           </div>
-//         ))}
-//       <div
-//         ref={ref}
-//         className="h-20 mt-8"
-//       >
-//         {isFetchingNextPage && <p className="text-white text-center">Loading more...</p>}
-//       </div>
-//     </div>
-//   );
-// };
 
 export default HomePage;
