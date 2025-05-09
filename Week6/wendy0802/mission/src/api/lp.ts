@@ -12,8 +12,15 @@ export const getLPList = async (paginationDto: PaginationDto): Promise<any> => {
     return data;
 };
 
-// LP 상세 조회
 export const getLPDetail = async (id: string): Promise<any> => {
     const { data } = await axiosInstance.get(`v1/lps/${id}`);
     return data;
+};
+
+
+export const getComments = async (lpId: string | number, params: { cursor?: number; limit?: number; order?: 'asc' | 'desc' }) => {
+  const { data } = await axiosInstance.get(`v1/lps/${lpId}/comments`, {
+    params,
+  });
+  return data;
 };

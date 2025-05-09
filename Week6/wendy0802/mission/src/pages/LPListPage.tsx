@@ -10,7 +10,7 @@ const LPListPage = () => {
   const { data, isLoading, error, fetchNextPage, hasNextPage, isFetchingNextPage } = useGetInfiniteLpList({ order, limit: 20 });
   const { ref, inView } = useInView();
 
-  // 하단 감지 시 다음 페이지 요청
+
   if (inView && hasNextPage && !isFetchingNextPage) {
     fetchNextPage();
   }
