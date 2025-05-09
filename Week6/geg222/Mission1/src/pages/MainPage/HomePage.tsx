@@ -14,9 +14,7 @@ const HomePage = () => {
     <div>
       <SortButtons order={order} setOrder={setOrder} />
       <div className="grid grid-cols-5 gap-4">
-        {data?.data.data.map((lp) => (
-          <LpCard key={lp.id} lp={lp} />
-        ))}
+        {data?.data.data.map((lp) => <LpCard key={lp.id} lp={lp} />)}
       </div>
     </div>
   );

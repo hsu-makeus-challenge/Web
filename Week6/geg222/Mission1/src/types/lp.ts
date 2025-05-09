@@ -24,6 +24,4 @@ export type Lp = {
   likes: Likes[];
 };
 
-export type ResponseLpListDto = CursorBasedResponse<{
-  data: Lp[];
-}>;
+export type ResponseLpListDto = CursorBasedResponse<Lp[]>;
