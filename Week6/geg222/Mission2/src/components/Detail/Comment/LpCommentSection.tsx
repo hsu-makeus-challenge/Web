@@ -1,3 +1,4 @@
+import { formatDistanceToNow } from "date-fns";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { postLpComment } from "../../../apis/lp";
 import { useState, useEffect, useRef } from "react";
@@ -83,9 +84,21 @@ const LpCommentSection = ({ lpId }: Props) => {
               key={comment.id}
               className="p-3 border border-[#333] rounded bg-[#121212] text-white"
             >
-              <p className="text-sm text-gray-400 font-semibold">
-                {comment.author.name}
-              </p>
+              <div className="flex items-center gap-3">
+                {comment.author.avatar && (
+                  <img
+                    src={comment.author.avatar}
+                    alt="avatar"
+                    className="w-8 h-8 rounded-full object-cover"
+                  />
+                )}
+                <div>
+                  <p className="text-sm text-gray-400 font-semibold">{comment.author.name}</p>
+                  <p className="text-xs text-gray-500">
+                    {formatDistanceToNow(new Date(comment.createdAt), { addSuffix: true })}
+                  </p>
+                </div>
+              </div>
               <p className="text-sm mt-1">{comment.content}</p>
             </div>
           ))}

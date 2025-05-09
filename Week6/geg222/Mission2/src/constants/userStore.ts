@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 interface User {
   id: string;
-  nickname: string;
+  name: string;
   email: string;
   // 필요한 경우 추가 필드: avatar, role 등
 }
