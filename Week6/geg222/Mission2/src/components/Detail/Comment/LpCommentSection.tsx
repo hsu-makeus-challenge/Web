@@ -84,7 +84,7 @@ const LpCommentSection = ({ lpId }: Props) => {
 
       <div
         ref={(el) => {
-          ref(el); // for intersection observer
+          ref(el); 
           bottomRef.current = el;
         }}
         className="h-10"
