@@ -1,4 +1,5 @@
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { getLpById } from "../../apis/lp";
@@ -9,6 +10,9 @@ import LpLikeDisplay from "../../components/Detail/LpLikeDisplay";
 import LpCommentSection from "../../components/Detail/Comment/LpCommentSection";
 
 const LpDetail = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   const { LPid } = useParams<{ LPid: string }>();
   const {
     data: response,

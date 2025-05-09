@@ -52,19 +52,29 @@ const LpCommentSection = ({ lpId }: Props) => {
       <div className="flex justify-end mb-6">
         <SortButtons order={order} setOrder={setOrder} />
       </div>
-      <textarea
-        placeholder="댓글을 입력하세요..."
-        className="w-full p-3 bg-[#121212] border border-[#333] rounded text-white focus:outline-none focus:ring-2 focus:ring-[#1DB954]"
-        rows={3}
-        value={comment}
-        onChange={(e) => setComment(e.target.value)}
-      />
-      <button
-        onClick={handleSubmit}
-        className="px-4 py-2 bg-[#1DB954] text-white rounded hover:bg-[#1AA34A] transition"
-      >
-        등록
-      </button>
+      <div className="space-y-2">
+        <textarea
+          placeholder="댓글을 입력하세요..."
+          className="w-full p-3 bg-[#121212] border border-[#333] rounded text-white focus:outline-none focus:ring-2 focus:ring-[#1DB954]"
+          rows={3}
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              handleSubmit();
+            }
+          }}
+        />
+        <div className="flex justify-end">
+          <button
+            onClick={handleSubmit}
+            className="px-4 py-2 bg-[#1DB954] text-white rounded hover:bg-[#1AA34A] transition"
+          >
+            등록
+          </button>
+        </div>
+      </div>
       <div className="space-y-4">
         {commentsData?.pages
           .flatMap((page) => page.data.data)
@@ -79,12 +89,14 @@ const LpCommentSection = ({ lpId }: Props) => {
               <p className="text-sm mt-1">{comment.content}</p>
             </div>
           ))}
-        {isFetchingNextPage && hasNextPage && <LpCommentSkeletonList count={5} />}
+        {isFetchingNextPage && hasNextPage && (
+          <LpCommentSkeletonList count={5} />
+        )}
       </div>
 
       <div
         ref={(el) => {
-          ref(el); 
+          ref(el);
           bottomRef.current = el;
         }}
         className="h-10"
