@@ -36,7 +36,7 @@ const LPList = () => {
     const lpItems = data?.pages.flatMap((page) => page.items) ?? [];
 
     return (
-        <>
+        <main className="w-full px-10 justify-center">
 
 
             <article className="flex gap-2 text-xs py-5 justify-end">
@@ -78,7 +78,7 @@ const LPList = () => {
             <div ref={ref} className="h-4">    </div>
 
 
-        </>
+        </main>
     )
 }
 
