@@ -1,0 +1,15 @@
+import { useQuery } from "@tanstack/react-query";
+import { LpAPI } from "../../apis/lp/lpAxios";
+import type { LpResponse } from "../../types/lp";
+
+export const useLpQuery = (
+  order: "asc" | "desc",
+  cursor: number | null,
+  limit: number
+) => {
+  return useQuery<LpResponse>({
+    queryKey: ["lps", order, cursor],
+    queryFn: () => LpAPI(order, cursor, limit),
+    placeholderData: (previousData) => previousData,
+  });
+};
