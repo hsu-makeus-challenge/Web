@@ -1,168 +1,83 @@
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loginApi } from "../api/auth";
-import Navbar from "../components/Navbar";
-import { useAuth } from "../context/AuthContext";
-import { useEffect, useCallback } from "react";
-import { useLocation } from "react-router-dom";
+import { useState, useEffect } from 'react';
+import { getLPList } from '../api/lp';
+import LPCard from '../components/LPCard';
 
-// 로그인 스키마 정의
-const loginSchema = z.object({
-  email: z.string().email("올바른 이메일 형식이 아닙니다."),
-  password: z.string().min(8, "비밀번호는 8자 이상이어야 합니다."),
-});
-
-type LoginForm = z.infer<typeof loginSchema>;
-
-const Login = () => {
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { setAccessToken, setRefreshToken } = useAuth();
-
-  // 구글 인증 후 리다이렉트 시 토큰 저장
-  const handleGoogleAuth = useCallback(() => {
-    const query = new URLSearchParams(location.search);
-    const accessToken = query.get("accessToken");
-    const refreshToken = query.get("refreshToken");
-    const email = query.get("email");
-    const name = query.get("name");
-    const error = query.get("error");
-
-    if (error) {
-      alert("구글 로그인에 실패했습니다. 다시 시도해주세요.");
-      return;
-    }
-
-    if (accessToken && refreshToken) {
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-      localStorage.setItem("signup_email", email || "");
-      localStorage.setItem("signup_nickname", name || "");
-
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
-
-      alert(`${name}님 환영합니다!`);
-      navigate("/my");
-    }
-  }, [location, navigate, setAccessToken, setRefreshToken]);
+const LPListPage = () => {
+  const [page, setPage] = useState(1);
+  const [order, setOrder] = useState<'asc' | 'desc'>('desc');
+  const [data, setData] = useState<any>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    handleGoogleAuth();
-  }, [handleGoogleAuth]);
+    setIsLoading(true);
+    setError(null);
+    getLPList({ order, limit: 20, cursor: (page - 1) * 20 })
+      .then((res) => setData(res))
+      .catch((err) => setError('LP 목록 조회 실패'))
+      .finally(() => setIsLoading(false));
+  }, [order, page]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginForm>({
-    resolver: zodResolver(loginSchema),
-  });
-
-  // 구글 로그인 버튼 클릭 시에만 리다이렉트
-  const handleGoogleLogin = () => {
-    const apiUrl = import.meta.env.VITE_SERVER_API_URL;
-    window.location.href = apiUrl + "/v1/auth/google/login";
-  };
-
-  const onValid = async (data: LoginForm) => {
-    try {
-      const res = await loginApi(data);
-      const { name, accessToken, refreshToken } = res.data.data;
-
-      localStorage.setItem("signup_email", data.email);
-      localStorage.setItem("signup_password", data.password);
-      localStorage.setItem("signup_nickname", name || "");
-      localStorage.setItem("signup_step", "1");
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
-
-      alert(`${name}님 환영합니다!`);
-      navigate("/my");
-    } catch (err) {
-      console.error(err);
-      alert("로그인에 실패했습니다. 이메일 또는 비밀번호를 확인해주세요.");
-    }
-  };
+  if (error) return <div className="text-center text-red-500">{error}</div>;
 
   return (
-    <>
-    <Navbar />
-      <div className="min-h-screen bg-white flex flex-col justify-center items-center px-4">
-        <div className="w-full max-w-sm mb-6 flex items-center justify-center relative">
-          <button
-            onClick={() => navigate(-1)}
-            className="absolute left-0 text-xl font-bold text-blue-500"
-          >
-            {"<"}
-          </button>
-          <h1 className="text-xl font-semibold text-center w-full text-gray-500">
-            로그인
-          </h1>
-        </div>
+    <div className="py-6">
+      <h1 className="text-2xl font-bold text-center mb-6 text-white">
+        🎵 LP 목록 🎵
+      </h1>
 
-        <form
-          onSubmit={handleSubmit(onValid)}
-          className="w-full max-w-sm space-y-4 text-blue-500"
+      <div className="flex justify-center gap-4 mb-6">
+        <button
+          onClick={() => setOrder('asc')}
+          className={`px-4 py-2 rounded ${order === 'asc' ? 'bg-white text-black' : 'bg-gray-700 text-white'}`}
         >
-          <button
-            type="button"
-            onClick={handleGoogleLogin}
-            className="w-full border border-gray-300 py-2 rounded flex items-center justify-center gap-2 text-gray-500"
-          >
-            <img src="./google.png" alt="google" className="w-5 h-5" />
-            <span>구글 로그인</span>
-          </button>
-
-          <div className="flex items-center justify-between text-gray-500">
-            <hr className="w-1/3" />
-            <span>OR</span>
-            <hr className="w-1/3" />
-          </div>
-
-          <input
-            type="text"
-            placeholder="이메일을 입력해주세요!"
-            {...register("email")}
-            autoComplete="email"
-            className={`w-full px-4 py-2 border rounded bg-white text-black ${
-              errors.email ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.email && (
-            <p className="text-red-500 text-sm ml-1">{errors.email.message}</p>
-          )}
-
-          <input
-            type="password"
-            placeholder="비밀번호를 입력해주세요!"
-            {...register("password")}
-            autoComplete="current-password"
-            className={`w-full px-4 py-2 border rounded bg-white text-black ${
-              errors.password ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.password && (
-            <p className="text-red-500 text-sm ml-1">
-              {errors.password.message}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:opacity-80 transition"
-          >
-            로그인
-          </button>
-        </form>
+          오래된순
+        </button>
+        <button
+          onClick={() => setOrder('desc')}
+          className={`px-4 py-2 rounded ${order === 'desc' ? 'bg-white text-black' : 'bg-gray-700 text-white'}`}
+        >
+          최신순
+        </button>
       </div>
-    </>
+
+      <div className="flex justify-center gap-4 mb-6">
+        <button
+          onClick={() => setPage((prev) => prev - 1)}
+          disabled={page === 1}
+          className="px-2 py-1 rounded bg-purple-500 text-white hover:bg-purple-600 disabled:bg-gray-300"
+        >
+          {"<"}
+        </button>
+        <span className="text-lg font-bold text-white">{page} 페이지</span>
+        <button
+          onClick={() => setPage((prev) => prev + 1)}
+          disabled={!data?.data?.nextCursor}
+          className="px-2 py-1 rounded bg-yellow-400 text-white hover:bg-yellow-500 disabled:bg-gray-300"
+        >
+          {">"}
+        </button>
+      </div>
+
+      {isLoading && (
+        <div className="fixed top-0 left-0 right-0 bottom-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="text-white text-xl">로딩 중...</div>
+        </div>
+      )}
+
+      <div>
+        {data?.data?.data && data.data.data.length > 0 ? (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-6 px-4">
+            {data.data.data.map((lp: any) => (
+              <LPCard key={lp.id} lp={lp} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center mt-10 text-white">LP 목록이 없습니다.</div>
+        )}
+      </div>
+    </div>
   );
 };
 
-export default Login;
+export default LPListPage;
