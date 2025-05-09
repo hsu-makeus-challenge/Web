@@ -6,6 +6,7 @@ import { PAGINATION_ORDER } from "../../enums/commons";
 import useGetInfiniteLpList from "../../hooks/queries/useGetInfiniteLpList";
 import { useInView } from "react-intersection-observer";
 import LpCardSkeletonList from "../../components/LpCard/LpCardSkeletonList";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 
 const HomePage = () => {
   const [search, setSearch] = useState("");
@@ -36,7 +37,7 @@ const HomePage = () => {
     refetch();
   }, [order, refetch]);
 
-  if (isPending) return <p>Loading...</p>;
+  if (isPending) return <LoadingSpinner />;
   if (isError) return <p>Error occurred</p>;
 
   return (
