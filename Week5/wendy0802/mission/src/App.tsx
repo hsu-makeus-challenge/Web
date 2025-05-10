@@ -15,7 +15,12 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import ProtectedLayout from "./pages/ProtectedLayout";
 
 import { AuthProvider } from "./context/AuthContext";
+import axios from "axios";
 
+const api = axios.create({
+  baseURL: "http://localhost:8000",
+  withCredentials: true,
+});
 
 const router = createBrowserRouter([
   {
