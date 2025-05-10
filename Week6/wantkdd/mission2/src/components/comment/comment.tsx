@@ -1,5 +1,5 @@
 import React from 'react';
-import type { Comment } from '../types/lp-detail';
+import type { Comment } from '../../types/lp-detail';
 
 interface CommentProps {
   comment: Comment;

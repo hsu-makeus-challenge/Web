@@ -1,4 +1,4 @@
-import googleLogo from '../assets/googleLogo.svg';
+import googleLogo from '../../assets/googleLogo.svg';
 
 const GoogleLoginButton = () => {
   const handleGoogleLogin = () => {

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
-import { Lp } from '../types/lp';
+import { useAuth } from '../../context/AuthContext';
+import { Lp } from '../../types/lp';
 
 interface LpCardProps {
   lp: Lp;
@@ -10,6 +10,7 @@ interface LpCardProps {
 const LpCard: React.FC<LpCardProps> = ({ lp }) => {
   const navigate = useNavigate();
   const { accessToken } = useAuth();
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const handleCardClick = () => {
     if (!accessToken) {
@@ -27,14 +28,19 @@ const LpCard: React.FC<LpCardProps> = ({ lp }) => {
       className="group cursor-pointer transition-all duration-300 hover:transform hover:scale-105"
     >
       <div className="bg-gray-800 rounded-lg overflow-hidden aspect-square relative shadow-lg">
+        {!imageLoaded && (
+          <div className="absolute inset-0 bg-gray-700 animate-pulse" />
+        )}{' '}
+        {/*이미지 대체 스켈레톤*/}
         <img
           src={lp.thumbnail}
           alt={lp.title}
-          className="w-full h-full object-cover"
+          className={`w-full h-full object-cover transition-opacity duration-300 ${
+            imageLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+          onLoad={() => setImageLoaded(true)}
         />
-
         <div className="absolute inset-0 bg-opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
-
         <div className="absolute bottom-0 left-0 right-0 p-3">
           <div className="flex justify-between items-end">
             <div className="truncate">

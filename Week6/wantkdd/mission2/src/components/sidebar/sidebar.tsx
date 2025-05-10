@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 interface SidebarProps {
   open: boolean;
@@ -26,7 +26,7 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
       />
 
       <div
-        className={`fixed md:static top-18 left-0 h-full w-60 bg-gray-700 text-white z-50 transition-transform duration-300
+        className={`fixed md:static top-18 left-0 h-full w-60 bg-gray-600 text-white z-50 transition-transform duration-300
           ${open ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
         `}
       >
@@ -35,13 +35,12 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
             <Link
               to="/"
               className={`flex items-center ${
-                isActive('/search')
+                isActive('search')
                   ? 'text-pink-500'
                   : 'text-white hover:text-pink-500'
               }`}
               onClick={onClose}
             >
-              <span className="w-5 h-5 mr-2"></span>
               🔍 찾기
             </Link>
 
@@ -54,7 +53,6 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
               }`}
               onClick={onClose}
             >
-              <span className="w-5 h-5 mr-2"></span>
               👤 마이페이지
             </Link>
           </div>

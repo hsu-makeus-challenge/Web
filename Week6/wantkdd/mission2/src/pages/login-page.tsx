@@ -1,8 +1,8 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useAuth } from '../context/AuthContext';
-import GoogleLoginButton from '../components/googleLogin';
-import LoginForm from '../components/login-form';
+import GoogleLoginButton from '../components/login/googleLogin';
+import LoginForm from '../components/login/login-form';
 
 const LoginPage = () => {
   const { accessToken } = useAuth();

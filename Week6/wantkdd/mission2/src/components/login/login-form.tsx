@@ -1,8 +1,8 @@
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { signinSchema, SigninFormFields } from '../utils/validate';
+import { signinSchema, SigninFormFields } from '../../utils/validate';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../../context/AuthContext';
 
 const LoginForm = () => {
   const { login } = useAuth();

@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom';
-import Navbar from '../components/navbar.tsx';
+import Navbar from '../components/navbar/navbar.tsx';
 import { PropsWithChildren, useState } from 'react';
 // import Footer from '../components/footer.tsx';
-import Sidebar from '../components/sidebar.tsx';
+import Sidebar from '../components/sidebar/sidebar.tsx';
 
 const RootLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);

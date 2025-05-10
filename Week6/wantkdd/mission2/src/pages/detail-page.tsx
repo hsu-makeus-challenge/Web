@@ -3,12 +3,12 @@ import { useParams } from 'react-router-dom';
 import { useInView } from 'react-intersection-observer';
 import { useGetLpDetail } from '../hooks/queries/useGetLpDetail';
 import { useGetInfiniteComments } from '../hooks/queries/useGetInfiniteLpDetail';
-import Comment from '../components/comment';
-import CommentSkeleton from '../components/comment-skeleton';
+import Comment from '../components/comment/comment';
+import CommentSkeleton from '../components/comment/comment-skeleton';
 
 const LpDetailPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(true); // 기본값을 true로 변경
   const [commentOrder, setCommentOrder] = useState<'desc' | 'asc'>('desc');
   const COMMENTS_PER_PAGE = 5;
 

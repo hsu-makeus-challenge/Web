@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 import useGetInfiniteLpList from '../hooks/queries/useGetInfiniteLpList';
-import LpCard from '../components/lp-card';
-import LpCardSkeletonList from '../components/lp-card-skeleton-list';
+import LpCard from '../components/lp-card/lp-card';
+import LpCardSkeletonList from '../components/lp-card/lp-card-skeleton-list';
 
 const HomePage: React.FC = () => {
   const [order, setOrder] = useState<'desc' | 'asc'>('asc');
