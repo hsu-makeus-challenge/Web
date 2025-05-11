@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-500 dark:bg-gray-900 py-6 text-center text-gray-600 dark:text-gray-400 w-full">
+        <footer className="bg-gray-500 dark:bg-gray-900 py-6 text-center text-green-300 dark:text-gray-400 w-full">
             <p>
                 &copy; {new Date().getFullYear()} spinningLP. All rights reserved.
             </p>
@@ -11,7 +11,7 @@ const Footer = () => {
                 <Link to="/">Terms of Service</Link>
                 <Link to="/">Contact</Link>
             </div>
-            <div>푸터가 보이면 정상입니다.</div>
+            
         </footer>
     );
 };

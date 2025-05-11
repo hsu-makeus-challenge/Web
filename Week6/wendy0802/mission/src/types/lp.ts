@@ -44,12 +44,41 @@ export interface LPListResponse {
   };
 }
 
-export type ResponseLpListdto = CurcorBasedResponse <Lp[]>;
+export interface CursorBaseResponse<T> {
+  data: T[];
+  meta: {
+    nextCursor?: number;
+    hasNext: boolean;
+  };
+}
+
+export type ResponseLpListDto = CursorBaseResponse<LP>;
 
 export interface LPListParams {
   cursor?: number;
   limit?: number;
   search?: string;
   order?: 'asc' | 'desc';
+}
+
+export interface Comment {
+  id: number;
+  content: string;
+  authorId: number;
+  lpId: number;
+  createdAt: string;
+  updatedAt: string;
+  author?: Author;
+}
+
+export interface CommentResponse {
+  status: boolean;
+  statusCode: number;
+  message: string;
+  data: {
+    data: Comment[];
+    nextCursor?: number;
+    hasNext: boolean;
+  };
 }
 

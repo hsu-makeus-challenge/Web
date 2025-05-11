@@ -6,12 +6,12 @@ import Footer from '../components/footer';
 
 const HomeLayout = () => {
   return (
-    <div className="w-full h-full flex flex-col">
+    <div className="w-full min-h-screen flex flex-col bg-black text-white">
       <Navbar />
       <main className="flex-1 flex flex-row">
         <Sidebar />
-        <div className="flex-1 px-10">
-        <Outlet />
+        <div className="flex-1 px-6 py-4">
+          <Outlet />
         </div>
       </main>
       <Footer />

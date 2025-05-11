@@ -39,7 +39,7 @@ export const logoutApi = async (): Promise<ResponseLogoutDto> => {
 };
 
 export const getMyInfo = async (): Promise<ResponseMyinfoDto> => {
-  const { data } = await axiosInstance.get('v1/user/me');
+  const { data } = await axiosInstance.get('v1/auth/protected');
   return data;
 };
 

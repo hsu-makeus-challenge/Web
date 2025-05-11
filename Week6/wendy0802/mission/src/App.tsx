@@ -1,5 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
+import { AuthProvider } from './context/AuthContext';
+import { SidebarProvider } from './context/SidebarContext';
 import LPListPage from './pages/LPListPage';
 import LPDetailPage from './pages/LPDetailPage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -50,9 +52,13 @@ const router = createBrowserRouter([
 
 function App(): JSX.Element {
   return (
-    <ThemeProvider>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider>
+        <SidebarProvider>
+          <RouterProvider router={router} />
+        </SidebarProvider>
+      </ThemeProvider>
+    </AuthProvider>
   );
 }
 
