@@ -1,0 +1,9 @@
+export { default as HomePage } from "./home";
+export { default as NotFound } from "./not-found";
+export { default as LoginPage } from "./login";
+export { default as SignupPage } from "./signup";
+export { default as MyPage } from "./mypage";
+export { default as SearchPage } from "./search";
+export { default as GoogleLoginRedirectPage } from "./google-login";
+export { default as LpPage } from "./lp";
+export { default as LpDeatilPage } from "./lp/lp-detail";
