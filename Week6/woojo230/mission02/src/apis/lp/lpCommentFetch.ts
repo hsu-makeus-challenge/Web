@@ -19,7 +19,7 @@ export const LpCommentFetch = async ({
         limit,
         order: orderProps,
         cursor,
-      }
+      },
     });
     return response.data.data || null;
   } catch (error) {

@@ -3,8 +3,10 @@ import {
   useLocalStorage,
   useSessionStorage,
 } from '../../hooks/useLocalStorage';
+import useLoginStore from '../../stores/login';
 
 export const GoogleRedirect = () => {
+  const { toggleLogin } = useLoginStore();
   const { set: setLocal } = useLocalStorage();
   const { set: setSession } = useSessionStorage();
 
@@ -17,6 +19,7 @@ export const GoogleRedirect = () => {
     if (accessToken) {
       setLocal('accessToken', accessToken ?? '');
       setSession('refreshToken', refreshToken ?? '');
+      toggleLogin();
       window.location.href = '/home';
     }
   }, [setLocal, setSession]);
