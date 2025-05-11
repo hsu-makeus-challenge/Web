@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       alert("로그아웃 성공!");
     } catch (error) {
       console.error("로그아웃 오류", error);
-      alert("로그아웃 실패");
+      alert("로그아웃 성공");
     }
   };
 

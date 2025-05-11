@@ -10,14 +10,15 @@ interface SidebarContextType {
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
 export const SidebarProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(window.innerWidth >= 768);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const checkScreenSize = () => {
       const mobile = window.innerWidth < 768;
       setIsMobile(mobile);
-      setIsOpen(!mobile); // 모바일이 아닐 때는 항상 열려있음
+      // 모바일에서는 닫히고, 데스크톱에서는 열리도록 설정
+      setIsOpen(!mobile);
     };
 
     // 초기 체크

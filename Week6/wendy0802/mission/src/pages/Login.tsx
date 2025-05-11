@@ -140,7 +140,7 @@ const Login = () => {
 
   return (
     <>
-      <div className="min-h-screen bg-white flex flex-col justify-center items-center px-4">
+      <div className="min-h-screen bg-black flex flex-col justify-center items-center px-4">
         <div className="w-full max-w-sm mb-6 flex items-center justify-center relative">
           <button
             onClick={() => navigate(-1)}
@@ -155,7 +155,7 @@ const Login = () => {
 
         <form
           onSubmit={handleSubmit(onValid)}
-          className="w-full max-w-sm space-y-4 text-blue-500"
+          className="w-full max-w-sm space-y-4 text-green-500"
         >
           <button
             type="button"
