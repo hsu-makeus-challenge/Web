@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import React, { useState, useEffect, useRef } from 'react';
-import Header from '../components/Header';
-import Sidebar from '../components/Sidebar';
+import Header from '../components/layout/Header';
+import Sidebar from '../components/layout/Sidebar';
 
 const SIDEBAR_WIDTH = 240; // w-60 = 240px
 const BREAKPOINT = 768;

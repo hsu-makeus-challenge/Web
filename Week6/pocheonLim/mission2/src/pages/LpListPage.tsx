@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchLpList } from '../apis/lp';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Lp } from '../types/lp';
-import SkeletonLpCard from '../components/SkeletonLpCard';
-
-const LIMIT = 30; 
+import SkeletonLpCard from '../components/skeleton/SkeletonLpCard';
+import { useLpList, LIMIT } from '../hooks/useLpList';
 
 const LpListPage: React.FC = () => {
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');
@@ -21,12 +18,7 @@ const LpListPage: React.FC = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-  } = useInfiniteQuery({
-    queryKey: ['lpList', order],
-    queryFn: ({ pageParam = 0 }) => fetchLpList({ order, cursor: pageParam, limit: LIMIT }),
-    getNextPageParam: (lastPage) => lastPage.hasNext ? lastPage.nextCursor : undefined,
-    initialPageParam: 0,
-  });
+  } = useLpList(order);
 
   useEffect(() => {
     const handleScroll = () => {

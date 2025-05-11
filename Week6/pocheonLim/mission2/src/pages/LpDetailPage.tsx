@@ -1,79 +1,23 @@
 import { useParams } from 'react-router-dom';
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
-import { axiosInstance } from '../apis/auth';
-import { fetchComments } from '../apis/lp';
-import { Comment } from '../types/comment';
 import { useState, useRef, useEffect } from 'react';
-import SkeletonComment from '../components/SkeletonComment';
-
-interface LpDetail {
-  id: number;
-  title: string;
-  content: string;
-  thumbnail: string;
-  published: boolean;
-  authorId: number;
-  createdAt: string;
-  updatedAt: string;
-  author: {
-    id: number;
-    name: string;
-    email: string;
-    bio: string | null;
-    avatar: string | null;
-    createdAt: string;
-    updatedAt: string;
-  };
-  tags: {
-    id: number;
-    name: string;
-  }[];
-  likes: {
-    id: number;
-    userId: number;
-    lpId: number;
-  }[];
-  audioUrl?: string;
-}
-
-const fetchLpDetail = async (lpId: string): Promise<LpDetail> => {
-  try {
-    const res = await axiosInstance.get(`/v1/lps/${lpId}`);
-    console.log('API 응답:', res.data);
-    return res.data.data;
-  } catch (error) {
-    console.error('LP 상세 정보 조회 실패:', error);
-    throw error;
-  }
-};
-
-const COMMENT_LIMIT = 5;
+import { Comment } from '../types/comment';
+import SkeletonComment from '../components/skeleton/SkeletonComment';
+import { useLpDetail } from '../hooks/useLpDetail';
+import { useComments, COMMENT_LIMIT } from '../hooks/useComments';
 
 const LpDetailPage = () => {
   const { lpId } = useParams();
   const [commentOrder, setCommentOrder] = useState<'asc' | 'desc'>('asc');
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const query = useQuery({
-    queryKey: ['lpDetail', lpId],
-    queryFn: () => fetchLpDetail(lpId!),
-    enabled: !!lpId,
-    retry: 1,
-  });
-
+  const { data, isLoading, isError } = useLpDetail(lpId);
   const {
     data: commentData,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
     isLoading: isCommentLoading,
-  } = useInfiniteQuery({
-    queryKey: ['comments', lpId, commentOrder],
-    queryFn: ({ pageParam = 0 }) => fetchComments({ lpId: lpId!, order: commentOrder, cursor: pageParam, limit: COMMENT_LIMIT }),
-    getNextPageParam: (lastPage) => lastPage.hasNext ? lastPage.nextCursor : undefined,
-    initialPageParam: 0,
-    enabled: !!lpId,
-  });
+  } = useComments(lpId, commentOrder);
 
   // 무한 스크롤 (댓글 영역)
   useEffect(() => {
@@ -89,12 +33,9 @@ const LpDetailPage = () => {
     return () => { if (ref) ref.removeEventListener('scroll', handleScroll); };
   }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
-  const data = query.data as LpDetail | undefined;
-  const { isLoading, isError } = query;
-
   if (isLoading) return <div className="flex justify-center items-center min-h-[calc(100vh-64px)]">로딩 중...</div>;
   if (isError) {
-    console.error('에러 상세:', query.error);
+    console.error('에러 상세:', isError);
     return <div className="flex justify-center items-center min-h-[calc(100vh-64px)] text-red-500">LP 정보를 불러올 수 없습니다.</div>;
   }
   if (!data) return <div className="flex justify-center items-center min-h-[calc(100vh-64px)]">데이터가 없습니다.</div>;
@@ -107,7 +48,7 @@ const LpDetailPage = () => {
       <div className="bg-[#232b3b] rounded-xl p-8 w-full max-w-2xl shadow-lg relative">
         {/* 작성자, 제목, 날짜 */}
         <div className="flex items-center gap-3 mb-2">
-          <img src={data.author?.avatar || '/default-profile.png'} alt="작성자" className="w-10 h-10 rounded-full" />
+          <img src={data.author?.avatar || '/images/user.png'} alt="작성자" className="w-10 h-10 rounded-full" />
           <span className="text-base font-semibold">{data.author?.name}</span>
           <span className="ml-auto text-xs text-gray-400">{new Date(data.createdAt).toLocaleDateString()}</span>
         </div>
@@ -179,7 +120,7 @@ const LpDetailPage = () => {
           {!isCommentLoading && !isFetchingNextPage && comments.length === 0 && <div className="text-center text-gray-400">아직 댓글이 없습니다.</div>}
           {!isCommentLoading && !isFetchingNextPage && comments.map((comment) => (
             <div key={comment.id} className="flex items-start gap-3">
-              <img src={comment.author.avatar || '/default-profile.png'} alt="작성자" className="w-8 h-8 rounded-full" />
+              <img src={comment.author.avatar || '/images/user.png'} alt="작성자" className="w-8 h-8 rounded-full" />
               <div className="flex-1 bg-gray-800 rounded px-3 py-2">
                 <div className="text-sm text-white font-semibold mb-1">{comment.author.name}</div>
                 <div className="text-gray-200 text-sm mb-1 whitespace-pre-line">{comment.content}</div>

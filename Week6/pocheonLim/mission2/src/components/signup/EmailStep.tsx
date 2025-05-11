@@ -1,7 +1,7 @@
-import { useSignup } from '../contexts/SignupContext';
+import { useSignup } from '../../contexts/SignupContext';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { emailSchema, type EmailFormData } from '../schemas/signup.schema';
+import { emailSchema, type EmailFormData } from '../../schemas/signup.schema';
 
 const EmailStep = () => {
   const { setEmail, setStep } = useSignup();

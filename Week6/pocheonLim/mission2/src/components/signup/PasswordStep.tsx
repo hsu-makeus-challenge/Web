@@ -1,7 +1,7 @@
-import { useSignup } from '../contexts/SignupContext';
+import { useSignup } from '../../contexts/SignupContext';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { passwordSchema, type PasswordFormData } from '../schemas/signup.schema';
+import { passwordSchema, type PasswordFormData } from '../../schemas/signup.schema';
 import { useState } from 'react';
 
 const PasswordStep = () => {

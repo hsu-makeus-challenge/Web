@@ -1,8 +1,8 @@
-import { useSignup } from '../contexts/SignupContext';
+import { useSignup } from '../../contexts/SignupContext';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { nicknameSchema, type NicknameFormData } from '../schemas/signup.schema';
-import { signup } from '../apis/auth';
+import { nicknameSchema, type NicknameFormData } from '../../schemas/signup.schema';
+import { signup } from '../../apis/auth';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { AxiosError } from 'axios';
