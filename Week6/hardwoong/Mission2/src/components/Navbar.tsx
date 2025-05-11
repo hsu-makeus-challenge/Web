@@ -50,7 +50,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }: NavbarProps) => {
           >
             <span className="text-white ml-8">
               {accessToken ? (name ?? "Who") : "Who"}
-            </span>s LP🎸👨‍🎤
+            </span>'s LP🎸👨‍🎤
           </Link>
         </div>
         <div className="flex space-x-6 items-center flex-wrap">

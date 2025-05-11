@@ -11,6 +11,10 @@ function useGetInfiniteCommentList(lpId: number, order: "asc" | "desc", limit: n
     getNextPageParam: (lastPage) => {
       return lastPage.data.hasNext ? lastPage.data.nextCursor : undefined;
     },
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 10,
+    refetchInterval: false,
+    retry: 2,
   });
 }
 
