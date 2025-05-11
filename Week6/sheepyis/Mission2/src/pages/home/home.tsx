@@ -8,7 +8,7 @@ const Home = () => {
   const [order, setOrder] = useState<"asc" | "desc">("desc");
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteLpQuery(order, 10);
 
-  const { ref, inView } = useInView({ threshold: 1 });
+  const { ref, inView } = useInView({ threshold: 0.1, rootMargin: "0px 0px 100px 0px" });
 
   console.log(data);
 

@@ -26,7 +26,11 @@ const Detail = ({ data }: Props) => {
                 <div className="w-[80%] flex gap-[2vw] flex-col items-center">
                     <div className="w-full flex justify-between items-center">
                         <div className="flex gap-[1vw] items-center">
-                            <img src={data.author.avatar ?? ""} alt={data.author.name} className="w-[2vw] h-[2vw] rounded-full object-cover" />
+                            {data.author.avatar ? (
+                                <img src={data.author.avatar} alt="author" className="w-[2vw] h-[2vw] rounded-full object-cover" />
+                                ) : (
+                                <div className="w-[2vw] h-[2vw] rounded-full bg-gray-500" />
+                            )}
                             <p className="text-[1vw]">{data.author.name}</p>
                         </div>
                         <p className="text-[1vw]">{formattedDate}</p>

@@ -11,5 +11,6 @@ export const useLpQuery = (
     queryKey: ["lps", order, cursor],
     queryFn: () => LpAPI(order, cursor, limit),
     placeholderData: (previousData) => previousData,
+    staleTime: 1000 * 60 * 5,
   });
 };
