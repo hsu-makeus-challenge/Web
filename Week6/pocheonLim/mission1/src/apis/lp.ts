@@ -5,6 +5,7 @@ export interface Lp {
   title: string;
   thumbnail: string;
   createdAt: string;
+  likes?: { id: number }[];
 }
 
 export interface LpListResponse {

@@ -44,7 +44,7 @@ const LpListPage: React.FC = () => {
       </div>
       <div className="grid grid-cols-5 gap-4">
         {data?.length === 0 && <div>LP가 없습니다.</div>}
-        {data?.map((lp: any) => (
+        {data?.map((lp: Lp) => (
           <div
             key={lp.id}
             onClick={() => handleLpClick(lp.id)}
