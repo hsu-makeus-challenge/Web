@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useAuthDeleteMutation } from "../../hooks/\bauth/useAuthDeleteMutation";
 
 type DeleteModalProps = {
@@ -6,13 +5,12 @@ type DeleteModalProps = {
 };
 
 const DeleteModal = ({ onClose }: DeleteModalProps) => {
-    const navigate = useNavigate();
 
     const deleteMutation = useAuthDeleteMutation(
         () => {
             alert("탈퇴되었습니다.");
             onClose();
-            navigate("/")
+            window.location.reload();
         }
     );
 
