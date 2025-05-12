@@ -1,7 +1,7 @@
 import type { LP } from "../../apis/lps";
 import { FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { MouseEvent } from "react";
+import { MouseEvent, useState } from "react";
 
 
 interface LpItemProps {
@@ -10,6 +10,7 @@ interface LpItemProps {
 
 const LpItem = ({lp} : LpItemProps) =>{
     const navigate = useNavigate();
+
     const handleNavigate = (id:number) => (e:MouseEvent<HTMLLIElement>) => {
                 navigate(`/lp/${id}`);
             };

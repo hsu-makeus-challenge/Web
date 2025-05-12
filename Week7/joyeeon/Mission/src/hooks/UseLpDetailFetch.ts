@@ -12,7 +12,7 @@ const useLPDetailFetch = <T>(endpoint: string | null): UseLPDetailFetchResult<T>
     const [data, setData] = useState<T | null>(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<Error | null>(null);
-
+    
     
 
     useEffect(() => {

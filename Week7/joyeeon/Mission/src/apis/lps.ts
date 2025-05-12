@@ -1,6 +1,7 @@
 import { api } from "./api";
 import { useInfiniteQuery } from "@tanstack/react-query";
-
+import type { CreateLpData } from "../types/createLp";
+import type { LpUpdateDetail } from "../types/lpdetails";
 
 export interface LP {
     id: number;
@@ -20,6 +21,50 @@ interface UseLpListParams {
     search?: string;
     order?: "asc" | "desc";
 }
+
+export const fetchLpDetail = (id: string) => {
+    return api.get(`/lps/${id}`).then(res => res.data.data);
+};
+
+export const createcomment =(content:string, lpid : number) =>{
+    const token = localStorage.getItem('ACCESS_TOKEN');
+
+    return api.post(`/lps/${lpid}/comments`, {content}, {
+        headers: {
+            Authorization: token ? `Bearer ${token}` : undefined,
+        },
+    });
+}
+
+//댓글 수정 삭제
+export const updatecomment = (content:string, lpid : number, commentid : number) =>{
+    const token = localStorage.getItem('ACCESS_TOKEN');
+
+    return api.patch(`/lps/${lpid}/comments/${commentid}`, {content}, {
+        headers: {
+            Authorization: token ? `Bearer ${token}` : undefined,
+        },
+    });
+}
+
+export const deletecomment = (lpid : number, commentid : number) =>{
+    const token = localStorage.getItem('ACCESS_TOKEN');
+    return api.delete(`/lps/${lpid}/comments/${commentid}`, {
+        headers: {
+            Authorization: token ? `Bearer ${token}` : undefined,
+        },
+    }); 
+}
+
+export const createLp = (lpData: CreateLpData) => {
+    const token = localStorage.getItem('ACCESS_TOKEN');
+
+    return api.post('/lps', lpData, {
+        headers: {
+            Authorization: token ? `Bearer ${token}` : undefined,
+        },
+    });
+};
 
 
 export const useLpList = ({
@@ -53,7 +98,31 @@ export const useLpList = ({
         },
         initialPageParam: 0,
         getNextPageParam: (lastPage) => {
-            return lastPage.nextCursor ?? undefined; 
+            return lastPage.nextCursor ?? undefined;
         },
     });
 };
+
+//lp 상세 수정
+export const updateLpDetail = (lpId: number, lpData: LpUpdateDetail) => { 
+    const token = localStorage.getItem('ACCESS_TOKEN');
+
+    return api.patch(`/lps/${lpId}`, lpData, {
+        headers: {
+            Authorization: token ? `Bearer ${token}` : undefined,
+        },
+    });
+}
+
+
+// LP 삭제
+export const deleteLp = (lpId: number) => {
+    const token = localStorage.getItem('ACCESS_TOKEN');
+
+    return api.delete(`/lps/${lpId}`, {
+        headers: {
+            Authorization: token ? `Bearer ${token}` : undefined,
+        },
+    });
+};
+

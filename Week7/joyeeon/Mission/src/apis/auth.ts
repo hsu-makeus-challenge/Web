@@ -21,3 +21,17 @@ export const signupApi = async (userData: {
     const response = await api.post(`${BASE_URL}/signup`, userData);
     return response.data;
 };
+
+
+// 로그아웃 API
+export const logoutApi = async () => {
+    const response = await api.post(`${BASE_URL}/signout`);
+    return response.data;
+};
+
+// 회원탈퇴
+export const WithdrawApi = async() =>{
+    return api.delete (`users`, {
+        
+    });
+}
