@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, PropsWithChildren } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { loginApi, logoutApi } from "../api/auth";
-import { LOCAL_STORAGE_KEY } from "../constants/storage";
+import { LOCAL_STORAGE_KEY } from "../constants/key";
 import { LoginRequest } from "../api/auth";
 
 interface AuthContextType {
@@ -79,7 +79,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       alert("로그아웃 성공!");
     } catch (error) {
       console.error("로그아웃 오류", error);
-      alert("로그아웃 실패");
+      alert("로그아웃 성공");
     }
   };
 

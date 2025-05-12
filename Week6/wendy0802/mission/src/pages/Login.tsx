@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
+import { getMyInfo } from "../api/auth";
 
 // 로그인 스키마 정의
 const loginSchema = z.object({
@@ -36,13 +37,29 @@ const Login = () => {
     }
 
     if (accessToken && refreshToken) {
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
+      console.log("[로그인] 구글 로그인 성공, 토큰 저장:", { 
+        accessToken: accessToken ? "있음" : "없음", 
+        refreshToken: refreshToken ? "있음" : "없음",
+        email, name
+      });
+      
+      // 사용자 정보 로컬 스토리지에 저장
       localStorage.setItem("signup_email", email || "");
       localStorage.setItem("signup_nickname", name || "");
-
+      
+      // localStorage에 토큰 직접 저장 (혹시 모르니 2중 저장)
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      
+      // AuthContext 상태 업데이트
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
+
+      // 저장 후 토큰 확인
+      setTimeout(() => {
+        const storedToken = localStorage.getItem("accessToken");
+        console.log("[로그인] 로컬스토리지 토큰 확인:", storedToken ? "있음" : "없음");
+      }, 100);
 
       alert(`${name}님 환영합니다!`);
       navigate("/my");
@@ -69,31 +86,61 @@ const Login = () => {
 
   const onValid = async (data: LoginForm) => {
     try {
+      console.log("[로그인] 로그인 시도:", data.email);
+      
+      // 로그인 API 호출
       const res = await loginApi(data);
-      const { name, accessToken, refreshToken } = res.data.data;
+      console.log("[로그인] API 응답:", res);
+      
+      const { accessToken, refreshToken } = res.data;
+      console.log("[로그인] 토큰 받음:", { 
+        accessToken: accessToken ? "있음" : "없음", 
+        refreshToken: refreshToken ? "있음" : "없음" 
+      });
 
-      localStorage.setItem("signup_email", data.email);
-      localStorage.setItem("signup_password", data.password);
-      localStorage.setItem("signup_nickname", name || "");
-      localStorage.setItem("signup_step", "1");
+      // localStorage에 토큰 직접 저장 (혹시 모르니 2중 저장)
       localStorage.setItem("accessToken", accessToken);
       localStorage.setItem("refreshToken", refreshToken);
-
+      
+      // AuthContext 상태 업데이트
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
 
-      alert(`${name}님 환영합니다!`);
+      // 저장 후 토큰 확인
+      setTimeout(() => {
+        const storedToken = localStorage.getItem("accessToken");
+        console.log("[로그인] 로컬스토리지 토큰 확인:", storedToken ? "있음" : "없음");
+      }, 100);
+
+      // 사용자 정보 가져오기
+      try {
+        console.log("[로그인] 사용자 정보 요청");
+        const userInfo = await getMyInfo();
+        const userName = userInfo.data.name || "사용자";
+        console.log("[로그인] 사용자 정보 받음:", userName);
+        
+        // 사용자 정보만 로컬 스토리지에 저장
+        localStorage.setItem("signup_email", data.email);
+        localStorage.setItem("signup_password", data.password);
+        localStorage.setItem("signup_nickname", userName);
+        localStorage.setItem("signup_step", "1");
+
+        alert(`${userName}님 환영합니다!`);
+      } catch (err) {
+        console.error("[로그인] 사용자 정보를 가져오는데 실패했습니다:", err);
+        alert("로그인에 성공했습니다!");
+      }
+      
       navigate("/my");
     } catch (err) {
-      console.error(err);
+      console.error("[로그인] 로그인 실패:", err);
       alert("로그인에 실패했습니다. 이메일 또는 비밀번호를 확인해주세요.");
     }
   };
 
   return (
     <>
-    <Navbar />
-      <div className="min-h-screen bg-white flex flex-col justify-center items-center px-4">
+      <div className="min-h-screen bg-black flex flex-col justify-center items-center px-4">
         <div className="w-full max-w-sm mb-6 flex items-center justify-center relative">
           <button
             onClick={() => navigate(-1)}
@@ -108,7 +155,7 @@ const Login = () => {
 
         <form
           onSubmit={handleSubmit(onValid)}
-          className="w-full max-w-sm space-y-4 text-blue-500"
+          className="w-full max-w-sm space-y-4 text-green-500"
         >
           <button
             type="button"
