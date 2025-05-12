@@ -15,7 +15,7 @@ const ItemComment = ({ comment }: Props) => {
   const { id } = useParams();
   const lpId = Number(id);
   const userId = localStorage.getItem("userId");
-  const isOwner = Number(userId) == comment.author.id + 1;
+  const isOwner = Number(userId) == comment.author.id;
   const [showMenu, setShowMenu] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
