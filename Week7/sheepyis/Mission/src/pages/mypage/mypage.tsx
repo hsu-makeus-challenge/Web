@@ -3,7 +3,7 @@ import { AuthAPI } from "../../apis/authAxios";
 import Profile from "../../components/mypage/profile";
 
 const Mypage = () => {
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["me"],
     queryFn: async () => {
       const res = await AuthAPI.get("/users/me");
@@ -15,6 +15,7 @@ const Mypage = () => {
 
   return (
     <div className="w-full h-full flex flex-col items-center">
+      {isLoading && <p className="text-white">로딩 중...</p>}
       {user && (
         <Profile
           email={user.email}

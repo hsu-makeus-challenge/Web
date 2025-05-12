@@ -6,5 +6,7 @@ export const useLpDetail = (id: string | undefined) => {
     queryKey: ["lpDetail", id],
     queryFn: () => LPDetailAPI(id),
     enabled: !!id,
+    staleTime: 0,
+    refetchOnWindowFocus: true
   });
 };

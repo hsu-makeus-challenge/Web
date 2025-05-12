@@ -15,13 +15,31 @@ export const useAuthUpdateMutation = () => {
       const res = await AuthAPI.patch("/users", data);
       return res.data;
     },
-    onSuccess: () => {
-      alert("프로필이 수정되었습니다.");
-      queryClient.invalidateQueries({ queryKey: ["me"] });
+    onMutate: async (newData) => {
+      await queryClient.cancelQueries({ queryKey: ["me"] });
+
+      const previousUser = queryClient.getQueryData(["me"]);
+
+      queryClient.setQueryData(["me"], (old: any) => ({
+        ...old,
+        data: {
+          ...old.data,
+          name: newData.name,
+          bio: newData.bio,
+          avatar: newData.avatar ?? old.data.avatar,
+        },
+      }));
+
+      return { previousUser };
     },
-    onError: (err) => {
-      console.error("프로필 수정 실패:", err);
-      alert("수정에 실패했습니다.");
+    onError: (err, _, context) => {
+      if (context?.previousUser) {
+        queryClient.setQueryData(["me"], context.previousUser);
+      }
+      alert("수정 실패");
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: ["me"] });
     },
   });
 };

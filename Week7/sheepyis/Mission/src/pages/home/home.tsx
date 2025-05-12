@@ -13,7 +13,7 @@ const Home = () => {
 
   const { ref, inView } = useInView({ threshold: 0.1, rootMargin: "0px 0px 100px 0px" });
 
-  console.log(data);
+  // console.log(data);
 
   useEffect(() => {
     if (inView && hasNextPage) {

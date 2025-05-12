@@ -60,19 +60,28 @@ const Profile = ({ email, name, bio = "", avatar }: ProfileProps) => {
       }
     }
 
-    mutate({
-      name: newName,
-      bio: newBio,
-      avatar: uploadedUrl,
-    });
-
-    setIsEditing(false);
+    mutate(
+      {
+        name: newName,
+        bio: newBio,
+        avatar: uploadedUrl,
+      },
+      {
+        onSuccess: () => {
+          alert("프로필 수정 완료!");
+          setIsEditing(false);
+        },
+      }
+    );
   };
 
   return (
     <div className="flex flex-col mt-[1vw] w-full items-center">
       <div className="border-white border-[0.1vw] w-[80%] h-[15vw] rounded-[1vw] flex justify-center items-center gap-[1vw]">
-        <div className="w-[10vw] h-[10vw] cursor-pointer" onClick={() => isEditing && fileInputRef.current?.click()}>
+        <div
+          className="w-[10vw] h-[10vw] cursor-pointer"
+          onClick={() => isEditing && fileInputRef.current?.click()}
+        >
           <img
             src={preview}
             className="w-full h-full object-cover border-[0.1vw] border-white rounded-full"
@@ -90,18 +99,16 @@ const Profile = ({ email, name, bio = "", avatar }: ProfileProps) => {
         <div className="flex flex-col gap-[0.5vw]">
           {isEditing ? (
             <>
-              <div className="flex items-center gap-[1vw]">
-                <input
-                  value={newName}
-                  onChange={(e) => setNewName(e.target.value)}
-                  className="bg-black border border-white rounded px-[1vw] py-[0.5vw] text-white text-[1vw] w-[100%]"
-                />
-              </div>
+              <input
+                value={newName}
+                onChange={(e) => setNewName(e.target.value)}
+                className="bg-black border border-white rounded px-[1vw] py-[0.5vw] text-white text-[1vw]"
+              />
               <input
                 value={newBio}
                 onChange={(e) => setNewBio(e.target.value)}
                 placeholder="한 줄 소개 (선택)"
-                className="bg-black border border-white rounded px-[1vw] py-[0.5vw] text-white text-[1vw] w-[100%]"
+                className="bg-black border border-white rounded px-[1vw] py-[0.5vw] text-white text-[1vw]"
               />
             </>
           ) : (
@@ -122,7 +129,7 @@ const Profile = ({ email, name, bio = "", avatar }: ProfileProps) => {
         ) : (
           <button
             onClick={() => setIsEditing(true)}
-            className="px-[1vw] py-[0.5vw] rounded text-[1vw] border-[0.1vw] border-white text-white hover:bg-white hover:text-black w-fit cursor-pointer"
+            className="px-[1vw] py-[0.5vw] rounded text-[1vw] border-[0.1vw] border-white text-white hover:bg-white hover:text-black"
           >
             수정
           </button>
