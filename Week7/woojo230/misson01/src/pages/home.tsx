@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import LoadingSpinner from '../components/loading';
 import Error from '../components/error';
-import useGetInfiniteScroll from '../hooks/queries/useGetInfiniteScroll';
+import useGetInfiniteScroll from '../hooks/queries/infiniteScroll/useGetInfiniteScroll';
 import { OrderButtons } from '../components/lp/orderBtn';
 import { LpGrid } from '../components/lp/lpGrid';
 import useInfiniteScrollObserver from '../hooks/observer/useInfiniteScrollObserver';
 import LpAddBtn from '../components/lpAddBtn';
 import useLpModalStore from '../stores/LpModal';
-import LpAddModal from '../components/modal/LpAddModal';
+import LpAddModal from '../components/modal/lp/LpAddModal';
 
 function Home() {
   const [order, setOrder] = useState('desc');

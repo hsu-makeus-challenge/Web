@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { lpFetchData } from '../../apis/lp/lpFetch';
+import { lpFetchData } from '../../../apis/lp/lpFetch';
 
 interface InfiniteScrollParams {
   order: string;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useCommentInfiniteScroll from '../../hooks/queries/useCommentInfiniteScroll';
+import useCommentInfiniteScroll from '../../hooks/queries/infiniteScroll/useCommentInfiniteScroll';
 import LoadingSpinner from '../loading';
 import Error from '../error';
 import LpComment from './LpComment';
@@ -40,7 +40,7 @@ const LpCommentsList = ({
     fetchNextPage,
     observerRef
   );
-  console.log(lpId);
+  // console.log(lpId);
 
   if (isLoading) return <LoadingSpinner />;
   if (error) return <Error />;

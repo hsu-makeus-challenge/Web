@@ -55,18 +55,18 @@ const LpCommentItem = ({ lpId, commentId, comment }: Props) => {
           <span className="font-semibold text-sm text-emerald-400">
             {author.name}
           </span>
-          {/* 현재 사용자와 댓글 작성자가 같을 때만 수정/삭제 버튼 표시 */}
+          {/* 현재 사용자 = 댓글 작성자 => 수정/삭제 버튼 표시 */}
           {author.id === Number(userId) && !isEditing && (
             <div className="flex gap-2">
               <button
                 onClick={() => setIsEditing(true)}
-                className="text-xs text-gray-400 hover:text-white"
+                className="text-sm text-lime-400 hover:text-lime-900 cursor-pointer"
               >
                 수정
               </button>
               <button
                 onClick={handleCommentDelete}
-                className="text-xs text-gray-400 hover:text-white"
+                className="text-sm text-lime-400 hover:text-lime-900 cursor-pointer"
               >
                 삭제
               </button>
@@ -83,7 +83,7 @@ const LpCommentItem = ({ lpId, commentId, comment }: Props) => {
             />
             <button
               onClick={handleCommentUpdate}
-              className="text-xs text-emerald-400 hover:text-emerald-300"
+              className="text-sm text-lime-400 hover:text-lime-300 cursor-pointer"
             >
               저장
             </button>
@@ -92,7 +92,7 @@ const LpCommentItem = ({ lpId, commentId, comment }: Props) => {
                 setIsEditing(false);
                 setEditedContent(content);
               }}
-              className="text-xs text-gray-400 hover:text-white"
+              className="text-sm text-gray-400 hover:text-white cursor-pointer"
             >
               취소
             </button>

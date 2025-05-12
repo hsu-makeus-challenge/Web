@@ -79,3 +79,15 @@ export interface LpCommentAddType {
   content: string;
   lpId: number;
 }
+
+export interface UserDataUpdateType {
+  name: string;
+  bio: string;
+  avatar: string;
+}
+
+export interface LpDetailUpdateType {
+  title: string;
+  thumbnail: string;
+  content: string;
+}

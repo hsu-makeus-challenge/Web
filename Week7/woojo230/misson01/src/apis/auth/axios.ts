@@ -1,4 +1,5 @@
 import axios from 'axios';
+import useLoginStore from '../../stores/login';
 
 const instance = axios.create({
   baseURL: `${import.meta.env.VITE_SERVER_URL}`,
@@ -28,7 +29,7 @@ instance.interceptors.request.use(
     }
 
     // skipAuth 헤더가 없는 경우 토큰을 추가
-    const token = localStorage.getItem('accessToken');
+    const token = useLoginStore.getState().accessToken;
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -51,7 +52,15 @@ instance.interceptors.response.use(
 
       if (!isRefreshing) {
         isRefreshing = true;
-        const refreshToken = localStorage.getItem('refreshToken');
+        const refreshToken = useLoginStore.getState().refreshToken;
+
+        if (!refreshToken) {
+          isRefreshing = false;
+          useLoginStore.getState().clearTokens();
+          window.location.href = '/login';
+          return Promise.reject(error);
+        }
+
         try {
           const { data } = await axios.post(
             `${import.meta.env.VITE_SERVER_URL}/v1/auth/refresh`,
@@ -61,18 +70,17 @@ instance.interceptors.response.use(
           );
 
           const newAccessToken = data.accessToken;
-          localStorage.setItem('accessToken', newAccessToken);
+          useLoginStore.getState().setTokens(newAccessToken, refreshToken);
 
           onTokenRefreshed(newAccessToken);
-
           isRefreshing = false;
 
           originalRequest.headers['Authorization'] = `Bearer ${newAccessToken}`;
           return instance(originalRequest);
         } catch (refreshError) {
           isRefreshing = false;
-          localStorage.removeItem('accessToken');
-          localStorage.removeItem('refreshToken');
+          alert('세션이 만료되었습니다. 다시 로그인해주세요.');
+          useLoginStore.getState().clearTokens();
           window.location.href = '/login';
           return Promise.reject(refreshError);
         }

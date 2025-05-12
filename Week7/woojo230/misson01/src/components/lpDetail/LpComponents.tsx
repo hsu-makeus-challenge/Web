@@ -1,6 +1,6 @@
-import { formatDate } from './dateUtils';
-import { DeleteIcon, EditIcon } from './icons';
-
+import { formatDate } from '../../components/lpDetail/dateUtils';
+import { DeleteIcon, EditIcon } from '../../components/lpDetail/icons';
+import useLpEditStore from '../../stores/lpEdit';
 interface LpRecordProps {
   thumbnail?: string;
   title?: string;
@@ -14,6 +14,7 @@ interface AuthorProps {
 
 interface TitleProps {
   title?: string;
+  handleDelete?: () => void;
 }
 
 interface TagProps {
@@ -57,19 +58,22 @@ export const LpHeader = ({ avatar, name, createdAt }: AuthorProps) => (
   </div>
 );
 
-export const LpTitle = ({ title }: TitleProps) => (
-  <div className="flex justify-between items-center mb-4 text-white">
-    <h1 className="text-xl font-bold">{title}</h1>
-    <div className="flex gap-2">
-      <button className="text-lime-500">
-        <EditIcon />
-      </button>
-      <button className="text-lime-500">
-        <DeleteIcon />
-      </button>
+export const LpTitle = ({ title, handleDelete }: TitleProps) => {
+  const { toggleLpEdit } = useLpEditStore();
+  return (
+    <div className="flex justify-between items-center mb-4 text-white">
+      <h1 className="text-xl font-bold">{title}</h1>
+      <div className="flex gap-2">
+        <button className="text-lime-500 cursor-pointer" onClick={toggleLpEdit}>
+          <EditIcon />
+        </button>
+        <button className="text-lime-500 cursor-pointer" onClick={handleDelete}>
+          <DeleteIcon />
+        </button>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const LpTags = ({ tags }: TagProps) => (
   <div className="flex flex-wrap gap-2 mb-4">

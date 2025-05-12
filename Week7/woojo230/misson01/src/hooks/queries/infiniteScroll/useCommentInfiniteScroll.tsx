@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { LpCommentFetch } from '../../apis/lp/lpCommentFetch';
+import { LpCommentFetch } from '../../../apis/lp/lpCommentFetch';
 
 interface InfiniteScrollParams {
   lpId: number;

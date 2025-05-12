@@ -1,13 +1,13 @@
 import { useState, useRef } from 'react';
-import usePostLpData from '../../hooks/queries/usePostLpData';
-import useLpModalStore from '../../stores/LpModal';
-import LoadingSpinner from '../loading';
-import Error from '../error';
+import usePostLpData from '../../../hooks/queries/usePostLpData';
+import useLpModalStore from '../../../stores/LpModal';
+import LoadingSpinner from '../../loading';
+import Error from '../../error';
 import {
   handleAddTag,
   handleThumbnailChange,
   validateForm,
-} from '../../utils/lpModal/lpModalUtils';
+} from '../../../utils/lpModal/lpModalUtils';
 import LpFormInputs from './LpFormInputs';
 import LpThumbnailUpload from './LpThumbnailUpload';
 import LpTagInput from './LpTagInput';
