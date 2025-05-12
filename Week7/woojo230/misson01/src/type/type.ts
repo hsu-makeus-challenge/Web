@@ -74,3 +74,8 @@ export interface LpAddType {
   tags: string[];
   published: boolean;
 }
+
+export interface LpCommentAddType {
+  content: string;
+  lpId: number;
+}

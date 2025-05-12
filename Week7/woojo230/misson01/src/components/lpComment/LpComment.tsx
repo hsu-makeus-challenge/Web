@@ -2,20 +2,47 @@ import { useState } from 'react';
 import type { LpCommentType } from '../../type/type';
 import LpCommentItem from './LpCommentItem';
 import LpCommentItemSkeleton from '../skeleton/LpCommentItemSkeleton';
+import { validateForm } from '../../utils/comment/commentUtils';
+import usePostCommentData from '../../hooks/queries/usePostCommentData';
+import LoadingSpinner from '../loading';
+import Error from '../error';
 
 interface CommentProps {
   commentData: LpCommentType[] | undefined;
   isFetching: boolean;
   isLoading: boolean;
+  lpId: number;
 }
 
-const LpComment = ({ commentData, isFetching, isLoading }: CommentProps) => {
+const LpComment = ({
+  commentData,
+  isFetching,
+  isLoading,
+  lpId,
+}: CommentProps) => {
   const [newComment, setNewComment] = useState('');
 
-  const handleSubmit = () => {
-    console.log('작성된 댓글:', newComment);
-    setNewComment('');
+  const { mutate, isPending, error } = usePostCommentData();
+
+  const handleSubmit = async () => {
+    if (!validateForm(newComment)) {
+      return;
+    }
+    mutate(
+      { lpId, content: newComment },
+      {
+        onSuccess: () => {
+          setNewComment('');
+        },
+        onError: (error) => {
+          console.error('댓글 등록 실패:', error);
+        },
+      }
+    );
   };
+
+  if (isPending) return <LoadingSpinner />;
+  if (error) return <Error />;
 
   return (
     <>
@@ -45,7 +72,12 @@ const LpComment = ({ commentData, isFetching, isLoading }: CommentProps) => {
           <p className="text-center text-gray-400">댓글이 아직 없음</p>
         )}
         {commentData?.map((comment) => (
-          <LpCommentItem key={comment.id} comment={comment} />
+          <LpCommentItem
+            key={comment.id}
+            lpId={lpId}
+            commentId={comment.id}
+            comment={comment}
+          />
         ))}
         {isFetching &&
           !isLoading &&

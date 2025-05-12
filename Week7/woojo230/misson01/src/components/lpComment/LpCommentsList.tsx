@@ -40,6 +40,7 @@ const LpCommentsList = ({
     fetchNextPage,
     observerRef
   );
+  console.log(lpId);
 
   if (isLoading) return <LoadingSpinner />;
   if (error) return <Error />;
@@ -60,6 +61,7 @@ const LpCommentsList = ({
         commentData={allCommentData}
         isFetching={isFetching}
         isLoading={isLoading}
+        lpId={lpId}
       />
     </>
   );

@@ -32,6 +32,7 @@ const Login = () => {
       setLocal('accessToken', response.data.data.accessToken);
       setLocal('name', response.data.data.name);
       setSession('refreshToken', response.data.data.refreshToken);
+      setLocal('userId', response.data.data.id);
       toggleLogin();
       navigate('/home');
     } catch (error: any) {
