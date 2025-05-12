@@ -24,12 +24,12 @@ const LikesButton = ({ count, lpId, currentUserId, likedUserIds }: LikesButtonPr
         }
 
         if (isLiked) {
-            // 💔 좋아요 취소
+            
             setIsLiked(false);
             setLocalCount((prev) => prev - 1);
             removeLikeMutation(lpId);
         } else {
-            // ❤️ 좋아요 추가
+            
             setIsLiked(true);
             setLocalCount((prev) => prev + 1);
             addLikeMutation(lpId);

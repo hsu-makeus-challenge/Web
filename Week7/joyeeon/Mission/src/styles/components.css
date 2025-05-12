@@ -29,7 +29,3 @@
 .lpsubmit {
     @apply w-[50px] cursor-pointer border-1 bg-cyan-200 border-cyan-300 rounded-lg h-10 p-3 text-sm box-border placeholder:text-xs flex items-center justify-between
 }
-
-.yesbutn {
-    @apply 
-}

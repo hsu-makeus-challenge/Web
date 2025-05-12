@@ -1,10 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { useLogout } from "../../hooks/Auths/useAuths";
+import { useMypageStore } from "../../stores/MypageStore";
 
 const SignOutBtn = () =>{
-    const {name} = useAuth();
+    
     const {mutate: logout} = useLogout();
+    const userInfo = useMypageStore((state) => state.userInfo);
+    const name = userInfo?.data?.name ?? "사용자";
     
     return(
 
