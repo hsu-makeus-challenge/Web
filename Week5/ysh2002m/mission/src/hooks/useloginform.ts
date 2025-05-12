@@ -32,7 +32,7 @@ export const useLoginForm = () => {
       sessionStorage.setItem("refreshToken", response.data.refreshToken);
 
       console.log("로그인 성공:", response.data);
-      navigate("/home");
+      navigate("/");
     } catch (err: unknown) {
         const error = err as AxiosError<{ message?: string }>;
         console.error("로그인 실패:", error.response?.data || error.message);

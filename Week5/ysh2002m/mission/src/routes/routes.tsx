@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       { index: true, element: <Home /> },
       { path: "login", element: <LoginPage /> },
       { path: "signup", element: <SignUpPage /> },
-      { path: "v1/auth/google/callback", element: <OAuthCallbackPage /> }, // ✅ 추가
+      { path: "v1/auth/google/callback", element: <OAuthCallbackPage /> }, 
       {
         element: <ProtectedRoute />,
         children: [
