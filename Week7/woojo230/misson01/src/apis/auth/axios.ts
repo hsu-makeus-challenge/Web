@@ -29,7 +29,7 @@ instance.interceptors.request.use(
     }
 
     // skipAuth 헤더가 없는 경우 토큰을 추가
-    const token = useLoginStore.getState().accessToken;
+    const token = localStorage.getItem('accessToken');
     if (token) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
@@ -52,11 +52,13 @@ instance.interceptors.response.use(
 
       if (!isRefreshing) {
         isRefreshing = true;
-        const refreshToken = useLoginStore.getState().refreshToken;
+        const refreshToken = localStorage.getItem('refreshToken');
 
         if (!refreshToken) {
           isRefreshing = false;
-          useLoginStore.getState().clearTokens();
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+          useLoginStore.getState().setLogin(false);
           window.location.href = '/login';
           return Promise.reject(error);
         }
@@ -70,7 +72,8 @@ instance.interceptors.response.use(
           );
 
           const newAccessToken = data.accessToken;
-          useLoginStore.getState().setTokens(newAccessToken, refreshToken);
+          localStorage.setItem('accessToken', newAccessToken);
+          useLoginStore.getState().setLogin(true);
 
           onTokenRefreshed(newAccessToken);
           isRefreshing = false;
@@ -80,7 +83,9 @@ instance.interceptors.response.use(
         } catch (refreshError) {
           isRefreshing = false;
           alert('세션이 만료되었습니다. 다시 로그인해주세요.');
-          useLoginStore.getState().clearTokens();
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+          useLoginStore.getState().setLogin(false);
           window.location.href = '/login';
           return Promise.reject(refreshError);
         }

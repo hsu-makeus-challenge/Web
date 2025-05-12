@@ -6,15 +6,27 @@ import {
 } from '../../hooks/useLocalStorage';
 import { FaBars } from 'react-icons/fa';
 import useSideBarStore from '../../stores/sideBar';
+import { useEffect } from 'react';
+import useGetUserBasicInfo from '../../hooks/queries/user/useGetUserBasicInfo';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { isLogin, toggleLogin } = useLoginStore();
-  const nickname = localStorage.getItem('name');
+  const { isLogin, toggleLogin, setLogin } = useLoginStore();
   const { remove: localRemove } = useLocalStorage();
   const { remove: sessionRemove } = useSessionStorage();
-
   const { toggleSidebar } = useSideBarStore();
+
+  const { data: userData } = useGetUserBasicInfo();
+  const nickname = userData?.data?.name || localStorage.getItem('name') || '';
+
+  useEffect(() => {
+    const accessToken = localStorage.getItem('accessToken');
+    if (accessToken && !isLogin) {
+      setLogin(true);
+    } else if (!accessToken && isLogin) {
+      setLogin(false);
+    }
+  }, [isLogin, setLogin]);
 
   const gotoHome = (): void => {
     navigate('/');
@@ -32,7 +44,7 @@ const Navbar = () => {
     localRemove('name');
     localRemove('accessToken');
     sessionRemove('refreshToken');
-    toggleLogin();
+    setLogin(false);
     navigate('/login');
   };
 

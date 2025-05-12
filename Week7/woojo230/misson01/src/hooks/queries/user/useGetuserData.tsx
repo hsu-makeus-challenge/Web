@@ -5,6 +5,9 @@ const useGetuserData = () => {
   return useQuery({
     queryKey: ['userData'],
     queryFn: userDataFetch,
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: true,
   });
 };
 

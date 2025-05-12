@@ -12,6 +12,7 @@ import LpFormInputs from './LpFormInputs';
 import LpThumbnailUpload from './LpThumbnailUpload';
 import LpTagInput from './LpTagInput';
 import LpPublishCheckbox from './LpPublishCheckbox';
+import LpVinylSvg from './LpVinylSvg';
 
 const LpAddModal = () => {
   const { toggleLpModal } = useLpModalStore();
@@ -65,7 +66,7 @@ const LpAddModal = () => {
       },
       {
         onSuccess: () => {
-          alert('LP가 성공적으로 생성되었습니다!');
+          alert('LP가 성공적으로 생성');
           toggleLpModal();
         },
       }
@@ -87,10 +88,9 @@ const LpAddModal = () => {
         >
           ✕
         </button>
-        <img
-          src="https://cdn.pixabay.com/photo/2016/03/31/20/37/record-1294479_1280.png"
-          alt="LP"
-          className="w-40 h-40 object-contain mb-6 mt-2 select-none pointer-events-none"
+        <LpVinylSvg
+          onClick={handleThumbnailButtonClick}
+          thumbnailPreview={thumbnailPreview}
         />
         <form className="w-full flex flex-col gap-4" onSubmit={handleSubmit}>
           <LpFormInputs

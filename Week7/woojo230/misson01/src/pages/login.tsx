@@ -1,16 +1,14 @@
 import useForm from '../hooks/useForm';
 import GoogleLoginButton from '../utils/googleLoginBtn';
 import { UserSigninInformation, validateSignin } from '../utils/validate';
-import axios from '../apis/auth/axios';
-import { useLocalStorage, useSessionStorage } from '../hooks/useLocalStorage';
 import { useNavigate } from 'react-router-dom';
 import useLoginStore from '../stores/login';
+import usePostLogin from '../hooks/queries/auth/usePostLogin';
 
 const Login = () => {
   const navigate = useNavigate();
   const { toggleLogin } = useLoginStore();
-  const { set: setLocal } = useLocalStorage();
-  const { set: setSession } = useSessionStorage();
+  const loginMutation = usePostLogin();
 
   const { errors, touched, getInputProps, isValid } =
     useForm<UserSigninInformation>({
@@ -27,17 +25,7 @@ const Login = () => {
     const email = getInputProps('email').value;
     const password = getInputProps('password').value;
 
-    try {
-      const response = await axios.post('/v1/auth/signin', { email, password });
-      setLocal('accessToken', response.data.data.accessToken);
-      setLocal('name', response.data.data.name);
-      setSession('refreshToken', response.data.data.refreshToken);
-      setLocal('userId', response.data.data.id);
-      toggleLogin();
-      navigate('/home');
-    } catch (error: any) {
-      console.error('로그인 에러:', error);
-    }
+    loginMutation.mutate({ email, password });
   };
 
   return (
@@ -93,8 +81,9 @@ const Login = () => {
                     : 'bg-gray-300 text-gray-500 cursor-not-allowed'
                 }
               `}
+            disabled={loginMutation.isPending}
           >
-            로그인
+            {loginMutation.isPending ? '로그인 중...' : '로그인'}
           </button>
         </div>
       </div>
