@@ -1,48 +1,60 @@
-import { useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { loginApi, getMyInfo } from "../api/auth";
-import Navbar from "../components/Navbar";
-import { useAuth } from "../context/AuthContext";
-import { useEffect, useCallback } from "react";
-import { useLocation } from "react-router-dom";
+import { useCallback, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import { axiosInstance } from '../api/axios';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { ApiResponse, LoginResponse, UserInfo } from '../types/api';
+import { ApiResponse, LoginResponse } from '../types/api';
 
-const loginSchema = z.object({
-  email: z.string().email("올바른 이메일 형식이 아닙니다."),
-  password: z.string().min(8, "비밀번호는 8자 이상이어야 합니다."),
-});
+interface LoginForm {
+  email: string;
+  password: string;
+}
 
-type LoginForm = z.infer<typeof loginSchema>;
+interface User {
+  id: string;
+  name: string;
+  email: string | null;
+}
 
 const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { setAccessToken, setRefreshToken } = useAuth();
+  const { login } = useAuth();
   const queryClient = useQueryClient();
 
+  const saveUserInfo = (name: string, email: string | null, id: string) => {
+    if (email) localStorage.setItem('signup_email', email);
+    localStorage.setItem('signup_nickname', name || '사용자');
+    localStorage.setItem('userId', id);
+  };
+
   const loginMutation = useMutation<ApiResponse<LoginResponse>, Error, LoginForm>({
-    mutationFn: loginApi,
+    mutationFn: async (data) => {
+      const response = await axiosInstance.post('/auth/login', data);
+      return response.data;
+    },
     onSuccess: async (response) => {
-      console.log("[로그인] 일반 로그인 성공, 응답:", response);
-      const { accessToken, refreshToken, name, id } = response.data;
-      
-      // 토큰 저장
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      localStorage.setItem('signup_email', response.data.email || '');
-      localStorage.setItem('signup_nickname', name || '사용자');
-      localStorage.setItem('userId', id.toString());
+      try {
+        console.log("[로그인] 일반 로그인 성공, 응답:", response);
+        const { accessToken, name, id, email } = response.data;
+        
+          const user: User = {
+          id: id.toString(),
+          name: name || '사용자',
+          email: email
+        };
 
-      // Context 업데이트
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
+        login(accessToken, user);
 
-      alert(`${name || '사용자'}님 환영합니다!`);
-      await queryClient.invalidateQueries();
-      navigate("/my");
+        saveUserInfo(name, email, id.toString());
+
+        await queryClient.invalidateQueries();
+        alert(`${name || '사용자'}님 환영합니다!`);
+        navigate("/my");
+      } catch (error) {
+        console.error("[로그인] 로그인 후처리 중 오류:", error);
+        alert("로그인은 성공했으나 일부 정보 처리에 실패했습니다.");
+      }
     },
     onError: (error) => {
       console.error("[로그인] 로그인 실패:", error);
@@ -50,13 +62,12 @@ const Login = () => {
     }
   });
 
-  // Google 로그인 콜백 처리
-  const handleGoogleAuth = useCallback(() => {
+  const handleGoogleAuth = useCallback(async () => {
     const query = new URLSearchParams(location.search);
     const accessToken = query.get("accessToken");
-    const refreshToken = query.get("refreshToken");
     const name = query.get("name");
     const userId = query.get("userId");
+    const email = query.get("email");
     const error = query.get("error");
 
     if (error) {
@@ -65,119 +76,88 @@ const Login = () => {
       return;
     }
 
-    if (accessToken && refreshToken) {
-      console.log("[로그인] 구글 로그인 성공, 토큰 저장 시작");
+    if (accessToken && userId && name) {
+      try {
+        console.log("[로그인] 구글 로그인 성공");
+        
+        // 사용자 정보 객체 생성
+        const user: User = {
+          id: userId,
+          name: name,
+          email: email
+        };
 
-      // 토큰 저장
-      localStorage.setItem('accessToken', accessToken);
-      localStorage.setItem('refreshToken', refreshToken);
-      if (name) localStorage.setItem('signup_nickname', name);
-      if (userId) localStorage.setItem('userId', userId);
+        // 새로운 login 함수 사용
+        login(accessToken, user);
+        
+        saveUserInfo(name, email, userId);
 
-      // Context 업데이트
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
-
-      alert(`${name || '사용자'}님 환영합니다!`);
-      navigate("/my");
+        await queryClient.invalidateQueries();
+        alert(`${name || '사용자'}님 환영합니다!`);
+        navigate("/my");
+      } catch (error) {
+        console.error("[로그인] 구글 로그인 후처리 중 오류:", error);
+        alert("로그인은 성공했으나 일부 정보 처리에 실패했습니다.");
+      }
     }
-  }, [location, navigate, setAccessToken, setRefreshToken]);
+  }, [location, navigate, login, queryClient]);
 
   useEffect(() => {
     handleGoogleAuth();
   }, [handleGoogleAuth]);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginForm>({
-    resolver: zodResolver(loginSchema),
-  });
-
   const handleGoogleLogin = () => {
-    const apiUrl = import.meta.env.VITE_SERVER_API_URL;
-    console.log("[로그인] 구글 로그인 시도, 리다이렉트:", apiUrl + "/v1/auth/google/login");
-    window.location.href = apiUrl + "/v1/auth/google/login";
-  };
-
-  const onSubmit = (data: LoginForm) => {
-    console.log("[로그인] 일반 로그인 시도:", data.email);
-    loginMutation.mutate(data);
+    const googleAuthUrl = `${import.meta.env.VITE_SERVER_API_URL}/auth/google`;
+    window.location.href = googleAuthUrl;
   };
 
   return (
-    <>
-      <div className="min-h-screen bg-black flex flex-col justify-center items-center px-4">
-        <div className="w-full max-w-sm mb-6 flex items-center justify-center relative">
-          <button
-            onClick={() => navigate(-1)}
-            className="absolute left-0 text-xl font-bold text-green-500"
-          >
-            {"<"}
-          </button>
-          <h1 className="text-xl font-semibold text-center w-full text-gray-500">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-lg shadow">
+        <div>
+          <h2 className="text-center text-3xl font-extrabold text-gray-900">
             로그인
-          </h1>
+          </h2>
         </div>
+        <form className="mt-8 space-y-6" onSubmit={(e) => {
+          e.preventDefault();
+          // 폼 데이터 처리 로직 추가 필요
+        }}>
+          <div className="flex flex-col space-y-4">
+            {/* 기존 이메일/비밀번호 입력 필드들 */}
+            
+            <button
+              type="submit"
+              className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              로그인
+            </button>
 
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="w-full max-w-sm space-y-4 text-green-500"
-        >
-          <button
-            type="button"
-            onClick={handleGoogleLogin}
-            className="w-full border border-gray-300 py-2 rounded flex items-center justify-center gap-2 text-gray-500"
-          >
-            <img src="./google.png" alt="google" className="w-5 h-5" />
-            <span>구글 로그인</span>
-          </button>
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">또는</span>
+              </div>
+            </div>
 
-          <div className="flex items-center justify-between text-gray-500">
-            <hr className="w-1/3" />
-            <span>OR</span>
-            <hr className="w-1/3" />
+            <button
+              type="button"
+              onClick={handleGoogleLogin}
+              className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            >
+              <img
+                src="https://www.google.com/favicon.ico"
+                alt="Google"
+                className="w-5 h-5 mr-2"
+              />
+              Google 계정으로 로그인
+            </button>
           </div>
-
-          <input
-            type="text"
-            placeholder="이메일을 입력해주세요!"
-            {...register("email")}
-            autoComplete="email"
-            className={`w-full px-4 py-2 border rounded bg-white text-black ${
-              errors.email ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.email && (
-            <p className="text-red-500 text-sm ml-1">{errors.email.message}</p>
-          )}
-
-          <input
-            type="password"
-            placeholder="비밀번호를 입력해주세요!"
-            {...register("password")}
-            autoComplete="current-password"
-            className={`w-full px-4 py-2 border rounded bg-white text-black ${
-              errors.password ? "border-red-500" : "border-gray-300"
-            }`}
-          />
-          {errors.password && (
-            <p className="text-red-500 text-sm ml-1">
-              {errors.password.message}
-            </p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loginMutation.isPending}
-            className="w-full bg-green-500 text-white py-2 rounded hover:opacity-80 transition disabled:opacity-50"
-          >
-            {loginMutation.isPending ? "로그인 중..." : "로그인"}
-          </button>
         </form>
       </div>
-    </>
+    </div>
   );
 };
 

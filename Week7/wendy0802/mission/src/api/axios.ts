@@ -5,6 +5,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
+const baseURL = import.meta.env.VITE_SERVER_API_URL;
 
 const getAccessToken = () => {
   const token = localStorage.getItem("accessToken");
@@ -33,7 +34,7 @@ const refreshAccessToken = async (): Promise<boolean> => {
 
     console.log("[axios] 토큰 갱신 시도");
     const response = await axios.post<ResponseRefreshDto>(
-      `${import.meta.env.VITE_API_URL}/v1/auth/refresh`,
+      `${baseURL}/v1/auth/refresh`,
       { refreshToken } as RequestRefreshDto
     );
 
@@ -48,12 +49,13 @@ const refreshAccessToken = async (): Promise<boolean> => {
   }
 };
 
-
 export const axiosInstance: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL,
   withCredentials: true,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
-
 
 axiosInstance.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
@@ -94,7 +96,6 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
       const isRefreshed = await refreshAccessToken();
       if (isRefreshed) {
-
         console.log("[axios] 토큰 갱신 후 요청 재시도");
         const accessToken = getAccessToken();
         originalRequest.headers = originalRequest.headers || {};
