@@ -72,7 +72,7 @@ const MyPage = () => {
               accept="image/*"
               onChange={(e) => {
                 handleAvatarUpload(e);
-                setFileInputKey(Date.now()); // reset input after change
+                setFileInputKey(Date.now()); 
               }}
             />
           )}

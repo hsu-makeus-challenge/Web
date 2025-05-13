@@ -6,12 +6,14 @@ import Sidebar from "../components/Sidebar";
 import LpAddButton from "../components/LpAddButton.tsx";
 import LpModal from "../components/LpModal.tsx";
 import QuitModal from "../components/QuitModal";
+import { useAuth } from "../context/AuthContext";
 
 const HomeLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const sidebarRef = useRef(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isQuitModalOpen, setIsQuitModalOpen] = useState(false);
+  const { accessToken } = useAuth();
   
   return (
     <div className="relative min-h-screen bg-[#121212] text-white flex">
@@ -32,8 +34,8 @@ const HomeLayout = () => {
         <main className="relative flex-1 p-6 overflow-auto bg-[#121212] mt-13 z-0">
           <Outlet />
         </main>
-        <LpAddButton onClick={() => setIsModalOpen(true)} />
-        {isModalOpen && <LpModal onClose={() => setIsModalOpen(false)} />}
+        {accessToken && <LpAddButton onClick={() => setIsModalOpen(true)} />}
+        {isModalOpen && accessToken && <LpModal onClose={() => setIsModalOpen(false)} />}
         {isQuitModalOpen && <QuitModal onClose={() => setIsQuitModalOpen(false)} />}
         <Footer />
       </div>
