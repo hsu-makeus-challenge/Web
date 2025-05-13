@@ -8,7 +8,7 @@ const usePostLpData = () => {
     mutationFn: (lpData: LpAddType) => lpPostData({ lpData }),
     onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ['lp'] });
-      console.log('서버 응답:', data);
+      // console.log('서버 응답:', data);
     },
   });
 };

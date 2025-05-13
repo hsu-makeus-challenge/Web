@@ -11,7 +11,7 @@ import useGetUserBasicInfo from '../../hooks/queries/user/useGetUserBasicInfo';
 
 const Navbar = () => {
   const navigate = useNavigate();
-  const { isLogin, toggleLogin, setLogin } = useLoginStore();
+  const { isLogin, setLogin } = useLoginStore();
   const { remove: localRemove } = useLocalStorage();
   const { remove: sessionRemove } = useSessionStorage();
   const { toggleSidebar } = useSideBarStore();
