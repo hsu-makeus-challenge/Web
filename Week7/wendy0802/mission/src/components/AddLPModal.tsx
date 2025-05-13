@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import axios from 'axios';
 
 interface Tag {
   id: number;
@@ -26,6 +27,20 @@ const AddLPModal: React.FC<AddLPModalProps> = ({ isOpen, onClose, onSubmit }) =>
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const selectedFile = e.target.files[0];
+      console.log("선택된 파일:", selectedFile.name, selectedFile.type, selectedFile.size);
+      
+      // 이미지 파일 유효성 검사
+      if (!selectedFile.type.startsWith('image/')) {
+        alert('이미지 파일만 선택할 수 있습니다.');
+        return;
+      }
+      
+      // 파일 크기 제한 (10MB)
+      if (selectedFile.size > 10 * 1024 * 1024) {
+        alert('파일 크기가 너무 큽니다. 10MB 이하의 파일을 선택해주세요.');
+        return;
+      }
+      
       setImage(selectedFile);
       const reader = new FileReader();
       reader.onload = () => {
@@ -64,26 +79,40 @@ const AddLPModal: React.FC<AddLPModalProps> = ({ isOpen, onClose, onSubmit }) =>
       return;
     }
 
-    const formData = new FormData();
-    formData.append('title', name);
-    formData.append('content', content);
-    formData.append('thumbnail', image);
-    tags.forEach(tag => {
-      formData.append('tags', tag.name);
-    });
-
     try {
+      const formData = new FormData();
+      formData.append('title', name);
+      formData.append('content', content);
+      
+      // 파일이 있는지 다시 확인
+      if (image) {
+        formData.append('thumbnail', image, image.name);
+        console.log("이미지 파일 정보:", image.name, image.type, image.size);
+      } else {
+        console.error("이미지 파일이 없습니다.");
+        alert('이미지는 필수입니다.');
+        return;
+      }
+      
+      // 태그 추가 (배열로 직접 전송하지 않고 개별 필드로 전송)
+      tags.forEach(tag => {
+        formData.append('tags', tag.name);
+      });
+      
+      formData.append('published', 'true');
+      
+      console.log("FormData 생성 완료");
       await onSubmit(formData);
+      
       setName('');
       setContent('');
       setTagInput('');
       setTags([]);
       setImage(null);
       setPreviewUrl(null);
-      onClose();
-    } catch (error) {
+    } catch (error: any) {
       console.error('LP 생성 실패:', error);
-      alert('LP 생성에 실패했습니다.');
+      alert('LP 생성에 실패했습니다. 다시 시도해주세요.');
     }
   };
 
@@ -197,7 +226,7 @@ const AddLPModal: React.FC<AddLPModalProps> = ({ isOpen, onClose, onSubmit }) =>
             type="submit"
             className="w-full bg-green-600 text-white py-2.5 rounded hover:bg-green-700 transition-colors font-semibold"
           >
-            LP 등록하기
+            LP 등록
           </button>
         </form>
       </div>

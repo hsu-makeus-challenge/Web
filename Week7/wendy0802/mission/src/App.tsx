@@ -3,7 +3,7 @@ import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { SidebarProvider } from './context/SidebarContext';
 import LPListPage from './pages/LPListPage';
-import LPDetailPage from './pages/LPDetailPage';
+import LPDetailPage from './pages/LpDetailPage';
 import NotFoundPage from './pages/NotFoundPage';
 import HomeLayout from "./pages/HomeLayout";
 import GoogleLoginRedirectPage from "./pages/GoogleLoginRedirectPage";
@@ -23,14 +23,6 @@ const router = createBrowserRouter([
         element: <HomePage />,
       },
       {
-        path: 'login',
-        element: <Login />,
-      },
-      {
-        path: 'signup',
-        element: <SignUp />,
-      },
-      {
         path: 'lps',
         element: <LPListPage />,
       },
@@ -39,14 +31,22 @@ const router = createBrowserRouter([
         element: <LPDetailPage />,
       },
       {
-        path: 'v1/auth/google/callback',
-        element: <GoogleLoginRedirectPage />,
-      },
-      {
         path: 'my',
         element: <MyPage />,
       },
     ],
+  },
+  {
+    path: '/login',
+    element: <Login />,
+  },
+  {
+    path: '/signup',
+    element: <SignUp />,
+  },
+  {
+    path: '/auth/google/callback',
+    element: <GoogleLoginRedirectPage />,
   },
 ]);
 

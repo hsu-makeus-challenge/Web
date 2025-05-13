@@ -6,7 +6,7 @@ import { getMyInfo } from '../api/auth';
 const MyPage = () => {
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const [data, setData] = useState<any>(null); // 실제 타입으로 교체하세요
+  const [data, setData] = useState<any>(null); 
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {

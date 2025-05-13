@@ -1,15 +1,17 @@
-import React from "react";
+import React from 'react';
 
-export default function SkeletonCard() {
+const SkeletonCard = () => {
   return (
-    <div
-      className="relative w-full rounded-lg overflow-hidden bg-gradient-to-br from-gray-700 via-gray-600 to-gray-700 animate-pulse"
-      style={{ paddingBottom: "100%" }}
-    >
-      <div className="absolute top-0 left-0 w-full h-full flex flex-col justify-center items-center">
-        <div className="w-2/3 h-6 bg-gray-500 rounded mb-2 opacity-60" />
-        <div className="w-1/2 h-4 bg-gray-500 rounded opacity-40" />
+    <div className="flex items-center justify-center">
+      <div className="relative aspect-square w-40 animate-pulse bg-gray-800 rounded-xl">
+        <div className="absolute inset-0 flex flex-col items-center justify-center">
+          <div className="h-4 w-3/4 bg-gray-700 rounded"></div>
+          <div className="mt-2 h-3 w-1/2 bg-gray-700 rounded"></div>
+          <div className="mt-2 h-3 w-1/3 bg-gray-700 rounded"></div>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default SkeletonCard;

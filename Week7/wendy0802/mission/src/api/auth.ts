@@ -11,57 +11,98 @@ import type {
 } from '../types/auth';
 import { axiosInstance } from './axios';
 import axios from 'axios';
+import { ApiResponse, LoginResponse, UserInfo } from '../types/api';
 
-// LoginRequest 타입 정의
+const baseURL = import.meta.env.VITE_BASE_URL || 'http://localhost:8000';
+
 export type LoginRequest = RequestSigninDto;
 
-export const postSignup = async (
-  body: RequestSignupDto,
-): Promise<ResponseSignupDto> => {
-  const { data } = await axiosInstance.post('v1/auth/signup', body);
+
+export const postSignup = async (body: RequestSignupDto): Promise<ResponseSignupDto> => {
+  const { data } = await axios.post(`${baseURL}/v1/auth/signup`, body, {
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true
+  });
   return data;
 };
 
-export const postSignin = async (
-  body: RequestSigninDto,
-): Promise<ResponseSigninDto> => {
-  const { data } = await axiosInstance.post('v1/auth/signin', body);
+
+export const postSignin = async (body: RequestSigninDto): Promise<ResponseSigninDto> => {
+  const { data } = await axios.post(`${baseURL}/v1/auth/signin`, body, {
+    headers: { 'Content-Type': 'application/json' },
+    withCredentials: true
+  });
   return data;
 };
 
-export const loginApi = async (data: LoginRequest): Promise<ResponseSigninDto> => {
-  return postSignin(data);
-};
-
-export const logoutApi = async (): Promise<ResponseLogoutDto> => {
-  const { data } = await axiosInstance.post('v1/auth/logout');
-  return data;
-};
-
-export const getMyInfo = async (): Promise<ResponseMyinfoDto> => {
-  const { data } = await axiosInstance.get('v1/auth/protected');
-  return data;
-};
-
-export const postLogout = async (): Promise<ResponseLogoutDto> => {
-  const { data } = await axiosInstance.post('v1/auth/logout');
-  return data;
-};
-
-const BASE_URL = 'http://localhost:3000/v1';
-
-interface SignUpRequest {
+interface LoginData {
   email: string;
   password: string;
 }
 
-export const postLogin = async (data: LoginRequest) => {
-  const response = await axios.post(`${BASE_URL}/auth/login`, data);
+export const loginApi = async (data: LoginData): Promise<ApiResponse<LoginResponse>> => {
+  const response = await axios.post<ApiResponse<LoginResponse>>('/v1/auth/login', data);
   return response.data;
 };
 
-export const postSignUp = async (data: SignUpRequest) => {
-  const response = await axios.post(`${BASE_URL}/auth/signup`, data);
+export const logoutApi = async () => {
+  const { data } = await axios.post(`${baseURL}/v1/auth/logout`, null, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+    },
+    withCredentials: true
+  });
+  return data;
+};
+
+export const checkAuth = async (): Promise<ResponseMyinfoDto> => {
+  const { data } = await axios.get(`${baseURL}/v1/auth/protected`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+    },
+    withCredentials: true
+  });
+  return data;
+};
+
+export const getMyInfo = async (): Promise<ApiResponse<UserInfo>> => {
+  const response = await axios.get<ApiResponse<UserInfo>>('/v1/auth/me');
   return response.data;
+};
+
+
+export const refreshToken = async (refresh: string): Promise<ApiResponse<LoginResponse>> => {
+  const response = await axios.post<ApiResponse<LoginResponse>>('/v1/auth/refresh', { refresh });
+  return response.data;
+};
+
+
+export const getGoogleLoginUrl = (): string => {
+  return `${baseURL}/v1/auth/google/login`;
+};
+
+
+export const handleGoogleCallback = async (code: string) => {
+  const { data } = await axios.get('${apiurl}/v1/auth/google/callback?code=${code}', {
+    withCredentials: true
+  });
+  return data;
+};
+
+export const signOut = async (): Promise<ApiResponse<null>> => {
+  const response = await axios.post<ApiResponse<null>>('/v1/auth/signout');
+  return response.data;
+};
+
+
+export const updateProfile = async (formData: FormData) => {
+  const { data } = await axios.patch(`${baseURL}/v1/users/me`, formData, {
+    headers: { 
+      'Content-Type': 'multipart/form-data',
+      'Authorization': `Bearer ${localStorage.getItem('accessToken')}`
+    },
+    withCredentials: true
+  });
+  return data;
 };
 

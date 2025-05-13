@@ -34,7 +34,7 @@ export const loginApi = async (data: LoginRequest): Promise<ResponseSigninDto> =
 };
 
 export const logoutApi = async (): Promise<ResponseLogoutDto> => {
-  const { data } = await axiosInstance.post('v1/auth/logout');
+  const { data } = await axiosInstance.post('v1/auth/signout');
   return data;
 };
 

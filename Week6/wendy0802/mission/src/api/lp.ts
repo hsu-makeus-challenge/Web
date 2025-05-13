@@ -10,7 +10,7 @@ import {
 } from "../types/lp";
 import { RequestRefreshDto, ResponseRefreshDto } from "../types/auth";
 
-// LP 리스트 조회
+
 export const getLPList = async (paginationDto: PaginationDto): Promise<LPListResponse> => {
     const { data } = await axiosInstance.get("lps", {
       params: paginationDto,
@@ -18,7 +18,7 @@ export const getLPList = async (paginationDto: PaginationDto): Promise<LPListRes
     return data;
 };
 
-// LP 상세 조회
+
 export interface LPDetailResponse {
   status: boolean;
   statusCode: number;
@@ -31,7 +31,7 @@ export const getLPDetail = async (id: string): Promise<LPDetailResponse> => {
     return data;
 };
 
-// LP 댓글 조회 - 인증 없이도 접근 가능하도록 수정
+
 export type CommentParams = { 
   cursor?: number; 
   limit?: number; 
@@ -109,7 +109,6 @@ export const getComments = async (lpId: string | number, params: CommentParams):
   }
 };
 
-// LP 댓글 생성
 export interface CreateCommentResponse {
   status: boolean;
   statusCode: number;
@@ -122,7 +121,7 @@ export const createComment = async (lpId: string | number, content: string): Pro
   return data;
 };
 
-// 토큰 갱신
+
 export const refreshAccessToken = async (): Promise<boolean> => {
   try {
     const refreshToken = localStorage.getItem('refreshToken');

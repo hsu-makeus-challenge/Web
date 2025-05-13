@@ -1,23 +1,22 @@
-import {useQuery} from "@tanstack/react-query";
-import {PaginationDto} from "../../types/common";
+import { useQuery } from "@tanstack/react-query";
 import { getLPList } from "../../api/lp";
 import { QUERY_KEY } from "../../constants/key";
+import { LPListResponse } from "../../types/lp";
 
-
-function useGEtLPList({cursor, search, order, limit}:PaginationDto) {
-    return useQuery({
-        queryKey:[QUERY_KEY.lps,search, order],
-        queryFn:()=>
-            getLPList({
-            cursor,
-            search,
-            order,
-            limit,
-        }),
-        staleTime: 1000*60*5,
-        gcTime:100*60*10,
-        
-    });
+interface UseGetLPListParams {
+  cursor?: number;
+  limit?: number;
+  search?: string;
+  order?: 'asc' | 'desc';
 }
 
-export default useGEtLPList;
+function useGetLPList(params: UseGetLPListParams = {}) {
+  return useQuery<LPListResponse>({
+    queryKey: [QUERY_KEY.lps, params.search, params.order],
+    queryFn: () => getLPList(params),
+    staleTime: 1000 * 60 * 5, 
+    gcTime: 1000 * 60 * 10,   
+  });
+}
+
+export default useGetLPList;

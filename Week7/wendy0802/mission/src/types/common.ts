@@ -16,18 +16,12 @@ export type CursorBaseResponse<T> = {
 
 export type PaginationDto = {
     cursor?: number;
-    limit?:number;
-    search?:string;
-    order?:"asc"|"desc";
+    limit?: number;
+    search?: string;
+    order?: PAGINATION_ORDER;
 }
 
 enum PAGINATION_ORDER {
     "asc" = "asc",
     "desc" = "desc",
-}
-export type PaginationDto = {
-    cursor?: number;
-    limit?:number;
-    search?:string;
-    order?:PAGINATION_ORDER;
 }

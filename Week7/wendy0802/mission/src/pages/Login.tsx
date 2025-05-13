@@ -2,14 +2,14 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginApi } from "../api/auth";
+import { loginApi, getMyInfo } from "../api/auth";
 import Navbar from "../components/Navbar";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
-import { getMyInfo } from "../api/auth";
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { ApiResponse, LoginResponse, UserInfo } from '../types/api';
 
-// 로그인 스키마 정의
 const loginSchema = z.object({
   email: z.string().email("올바른 이메일 형식이 아닙니다."),
   password: z.string().min(8, "비밀번호는 8자 이상이어야 합니다."),
@@ -21,47 +21,64 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { setAccessToken, setRefreshToken } = useAuth();
+  const queryClient = useQueryClient();
 
-  // 구글 인증 후 리다이렉트 시 토큰 저장
+  const loginMutation = useMutation<ApiResponse<LoginResponse>, Error, LoginForm>({
+    mutationFn: loginApi,
+    onSuccess: async (response) => {
+      console.log("[로그인] 일반 로그인 성공, 응답:", response);
+      const { accessToken, refreshToken, name, id } = response.data;
+      
+      // 토큰 저장
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      localStorage.setItem('signup_email', response.data.email || '');
+      localStorage.setItem('signup_nickname', name || '사용자');
+      localStorage.setItem('userId', id.toString());
+
+      // Context 업데이트
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+
+      alert(`${name || '사용자'}님 환영합니다!`);
+      await queryClient.invalidateQueries();
+      navigate("/my");
+    },
+    onError: (error) => {
+      console.error("[로그인] 로그인 실패:", error);
+      alert("로그인에 실패했습니다. 이메일 또는 비밀번호를 확인해주세요.");
+    }
+  });
+
+  // Google 로그인 콜백 처리
   const handleGoogleAuth = useCallback(() => {
     const query = new URLSearchParams(location.search);
     const accessToken = query.get("accessToken");
     const refreshToken = query.get("refreshToken");
-    const email = query.get("email");
     const name = query.get("name");
+    const userId = query.get("userId");
     const error = query.get("error");
 
     if (error) {
+      console.error("[로그인] 구글 로그인 실패:", error);
       alert("구글 로그인에 실패했습니다. 다시 시도해주세요.");
       return;
     }
 
     if (accessToken && refreshToken) {
-      console.log("[로그인] 구글 로그인 성공, 토큰 저장:", { 
-        accessToken: accessToken ? "있음" : "없음", 
-        refreshToken: refreshToken ? "있음" : "없음",
-        email, name
-      });
-      
-      // 사용자 정보 로컬 스토리지에 저장
-      localStorage.setItem("signup_email", email || "");
-      localStorage.setItem("signup_nickname", name || "");
-      
-      // localStorage에 토큰 직접 저장 (혹시 모르니 2중 저장)
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-      
-      // AuthContext 상태 업데이트
+      console.log("[로그인] 구글 로그인 성공, 토큰 저장 시작");
+
+      // 토큰 저장
+      localStorage.setItem('accessToken', accessToken);
+      localStorage.setItem('refreshToken', refreshToken);
+      if (name) localStorage.setItem('signup_nickname', name);
+      if (userId) localStorage.setItem('userId', userId);
+
+      // Context 업데이트
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
 
-      // 저장 후 토큰 확인
-      setTimeout(() => {
-        const storedToken = localStorage.getItem("accessToken");
-        console.log("[로그인] 로컬스토리지 토큰 확인:", storedToken ? "있음" : "없음");
-      }, 100);
-
-      alert(`${name}님 환영합니다!`);
+      alert(`${name || '사용자'}님 환영합니다!`);
       navigate("/my");
     }
   }, [location, navigate, setAccessToken, setRefreshToken]);
@@ -78,64 +95,15 @@ const Login = () => {
     resolver: zodResolver(loginSchema),
   });
 
-  // 구글 로그인 버튼 클릭 시에만 리다이렉트
   const handleGoogleLogin = () => {
     const apiUrl = import.meta.env.VITE_SERVER_API_URL;
+    console.log("[로그인] 구글 로그인 시도, 리다이렉트:", apiUrl + "/v1/auth/google/login");
     window.location.href = apiUrl + "/v1/auth/google/login";
   };
 
-  const onValid = async (data: LoginForm) => {
-    try {
-      console.log("[로그인] 로그인 시도:", data.email);
-      
-      // 로그인 API 호출
-      const res = await loginApi(data);
-      console.log("[로그인] API 응답:", res);
-      
-      const { accessToken, refreshToken } = res.data;
-      console.log("[로그인] 토큰 받음:", { 
-        accessToken: accessToken ? "있음" : "없음", 
-        refreshToken: refreshToken ? "있음" : "없음" 
-      });
-
-      // localStorage에 토큰 직접 저장 (혹시 모르니 2중 저장)
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-      
-      // AuthContext 상태 업데이트
-      setAccessToken(accessToken);
-      setRefreshToken(refreshToken);
-
-      // 저장 후 토큰 확인
-      setTimeout(() => {
-        const storedToken = localStorage.getItem("accessToken");
-        console.log("[로그인] 로컬스토리지 토큰 확인:", storedToken ? "있음" : "없음");
-      }, 100);
-
-      // 사용자 정보 가져오기
-      try {
-        console.log("[로그인] 사용자 정보 요청");
-        const userInfo = await getMyInfo();
-        const userName = userInfo.data.name || "사용자";
-        console.log("[로그인] 사용자 정보 받음:", userName);
-        
-        // 사용자 정보만 로컬 스토리지에 저장
-        localStorage.setItem("signup_email", data.email);
-        localStorage.setItem("signup_password", data.password);
-        localStorage.setItem("signup_nickname", userName);
-        localStorage.setItem("signup_step", "1");
-
-        alert(`${userName}님 환영합니다!`);
-      } catch (err) {
-        console.error("[로그인] 사용자 정보를 가져오는데 실패했습니다:", err);
-        alert("로그인에 성공했습니다!");
-      }
-      
-      navigate("/my");
-    } catch (err) {
-      console.error("[로그인] 로그인 실패:", err);
-      alert("로그인에 실패했습니다. 이메일 또는 비밀번호를 확인해주세요.");
-    }
+  const onSubmit = (data: LoginForm) => {
+    console.log("[로그인] 일반 로그인 시도:", data.email);
+    loginMutation.mutate(data);
   };
 
   return (
@@ -154,7 +122,7 @@ const Login = () => {
         </div>
 
         <form
-          onSubmit={handleSubmit(onValid)}
+          onSubmit={handleSubmit(onSubmit)}
           className="w-full max-w-sm space-y-4 text-green-500"
         >
           <button
@@ -202,9 +170,10 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-green-500 text-white py-2 rounded hover:opacity-80 transition"
+            disabled={loginMutation.isPending}
+            className="w-full bg-green-500 text-white py-2 rounded hover:opacity-80 transition disabled:opacity-50"
           >
-            로그인
+            {loginMutation.isPending ? "로그인 중..." : "로그인"}
           </button>
         </form>
       </div>

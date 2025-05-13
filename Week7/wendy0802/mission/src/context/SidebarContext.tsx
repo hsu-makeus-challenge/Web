@@ -9,28 +9,28 @@ interface SidebarContextType {
 
 const SidebarContext = createContext<SidebarContextType | undefined>(undefined);
 
-export const SidebarProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(window.innerWidth >= 768);
+export const SidebarProvider = ({ children }: { children: ReactNode }) => {
+  const [isOpen, setIsOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const checkScreenSize = () => {
-      const mobile = window.innerWidth < 768;
-      setIsMobile(mobile);
-      // 모바일에서는 닫히고, 데스크톱에서는 열리도록 설정
-      setIsOpen(!mobile);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
     };
 
-    // 초기 체크
-    checkScreenSize();
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
 
-    // 리사이즈 이벤트
-    window.addEventListener('resize', checkScreenSize);
-    return () => window.removeEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  const toggleSidebar = () => setIsOpen(prev => !prev);
-  const closeSidebar = () => setIsOpen(false);
+  const toggleSidebar = () => {
+    setIsOpen(prev => !prev);
+  };
+
+  const closeSidebar = () => {
+    setIsOpen(false);
+  };
 
   return (
     <SidebarContext.Provider value={{ isOpen, isMobile, toggleSidebar, closeSidebar }}>
@@ -39,7 +39,7 @@ export const SidebarProvider: React.FC<{ children: ReactNode }> = ({ children })
   );
 };
 
-export const useSidebar = (): SidebarContextType => {
+export const useSidebar = () => {
   const context = useContext(SidebarContext);
   if (context === undefined) {
     throw new Error('useSidebar must be used within a SidebarProvider');

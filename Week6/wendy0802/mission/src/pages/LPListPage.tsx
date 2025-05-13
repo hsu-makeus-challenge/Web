@@ -48,6 +48,7 @@ const LPListPage = () => {
             </div>
             <div ref={ref} style={{ height: 1 }} />
           </div>
+          <FloatingButton onClick={handleOpenModal} />
         </div>
       </main>
     </>

@@ -1,20 +1,8 @@
-import useGetLPList from "../hooks/queries/useGetLPList";
-import React, { useState } from "react";
-import LPCard from "../components/LPCard";
+import React from "react";
 import LPListPage from "./LPListPage";
 
 const HomePage = (): JSX.Element => {
-  // const [search, setSearch] = useState("");
-  const { data, isPending, isError } = useGetLPList({});
-
-  if (isPending) return <div>로딩중...</div>;
-  if (isError) return <div>에러 발생</div>;
-
-  return (
-    <div className="w-full h-full p-10">
-      <LPListPage />
-    </div>
-  );
+  return <LPListPage />;
 };
 
 export default HomePage;
