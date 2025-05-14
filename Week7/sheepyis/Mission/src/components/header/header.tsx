@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaBars } from 'react-icons/fa';
-import { useAuthLogoutMutation } from "../../hooks/\bauth/useAuthLogoutMutation";
+import { useAuthLogoutMutation } from "../../hooks/auth/useAuthLogoutMutation";
 import { useQuery } from "@tanstack/react-query";
 import { AuthAPI } from "../../apis/authAxios";
 

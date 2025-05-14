@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useAuthLoginMutation } from "../../hooks/\bauth/useAuthLoginMutation";
+import { useAuthLoginMutation } from "../../hooks/auth/useAuthLoginMutation";
 import { errorMessages } from "../../utils/login/errorMessages";
 import { validationRules } from "../../utils/login/validationRules";
 import { useLocalStorage } from "../../hooks/useLocalStorage";

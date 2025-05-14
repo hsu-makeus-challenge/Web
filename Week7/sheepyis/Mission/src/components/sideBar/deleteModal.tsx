@@ -1,4 +1,4 @@
-import { useAuthDeleteMutation } from "../../hooks/\bauth/useAuthDeleteMutation";
+import { useAuthDeleteMutation } from "../../hooks/auth/useAuthDeleteMutation";
 
 type DeleteModalProps = {
     onClose: () => void;

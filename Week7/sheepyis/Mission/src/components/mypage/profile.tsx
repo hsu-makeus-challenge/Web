@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { FiCheck } from "react-icons/fi";
 import LP from "../../assets/lp.png";
-import { useAuthUpdateMutation } from "../../hooks/\bauth/useAuthUpdateMutation";
+import { useAuthUpdateMutation } from "../../hooks/auth/useAuthUpdateMutation";
 import { AuthAPI } from "../../apis/authAxios";
 
 type ProfileProps = {
