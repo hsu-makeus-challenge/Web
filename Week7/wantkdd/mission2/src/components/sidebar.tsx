@@ -13,25 +13,21 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
   const { accessToken } = useAuth();
   const [showModal, setShowModal] = useState(false);
 
-  // useDeleteUser 훅 사용
   const { mutate: deleteUserAccount, isPending } = useDeleteUser();
 
   const isActive = (path: string) => {
     return location.pathname === path;
   };
 
-  // 탈퇴하기 버튼 핸들러
   const handleDeleteClick = () => {
     setShowModal(true);
   };
 
-  // 모달 확인 버튼 핸들러
   const handleConfirmDelete = () => {
     deleteUserAccount();
     setShowModal(false);
   };
 
-  // 모달 취소 버튼 핸들러
   const handleCancelDelete = () => {
     setShowModal(false);
   };
@@ -91,7 +87,6 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
         </div>
       </div>
 
-      {/* 탈퇴 확인 모달 */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full">

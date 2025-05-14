@@ -14,6 +14,7 @@ function usePostLike() {
     mutationFn: postLike,
 
     onMutate: async (lpId: number) => {
+      //Optimistic update
       await queryClient.cancelQueries({ queryKey: [QUERY_KEY.lps, lpId] });
 
       const previousData = queryClient.getQueryData<LpDetailData>([

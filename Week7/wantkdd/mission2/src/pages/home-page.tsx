@@ -16,6 +16,7 @@ const HomePage: React.FC = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isLoading,
     status,
     error,
     refetch,
@@ -32,22 +33,6 @@ const HomePage: React.FC = () => {
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const allLps = data?.pages.flatMap((page) => page.data.data) || [];
-
-  if (status === 'pending') {
-    return (
-      <div className="px-6 py-8 max-w-7xl mx-auto">
-        <div className="flex justify-end mb-6">
-          <div className="bg-gray-800 rounded-lg p-1 inline-flex">
-            <div className="px-4 py-2 rounded-md bg-gray-700 w-20 h-10 animate-pulse"></div>
-            <div className="px-4 py-2 rounded-md bg-gray-700 w-20 h-10 ml-2 animate-pulse"></div>
-          </div>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-          <LpCardSkeletonList count={20} />
-        </div>
-      </div>
-    );
-  }
 
   if (status === 'error') {
     return (
@@ -95,7 +80,7 @@ const HomePage: React.FC = () => {
               <LpCard key={lp.id} lp={lp} />
             ))}
 
-            {isFetchingNextPage && <LpCardSkeletonList count={20} />}
+            {!isLoading && <LpCardSkeletonList count={20} />}
           </>
         )}
       </div>

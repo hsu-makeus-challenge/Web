@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { Lp } from '../../types/lp';
@@ -10,7 +10,11 @@ interface LpCardProps {
 const LpCard: React.FC<LpCardProps> = ({ lp }) => {
   const navigate = useNavigate();
   const { accessToken } = useAuth();
+  const [imageLoaded, setImageLoaded] = useState(false);
 
+  const handleImageLoad = () => {
+    setImageLoaded(true);
+  };
   const handleCardClick = () => {
     if (!accessToken) {
       if (window.confirm('로그인이 필요합니다. 로그인 하시겠습니까?')) {
@@ -27,11 +31,17 @@ const LpCard: React.FC<LpCardProps> = ({ lp }) => {
       className="group cursor-pointer transition-all duration-300 hover:transform hover:scale-105"
     >
       <div className="bg-gray-800 rounded-lg overflow-hidden aspect-square relative shadow-lg">
-        <img
-          src={lp.thumbnail}
-          alt={lp.title}
-          className="w-full h-full object-cover"
-        />
+        <div className="aspect-square w-full relative">
+          {!imageLoaded && (
+            <div className="absolute inset-0 bg-gray-700 animate-pulse rounded-t-lg"></div>
+          )}
+          <img
+            src={lp.thumbnail}
+            alt={lp.title}
+            className="w-full h-full object-cover"
+            onLoad={handleImageLoad}
+          />
+        </div>
 
         <div className="absolute inset-0 bg-opacity-50 group-hover:opacity-100 transition-opacity duration-300" />
 
