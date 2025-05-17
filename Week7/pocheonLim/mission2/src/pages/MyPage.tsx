@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { MdSettings } from 'react-icons/md';
 import { useProfileMutation } from '../hooks/profile/useProfileMutation';
 import { useProfileEdit } from '../hooks/profile/useProfileEdit';
-import { useLpSort } from '../hooks/lp/useLpSort';
+import { useLpSort } from '../hooks/lp/queries/useLpSort';
 
 const MyPage = () => {
   const { user, logout, updateUser } = useAuth();

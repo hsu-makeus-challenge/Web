@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { fetchLpList } from '../../apis/lp';
+import { fetchLpList } from '../../../apis/lp';
 
 export const LIMIT = 30;
 

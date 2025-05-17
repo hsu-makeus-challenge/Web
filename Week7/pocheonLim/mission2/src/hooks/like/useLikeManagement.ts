@@ -1,17 +1,11 @@
-import { useLpMutations } from '../lp/useLpMutations';
+import { useAddLike } from '../lp/likes/useAddLike';
+import { useRemoveLike } from '../lp/likes/useRemoveLike';
 import { useAuth } from '../../contexts/AuthContext';
 
 export const useLikeManagement = (lpId: string, commentOrder: 'asc' | 'desc', likes: { userId: number }[] | undefined) => {
   const { user } = useAuth();
-  const { addLikeMutation, removeLikeMutation } = useLpMutations(
-    lpId,
-    commentOrder,
-    () => {},
-    () => {},
-    () => {},
-    () => {},
-    () => {}
-  );
+  const addLikeMutation = useAddLike(lpId);
+  const removeLikeMutation = useRemoveLike(lpId);
 
   const isLiked = likes?.some(like => like.userId === user?.id);
 

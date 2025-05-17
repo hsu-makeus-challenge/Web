@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Lp } from '../types/lp';
 import SkeletonLpCard from '../components/skeleton/SkeletonLpCard';
-import { useLpList, LIMIT } from '../hooks/lp/useLpList';
+import { useLpList, LIMIT } from '../hooks/lp/queries/useLpList';
 
 const LpListPage: React.FC = () => {
   const [order, setOrder] = useState<'asc' | 'desc'>('asc');

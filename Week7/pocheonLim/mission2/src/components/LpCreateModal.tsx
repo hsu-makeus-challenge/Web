@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { IoMdClose } from 'react-icons/io';
-import { useLpCreate } from '../hooks/lp/useLpCreate';
+import { useLpCreate } from '../hooks/lp/mutations/useLpCreate';
 import { useTagManagement } from '../hooks/utils/useTagManagement';
 import { uploadImage } from '../apis/upload';
 

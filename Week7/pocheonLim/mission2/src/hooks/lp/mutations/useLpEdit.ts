@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useImageUpload } from '../utils/useImageUpload';
-import { LpDetail } from '../../types/lp';
+import { useImageUpload } from '../../utils/useImageUpload';
+import { LpDetail } from '../../../types/lp';
 
 export const useLpEdit = (initialData: LpDetail | undefined) => {
   const [isEditing, setIsEditing] = useState(false);

@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useComments, COMMENT_LIMIT } from './useComments';
-import { useLpMutations } from '../lp/useLpMutations';
+import { useCreateComment } from '../lp/comments/useCreateComment';
+import { useUpdateComment } from '../lp/comments/useUpdateComment';
+import { useDeleteComment } from '../lp/comments/useDeleteComment';
 import { useAuth } from '../../contexts/AuthContext';
 
 export const useCommentManagement = (lpId: string, commentOrder: 'asc' | 'desc') => {
@@ -19,19 +21,9 @@ export const useCommentManagement = (lpId: string, commentOrder: 'asc' | 'desc')
     isLoading: isCommentLoading,
   } = useComments(lpId, commentOrder);
 
-  const {
-    createCommentMutation,
-    updateCommentMutation,
-    deleteCommentMutation
-  } = useLpMutations(
-    lpId,
-    commentOrder,
-    setCommentInput,
-    setCommentError,
-    setEditingCommentId,
-    setEditedContent,
-    () => {}
-  );
+  const createCommentMutation = useCreateComment(lpId, commentOrder, setCommentInput, setCommentError);
+  const updateCommentMutation = useUpdateComment(lpId, commentOrder, setEditingCommentId, setEditedContent, setCommentError);
+  const deleteCommentMutation = useDeleteComment(lpId, commentOrder, setCommentError);
 
   const handleCommentSubmit = () => {
     if (!lpId) return;

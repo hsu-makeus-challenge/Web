@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-import { axiosInstance } from '../../apis/auth';
-import { LpDetail } from '../../types/lp';
+import { axiosInstance } from '../../../apis/auth';
+import { LpDetail } from '../../../types/lp';
 
 const fetchLpDetail = async (lpId: string): Promise<LpDetail> => {
   try {
