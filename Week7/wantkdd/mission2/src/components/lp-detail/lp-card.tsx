@@ -33,7 +33,7 @@ const LpCard: React.FC<LpCardProps> = ({ lp }) => {
       <div className="bg-gray-800 rounded-lg overflow-hidden aspect-square relative shadow-lg">
         <div className="aspect-square w-full relative">
           {!imageLoaded && (
-            <div className="absolute inset-0 bg-gray-700 animate-pulse rounded-t-lg"></div>
+            <div className="absolute inset-0 bg-gray-700 animate-pulse rounded-t-lg" />
           )}
           <img
             src={lp.thumbnail}

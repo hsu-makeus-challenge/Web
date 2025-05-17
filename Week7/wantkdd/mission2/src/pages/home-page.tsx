@@ -84,7 +84,7 @@ const HomePage: React.FC = () => {
           </>
         )}
       </div>
-      <div ref={ref} className="h-10 mt-4"></div>
+      <div ref={ref} className="h-10 mt-4" />
     </div>
   );
 };

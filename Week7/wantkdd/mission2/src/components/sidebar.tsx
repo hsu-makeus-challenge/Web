@@ -57,7 +57,6 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
               }`}
               onClick={onClose}
             >
-              <span className="w-5 h-5 mr-2"></span>
               🔍 찾기
             </Link>
 
@@ -70,7 +69,6 @@ const Sidebar: React.FC<SidebarProps> = ({ open, onClose }) => {
               }`}
               onClick={onClose}
             >
-              <span className="w-5 h-5 mr-2"></span>
               👤 마이페이지
             </Link>
           </div>

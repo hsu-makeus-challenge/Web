@@ -74,7 +74,7 @@ const LpComments: React.FC<LpCommentsProps> = forwardRef(
 
         <div className="p-4 border-b border-gray-800">
           <form className="flex gap-3" onSubmit={onSubmitComment}>
-            <div className="h-8 w-8 rounded-full bg-gray-700 flex-shrink-0"></div>
+            <div className="h-8 w-8 rounded-full bg-gray-700 flex-shrink-0" />
             <div className="flex-1">
               <textarea
                 value={commentContent}

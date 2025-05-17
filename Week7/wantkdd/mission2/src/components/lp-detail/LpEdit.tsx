@@ -157,7 +157,7 @@ const LpEdit: React.FC<LpEditProps> = ({ lpData, onCancel, onDelete }) => {
             className="w-full h-full object-cover"
           />
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-            <div className="w-12 h-12 bg-gray-900 rounded-full border-2 border-gray-700"></div>
+            <div className="w-12 h-12 bg-gray-900 rounded-full border-2 border-gray-700" />
           </div>
           <input
             type="file"
