@@ -43,6 +43,14 @@ function useUpdateUserInfo() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [QUERY_KEY.myInfo] });
     },
+    onError: (error, _, context) => {
+      console.error('사용자 정보 업데이트 실패:', error);
+
+      if (context?.previousUserInfo) {
+        queryClient.setQueryData([QUERY_KEY.myInfo], context.previousUserInfo);
+        setUserInfo(context.previousUserInfo.data);
+      }
+    },
   });
 }
 

@@ -39,6 +39,13 @@ function useDeleteLike() {
         exact: true,
       });
     },
+    onError: (error, lpId, context) => {
+      console.error('좋아요 취소 실패:', error);
+
+      if (context?.previousData) {
+        queryClient.setQueryData([QUERY_KEY.lps, lpId], context.previousData);
+      }
+    },
   });
 }
 

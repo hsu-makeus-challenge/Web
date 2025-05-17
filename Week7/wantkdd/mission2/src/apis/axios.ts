@@ -32,6 +32,10 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest: CustomInternalAxiosRequestConfig = error.config;
+
+    if (originalRequest.url === '/v1/auth/signin') {
+      return Promise.reject(error);
+    }
     if (
       error.response &&
       error.response.status === 401 &&

@@ -12,7 +12,7 @@ const LoginPage = () => {
     if (accessToken) {
       navigate('/my-page');
     }
-  });
+  }, [accessToken, navigate]);
 
   return (
     <div>

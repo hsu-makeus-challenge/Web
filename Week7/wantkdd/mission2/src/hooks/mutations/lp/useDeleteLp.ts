@@ -9,8 +9,10 @@ export const useDeleteLp = () => {
 
   return useMutation({
     mutationFn: (lpId: number) => deleteLp(lpId),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.lps] });
+    onSuccess: (_, lpId) => {
+      queryClient.removeQueries({
+        queryKey: [QUERY_KEY.lps, lpId],
+      });
 
       navigate('/');
     },
