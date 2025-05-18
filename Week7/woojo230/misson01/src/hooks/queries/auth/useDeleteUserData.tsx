@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import signOut from '../../../apis/auth/signOut';
+import signOut from '../../../apis/auth/deleteUser';
 
 const useDeleteUserData = () => {
   const queryClient = useQueryClient();

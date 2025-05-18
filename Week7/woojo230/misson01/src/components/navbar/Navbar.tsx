@@ -8,7 +8,7 @@ import { FaBars } from 'react-icons/fa';
 import useSideBarStore from '../../stores/sideBar';
 import { useEffect } from 'react';
 import useGetUserBasicInfo from '../../hooks/queries/user/useGetUserBasicInfo';
-
+import signOut from '../../apis/auth/signOut';
 const Navbar = () => {
   const navigate = useNavigate();
   const { isLogin, setLogin } = useLoginStore();
@@ -40,12 +40,17 @@ const Navbar = () => {
     navigate('/signUp');
   };
 
-  const handleLogout = () => {
-    localRemove('name');
-    localRemove('accessToken');
-    sessionRemove('refreshToken');
-    setLogin(false);
-    navigate('/login');
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      localRemove('name');
+      localRemove('accessToken');
+      sessionRemove('refreshToken');
+      setLogin(false);
+      navigate('/login');
+    } catch (error) {
+      console.error('로그아웃 중 오류가 발생했습니다:', error);
+    }
   };
 
   return (

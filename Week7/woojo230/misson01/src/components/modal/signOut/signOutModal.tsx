@@ -1,9 +1,14 @@
+import useDeleteUser from '../../../hooks/queries/user/useDeleteUser';
 import useSignOutStore from '../../../stores/signOut';
 
 const SignOutModal = () => {
   const { toggleSignOutModal } = useSignOutStore();
 
-  const handleSignOut = async () => {};
+  const { mutate: deleteUser } = useDeleteUser();
+
+  const handleSignOut = async () => {
+    deleteUser();
+  };
 
   const handleCancel = () => {
     toggleSignOutModal();

@@ -13,6 +13,14 @@ export const handleAddTag = (
   }
 };
 
+export const handleDeleteTag = (
+  tag: string,
+  tags: string[],
+  setTags: (tags: string[]) => void
+) => {
+  setTags(tags.filter((t) => t !== tag));
+};
+
 export const handleThumbnailChange = async (
   file: File,
   setThumbnailPreview: (url: string) => void,

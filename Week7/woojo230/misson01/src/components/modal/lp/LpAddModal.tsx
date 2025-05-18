@@ -5,6 +5,7 @@ import LoadingSpinner from '../../loading';
 import Error from '../../error';
 import {
   handleAddTag,
+  handleDeleteTag,
   handleThumbnailChange,
   validateForm,
 } from '../../../utils/lpModal/lpModalUtils';
@@ -113,6 +114,7 @@ const LpAddModal = () => {
             onTagInputChange={(e) => setTagInput(e.target.value)}
             onTagInputKeyDown={handleTagInputKeyDown}
             onAddTag={() => handleAddTag(tagInput, tags, setTags, setTagInput)}
+            onDeleteTag={(tag) => handleDeleteTag(tag, tags, setTags)}
           />
 
           <LpPublishCheckbox

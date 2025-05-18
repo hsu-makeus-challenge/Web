@@ -4,6 +4,7 @@ interface LpTagInputProps {
   onTagInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onTagInputKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
   onAddTag: () => void;
+  onDeleteTag: (tag: string) => void;
 }
 
 const LpTagInput = ({
@@ -12,6 +13,7 @@ const LpTagInput = ({
   onTagInputChange,
   onTagInputKeyDown,
   onAddTag,
+  onDeleteTag,
 }: LpTagInputProps) => {
   return (
     <>
@@ -37,9 +39,16 @@ const LpTagInput = ({
           {tags.map((tag, idx) => (
             <span
               key={idx}
-              className="bg-lime-700 text-white px-2 py-1 rounded text-xs"
+              className="bg-lime-700 text-white px-2 py-1 rounded text-xs flex items-center"
             >
               {tag}
+              <button
+                type="button"
+                onClick={() => onDeleteTag(tag)}
+                className="ml-1 text-lime-400 hover:text-lime-600 cursor-pointer"
+              >
+                x
+              </button>
             </span>
           ))}
         </div>
