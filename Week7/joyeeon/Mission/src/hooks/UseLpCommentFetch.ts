@@ -51,7 +51,7 @@ export const useLpComments = ({
             const nextCursor = response.data.data.nextCursor;
 
             // UX 확인용 지연
-            await new Promise((resolve) => setTimeout(resolve, 700));
+            //await new Promise((resolve) => setTimeout(resolve, 700));
             console.log("댓글리스트", commentList);
 
             return {
