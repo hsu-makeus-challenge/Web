@@ -7,6 +7,7 @@ import { useInView } from "react-intersection-observer";
 import LpSkeletonItem from "./LpSkeletonItem";
 import SearchInput from "../searchs/SearchInput";
 import useDebounce from "../../hooks/state/useDebounce";
+import useThrottle from "../../hooks/state/useThrottle";
 
 const LPList = () => {
     //const [inputValue, setInputValue] = useState("");
@@ -36,11 +37,24 @@ const LPList = () => {
 
     const { ref, inView } = useInView();
 
-    useEffect(() => {
-        if (inView && hasNextPage && !isFetchingNextPage) {
+    const throttledFetchNextPage = useThrottle(() => {
+        if (hasNextPage && !isFetchingNextPage) {
             fetchNextPage();
         }
-    }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+    }, 1000);
+
+    // useEffect(() => {
+    //     if (inView && hasNextPage && !isFetchingNextPage) {
+    //         fetchNextPage();
+    //     }
+    // }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+
+    useEffect(() => {
+        if (inView) {
+            throttledFetchNextPage();
+        }
+    }, [inView, throttledFetchNextPage]);
 
     // if (isLoading) return <div>로딩 중...</div>;
     if (error) return <div>에러 발생: {String(error)}</div>;
