@@ -5,6 +5,7 @@ import { useInView } from "react-intersection-observer";
 import Skeleton from "../../components/skeleton/skeleton";
 import Add from "../../components/lp/add/add";
 import AddModal from "../../components/lp/add/addModal";
+import useThrottle from "../../hooks/useThrottle";
 
 const Home = () => {
   const [order, setOrder] = useState<"asc" | "desc">("desc");
@@ -13,13 +14,15 @@ const Home = () => {
 
   const { ref, inView } = useInView({ threshold: 0.1, rootMargin: "0px 0px 100px 0px" });
 
-  // console.log(data);
+  const throttledFetchNext = useThrottle(() => {
+    if (hasNextPage) fetchNextPage();
+  }, 3000);
 
   useEffect(() => {
-    if (inView && hasNextPage) {
-      fetchNextPage();
+    if (inView) {
+      throttledFetchNext();
     }
-  }, [inView, hasNextPage, fetchNextPage]);
+  }, [inView, throttledFetchNext]);
 
   return (
     <div className="w-full flex flex-col items-center py-[2vw] relative">
