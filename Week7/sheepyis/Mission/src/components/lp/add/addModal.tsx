@@ -16,7 +16,7 @@ const AddModal = ({ onClose }: AddModalProps) => {
   const [content, setContent] = useState("");
   const [tag, setTag] = useState("");
   const [tags, setTags] = useState<string[]>([]);
-  const { mutate, isPending } = useLpMutation();
+  const { mutate, isPending } = useLpMutation(onClose);
 
   const isFormValid =
     name.trim() !== "" &&

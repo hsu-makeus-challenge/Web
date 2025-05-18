@@ -92,6 +92,7 @@ const isLiked = lpData.likes.some((like: Like) => like.userId === currentUserId)
         onSuccess: () => {
           alert("삭제 완료가 완료되었습니다.");
           navigate("/");
+          window.location.reload();
         },
         onError: () => {
           alert("삭제 실패. 다시 시도해주세요.");
