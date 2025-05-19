@@ -2,6 +2,8 @@ import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useAuth } from "@hooks/auth/use-auth";
 import { useLpLike } from "@hooks/lp/use-lp-like";
 import type { Like, Tag } from "@typedefs/lp";
+import { useState } from "react";
+import useThrottle from "@hooks/common/use-throttle";
 
 export interface LpContentsProps {
 	content: string;
@@ -16,6 +18,18 @@ const LpContents = ({ content, likes, tags, lpId }: LpContentsProps) => {
 		lpId,
 		initialLikes: likes,
 	});
+
+	const [buttonClicked, setButtonClicked] = useState(false);
+	const throttledButtonClicked = useThrottle(buttonClicked, 1000);
+
+	const handleThrottledLike = () => {
+		if (throttledButtonClicked !== buttonClicked) {
+			return;
+		}
+
+		setButtonClicked(!buttonClicked);
+		handleToggleLike();
+	};
 
 	return (
 		<>
@@ -34,7 +48,7 @@ const LpContents = ({ content, likes, tags, lpId }: LpContentsProps) => {
 			<button
 				type="button"
 				className="flex items-center gap-2 focus:outline-none"
-				onClick={handleToggleLike}
+				onClick={handleThrottledLike}
 				disabled={isPending}
 				title={isAuthenticated ? "좋아요 토글" : "로그인이 필요합니다"}
 			>
