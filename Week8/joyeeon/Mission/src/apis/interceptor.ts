@@ -1,6 +1,7 @@
 import { api } from "./api";
 import { refreshTokenApi } from "./refreshTokenApi";
 import { AxiosError, AxiosRequestConfig } from "axios";
+import { InternalAxiosRequestConfig } from "axios";
 
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
     _retry?: boolean;
@@ -25,6 +26,17 @@ const processQueue = (error: AxiosError | null, token: string | null = null) => 
 
 
 export const setupInterceptors = () => {
+
+    api.interceptors.request.use(
+        (config: InternalAxiosRequestConfig) => {
+            const token = localStorage.getItem('ACCESS_TOKEN');
+            if (token) {
+                config.headers.Authorization = `Bearer ${token}`;
+            }
+            return config;
+        },
+        error => Promise.reject(error)
+    );
     api.interceptors.response.use(
         response => response,
         async (error: AxiosError) => {
@@ -79,7 +91,10 @@ export const setupInterceptors = () => {
                     // 토큰 재발급 실패 -> 로그아웃 처리
                     localStorage.removeItem('ACCESS_TOKEN');
                     localStorage.removeItem('REFRESH_TOKEN');
-                    window.location.href = '/login';  // 로그인 페이지로 이동
+                    //window.location.href = '/login';  // 로그인 페이지로 이동
+                    if (window.location.pathname !== '/login') {
+                        window.location.href = '/login';
+                    }
                     return Promise.reject(err);
                 } finally {
                     isRefreshing = false;

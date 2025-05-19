@@ -32,8 +32,10 @@ const WidthDraw = ({isOpen, onRequestClose, modalRef} : WidthdrawModalProps) => 
                     <div className="text-lg font-bold ">정말 탈퇴하시겠습니까?</div>
                     
                     <div className="flex flex-row justify-between gap-5 mt-10 w-full">
-                        <button className="btn bg-red-200 w-fill"
-                        onClick={() => logoutmutate}
+                        <button className="btn bg-red-200 w-fill cursor-pointer"
+                        onClick={() => {logoutmutate();
+                            onRequestClose();
+                        }}
                         >예</button>
                         <button className="btn bg-slate-200 w-[200px]"
                         onClick={onRequestClose}

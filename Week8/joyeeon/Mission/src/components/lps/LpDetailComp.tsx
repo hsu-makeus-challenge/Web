@@ -9,6 +9,7 @@ import { useUpdateLpDetail } from "../../hooks/UseLpDetailUpdate";
 import { useDeleteLp } from "../../hooks/UseLpDelete";
 import { useUploadImage } from "../../hooks/UseUploadImage";
 import LikesButton from "./LikesButton";
+import DefaultImg from "../../assets/user.png";
 
 interface DetailItemProps {
     detail: LpDetail;
@@ -108,7 +109,7 @@ const LpDetailComp = ({ detail }: DetailItemProps) => {
 
             <article className="flex justify-between h-full items-center">
                 <div className="flex gap-5">
-                    <img className="w-[30px] h-[30px] rounded-2xl" src={detail.author?.avatar} alt="프로필" />
+                    <img className="w-[30px] h-[30px] rounded-2xl" src={detail.author?.avatar || DefaultImg} alt="프로필" />
                     {detail.author?.name || "이름"}
                 </div>
                 <article className=" flex text-[10px] h-full justify-end items-center gap-4">

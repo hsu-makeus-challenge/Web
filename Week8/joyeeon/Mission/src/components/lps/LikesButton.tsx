@@ -1,6 +1,7 @@
 import { FaHeart } from "react-icons/fa";
 import { useState } from "react";
-import { useAddLike, useRemoveLike } from "../../hooks/UseControlLikes";
+//import { useAddLike, useRemoveLike } from "../../hooks/UseControlLikes";
+import { useToggleLike } from "../../hooks/UseControlLikes";
 interface LikesButtonProps {
     count: number;
     lpId: number;
@@ -12,9 +13,10 @@ const LikesButton = ({ count, lpId, currentUserId, likedUserIds }: LikesButtonPr
     const [localCount, setLocalCount] = useState(count);
     const [isLiked, setIsLiked] = useState(likedUserIds.includes(currentUserId));
 
-    const { mutate: addLikeMutation } = useAddLike();
-    const { mutate: removeLikeMutation } = useRemoveLike();
+    // const { mutate: addLikeMutation } = useAddLike();
+    // const { mutate: removeLikeMutation } = useRemoveLike();
 
+    const { mutate: toggleLike } = useToggleLike();
     //const isLiked = likedUserIds.includes(currentUserId);
 
     const handleToggleLike = () => {
@@ -23,17 +25,25 @@ const LikesButton = ({ count, lpId, currentUserId, likedUserIds }: LikesButtonPr
             return;
         }
 
-        if (isLiked) {
+        toggleLike({
+            lpId,
+            userId: currentUserId,
+            isCurrentlyLiked: isLiked,
+        });
+
+        // if (isLiked) {
             
-            setIsLiked(false);
-            setLocalCount((prev) => prev - 1);
-            removeLikeMutation(lpId);
-        } else {
+        //     setIsLiked(false);
+        //     setLocalCount((prev) => prev - 1);
+        //     removeLikeMutation(lpId);
+        // } else {
             
-            setIsLiked(true);
-            setLocalCount((prev) => prev + 1);
-            addLikeMutation(lpId);
-        }
+        //     setIsLiked(true);
+        //     setLocalCount((prev) => prev + 1);
+        //     addLikeMutation(lpId);
+        // }
+        setIsLiked((prev) => !prev);
+        setLocalCount((prev) => (isLiked ? prev - 1 : prev + 1));
     };
 
 

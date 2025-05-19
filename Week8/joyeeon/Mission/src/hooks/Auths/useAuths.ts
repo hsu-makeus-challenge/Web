@@ -70,7 +70,11 @@ export const useWithdraw = () => {
         mutationFn: WithdrawApi,
         onSuccess: () => {
             alert("회원 탈퇴가 완료되었습니다.");
-            localStorage.removeItem("accessToken");
+            localStorage.removeItem("ACCESS_TOKEN");
+            localStorage.removeItem("REFRESH_TOKEN");
+            localStorage.removeItem("ID");
+            localStorage.removeItem("USER_NAME");
+
             navigate("/login");
         },
         onError: () => {

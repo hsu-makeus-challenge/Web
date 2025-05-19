@@ -18,25 +18,27 @@ import GoogleLoginRedirectPage from './pages/GoogleLoginRedirectPage'
 import LPpage from './pages/LPpage'
 import LPDetailPage from './pages/LpDetailPage'
 import SearchPage from './pages/Search'
+import { useMypageStore } from './stores/MypageStore'
+import { ToastContainer, toast } from 'react-toastify';
 
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <RootLayout/>,
+    element: <RootLayout />,
     errorElement: <Notfound />,
-    children:[
+    children: [
       {
-        index:true,
-        element:<LPpage />
+        index: true,
+        element: <LPpage />
 
       },
       {
         path: '/movies',
-        children : [
+        children: [
           {
-            path:':category',
-            element:<MoviePage />
+            path: ':category',
+            element: <MoviePage />
           },
           {
             path: 'detail/:id',
@@ -46,32 +48,32 @@ const router = createBrowserRouter([
       },
       {
         path: '/login',
-        element:<Loginpage />
+        element: <Loginpage />
       },
-      
+
       {
         path: '/signup',
         element: <Signuppage />
       },
 
       {
-        path:'/signout',
+        path: '/signout',
         element: <ProtectedRoute>
           <Logoutpage />
         </ProtectedRoute>
       },
       {
-        path:'/v1/auth/google/callback',
+        path: '/v1/auth/google/callback',
         element: <GoogleLoginRedirectPage />
       },
 
       {
-        path:'/mypage',
-        element: <ProtectedRoute><Mypage/> </ProtectedRoute>
+        path: '/mypage',
+        element: <ProtectedRoute><Mypage /> </ProtectedRoute>
       },
       {
         path: '/lp',
-        children : [
+        children: [
           {
             path: ':id',
             element: <ProtectedRoute><LPDetailPage /></ProtectedRoute>
@@ -81,18 +83,27 @@ const router = createBrowserRouter([
       {
         path: '/search',
         element: <SearchPage />
-        
+
       }
     ]
   },
 ])
 
 function App() {
-  useEffect(() =>{
-    setupInterceptors();
+  //const notify = () => toast("Wow so easy!");
+  const fetchUserInfo = useMypageStore((state) => state.fetchUserInfo);
+  useEffect(() => {
+    const accessToken = localStorage.getItem("ACCESS_TOKEN");
+    if (accessToken) {
+      fetchUserInfo();
+    }
   }, []);
   return (
-    <RouterProvider router={router}/>
+    <>
+      <ToastContainer />
+      <RouterProvider router={router} />
+    </>
+    
   )
 }
 
