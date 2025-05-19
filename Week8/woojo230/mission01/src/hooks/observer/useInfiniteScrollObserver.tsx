@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import useThrottling from '../useThrottling';
 
 function useInfiniteScrollObserver(
   hasNextPage: boolean | undefined,
@@ -12,12 +13,13 @@ function useInfiniteScrollObserver(
   const observer = useRef<IntersectionObserver | null>(null);
   const scrollPosition = useRef<number>(0);
 
-  useEffect(() => {
-    const handleScroll = (): void => {
-      scrollPosition.current = window.scrollY;
-    };
+  const throttledHandleScroll = useThrottling(() => {
+    scrollPosition.current = window.scrollY;
+    console.log('스로틀링 발생', window.scrollY);
+  }, 5000);
 
-    window.addEventListener('scroll', handleScroll);
+  useEffect(() => {
+    window.addEventListener('scroll', throttledHandleScroll);
 
     if (!isFetching && scrollPosition.current > 0) {
       window.scrollTo(0, scrollPosition.current);
@@ -30,6 +32,7 @@ function useInfiniteScrollObserver(
         ([entry]: IntersectionObserverEntry[]) => {
           if (entry.isIntersecting && hasNextPage && !isFetching) {
             scrollPosition.current = window.scrollY;
+            console.log('다음 페이지 로딩', window.scrollY);
             fetchNextPage();
           }
         },
@@ -40,12 +43,18 @@ function useInfiniteScrollObserver(
     }
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('scroll', throttledHandleScroll);
       if (observer.current && observerRef.current) {
         observer.current.unobserve(observerRef.current);
       }
     };
-  }, [hasNextPage, isFetching, fetchNextPage, observerRef]);
+  }, [
+    hasNextPage,
+    isFetching,
+    fetchNextPage,
+    observerRef,
+    throttledHandleScroll,
+  ]);
 
   return observerRef;
 }
