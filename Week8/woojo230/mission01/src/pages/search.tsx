@@ -46,6 +46,7 @@ const Search = () => {
     order: order,
     limit: 50,
     search: '',
+    enabled: searchType === 'tag' && debouncedSearch !== '',
   });
 
   const allLpData = lpData?.pages.flatMap((page) => page.data) ?? [];

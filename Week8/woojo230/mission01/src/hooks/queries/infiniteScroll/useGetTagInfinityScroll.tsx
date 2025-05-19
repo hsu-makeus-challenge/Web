@@ -6,6 +6,7 @@ interface InfiniteScrollParams {
   order: string;
   limit?: number;
   search?: string;
+  enabled?: boolean;
 }
 
 const useGetTagInfiniteScroll = ({
@@ -13,6 +14,7 @@ const useGetTagInfiniteScroll = ({
   order,
   limit = 30,
   search = '',
+  enabled = true,
 }: InfiniteScrollParams) => {
   return useInfiniteQuery({
     queryKey: ['tag', tagName, order, search],
@@ -28,6 +30,7 @@ const useGetTagInfiniteScroll = ({
     getNextPageParam: (lastPage) => {
       return lastPage.hasNext ? lastPage.nextCursor : undefined;
     },
+    enabled,
   });
 };
 
