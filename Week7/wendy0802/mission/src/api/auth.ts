@@ -40,7 +40,7 @@ interface LoginData {
   password: string;
 }
 
-export const loginApi = async (data: LoginData): Promise<ApiResponse<LoginResponse>> => {
+export const loginApi = async (data: LoginData, p0: string): Promise<ApiResponse<LoginResponse>> => {
   const response = await axios.post<ApiResponse<LoginResponse>>('/v1/auth/login', data);
   return response.data;
 };

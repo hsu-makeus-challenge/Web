@@ -3,7 +3,39 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_BASE_URL || 'http://localhost:8000';
 
-interface Author {
+export interface Comment {
+  id: number;
+  content: string;
+  createdAt: string;
+  updatedAt: string;
+  author: {
+    id: number;
+    name: string;
+    avatar?: string;
+  };
+}
+
+export interface CommentListResponse {
+  status: boolean;
+  message: string;
+  data: {
+    data: Comment[];
+    nextCursor: number | null;
+    hasNext: boolean;
+  };
+}
+
+export interface CreateCommentRequest {
+  content: string;
+}
+
+export interface CreateCommentResponse {
+  status: boolean;
+  message: string;
+  data: Comment;
+}
+
+export interface Author {
   id: number;
   name: string;
   email: string;
@@ -13,35 +45,14 @@ interface Author {
   updatedAt: string;
 }
 
-interface Comment {
-  id: number;
-  content: string;
-  lpId: number;
-  authorId: number;
-  createdAt: string;
-  updatedAt: string;
-  author: Author;
-}
-
-interface CommentListResponse {
-  status: boolean;
-  statusCode: number;
-  message: string;
-  data: {
-    data: Comment[];
-    nextCursor: number;
-    hasNext: boolean;
-  };
-}
-
-interface CommentResponse {
+export interface CommentResponse {
   status: boolean;
   statusCode: number;
   message: string;
   data: Comment;
 }
 
-interface DeleteCommentResponse {
+export interface DeleteCommentResponse {
   status: boolean;
   statusCode: number;
   message: string;
@@ -51,45 +62,19 @@ interface DeleteCommentResponse {
 }
 
 // 댓글 목록 조회
-export const getComments = async (
-  lpId: number,
-  params?: {
-    cursor?: number;
-    limit?: number;
-    order?: 'asc' | 'desc';
-  }
-): Promise<CommentListResponse> => {
-  const { data } = await axios.get(`${baseURL}/v1/lps/${lpId}/comments`, {
-    params: {
-      cursor: params?.cursor,
-      limit: params?.limit || 10,
-      order: params?.order || 'asc'
-    },
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-    },
-    withCredentials: true
-  });
-  return data;
+export const getComments = async (lpId: number, params: {
+  cursor?: number;
+  limit?: number;
+  order?: 'asc' | 'desc';
+}): Promise<CommentListResponse> => {
+  const response = await axiosInstance.get(`/v1/lps/${lpId}/comments`, { params });
+  return response.data;
 };
 
 // 댓글 생성
-export const createComment = async (
-  lpId: number,
-  content: string
-): Promise<CommentResponse> => {
-  const { data } = await axios.post(
-    `${baseURL}/v1/lps/${lpId}/comments`,
-    { content },
-    {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-      },
-      withCredentials: true
-    }
-  );
-  return data;
+export const createComment = async (lpId: number, data: CreateCommentRequest): Promise<CreateCommentResponse> => {
+  const response = await axiosInstance.post(`/v1/lps/${lpId}/comments`, data);
+  return response.data;
 };
 
 // 댓글 수정

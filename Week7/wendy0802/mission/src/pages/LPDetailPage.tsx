@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getLPDetail } from '../api/lp';
-import { LP, Comment } from '../types/lp';
+import { LP, getLPDetail,LPDetailResponse } from '../api/lp';
 import useGetInfiniteComments from '../hooks/queries/useGetInfiniteComments';
 import SkeletonCard from '../components/SkeletonCard';
 import CommentSkeleton from '../components/CommentSkeleton';
@@ -9,9 +8,16 @@ import { useInView } from 'react-intersection-observer';
 import { FaHeart, FaRegHeart, FaEdit, FaTrash, FaSpinner, FaMusic } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import { useMutation } from '@tanstack/react-query';
-import { createComment, updateComment, deleteComment } from '../api/comments'; // 댓글 API 함수
+import { 
+  createComment, 
+  updateComment, 
+  deleteComment, 
+  CreateCommentResponse, 
+  CreateCommentRequest,
+  CommentResponse,
+  DeleteCommentResponse
+} from '../api/comments';
 
-// API 응답 타입 정의
 type ApiResponse<T> = {
   message: string;
   data: T;
@@ -49,12 +55,10 @@ const LPDetailPage = (): JSX.Element => {
     error: commentError,
   } = useGetInfiniteComments({ lpid: lpId || '', order, limit: 5 });
 
-  // 댓글 작성
-  const { mutate: createCommentMutation } = useMutation<ApiResponse<Comment>, Error, string>({
-    mutationFn: (newComment: string) => createComment(Number(lpId), newComment),
+  const { mutate: createCommentMutation } = useMutation<CreateCommentResponse, Error, CreateCommentRequest>({
+    mutationFn: (newComment: CreateCommentRequest) => createComment(Number(lpId), newComment),
     onSuccess: () => {
       setCommentContent('');
-      // 댓글 작성 후 새로 고침
       window.location.reload();
     },
     onError: (error) => {
@@ -63,12 +67,10 @@ const LPDetailPage = (): JSX.Element => {
     }
   });
 
-  // 댓글 수정
-  const { mutate: updateCommentMutation } = useMutation<ApiResponse<Comment>, Error, UpdateCommentVariables>({
+  const { mutate: updateCommentMutation } = useMutation<CommentResponse, Error, UpdateCommentVariables>({
     mutationFn: (updatedComment) =>
       updateComment(Number(lpId), Number(updatedComment.commentId), updatedComment.content),
     onSuccess: () => {
-      // 수정 후 새로 고침
       window.location.reload();
     },
     onError: (error) => {
@@ -77,11 +79,9 @@ const LPDetailPage = (): JSX.Element => {
     }
   });
 
-  // 댓글 삭제
-  const { mutate: deleteCommentMutation } = useMutation<{ message: string }, Error, string>({
+  const { mutate: deleteCommentMutation } = useMutation<DeleteCommentResponse, Error, string>({
     mutationFn: (commentId: string) => deleteComment(Number(lpId), Number(commentId)),
     onSuccess: () => {
-      // 삭제 후 새로 고침
       window.location.reload();
     },
     onError: (error) => {
@@ -130,7 +130,7 @@ const LPDetailPage = (): JSX.Element => {
 
     try {
       setIsSubmitting(true);
-      createCommentMutation(commentContent);
+      createCommentMutation({ content: commentContent });
     } catch (error) {
       console.error('댓글 작성 실패:', error);
       alert('댓글 작성에 실패했습니다.');

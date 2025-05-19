@@ -7,11 +7,11 @@ import AuthHeader from "./AuthHeader";
 import EmailComp from "./EmailComp";
 import AbledButton from "./AbledButton";
 import PassComp from "./PassComp";
-import useLocalStorage from "../../hooks/useLocalStorage";
 
 import { useAuth } from "../../context/AuthContext";
 import { loginApi } from "../../apis/auth";
 import { api } from "../../apis/api";
+import { useLogin } from "../../hooks/Auths/useAuths";
 
 const loginSchema = z.object({
     email: z.string().email({ message: "올바른 이메일 형식이 아닙니다." }),
@@ -21,9 +21,7 @@ const loginSchema = z.object({
 type LoginFormValues = z.infer<typeof loginSchema>;
 
 const LoginComp = () => {
-    const navigate = useNavigate();
-    //const [token, setToken] = useLocalStorage<string | null>("token", null);
-    const {login} = useAuth();
+    const {mutate:loginMutate, isPending} = useLogin();
 
     const methods = useForm<LoginFormValues>({
         resolver: zodResolver(loginSchema),
@@ -42,23 +40,8 @@ const LoginComp = () => {
     } = methods;
 
     const onSubmit = async (data: LoginFormValues) => {
-        try {
-            console.log("로그인 요청 시작");
-            const response = await loginApi(data.email, data.password);
-
-            console.log("로그인 성공", response.data);
-            const accessToken = response.data.accessToken;
-            const refreshToken = response.data.refreshToken;
-            const name = response.data.name;
-
-            login(accessToken, refreshToken, name); 
-
-            api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-
-            navigate("/");
-        } catch(error) {
-            console.error("로그인 실패", error);
-        }
+        
+        loginMutate({ email: data.email, password: data.password });
     };
 
     const isDisabled =
@@ -90,7 +73,7 @@ const LoginComp = () => {
                 <AbledButton
                     label="로그인"
                     type="submit"
-                    disabled={isDisabled}
+                    disabled={isDisabled || isPending}
                 />
             </form>
         </FormProvider>

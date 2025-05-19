@@ -1,5 +1,4 @@
 import GoogleIcon from '../../assets/google.png'
-import React from 'react';
 
 const Google = () =>{
     const Googlehandler = () =>{

@@ -1,11 +1,19 @@
-import { createContext, useContext, useState, useEffect, PropsWithChildren, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, PropsWithChildren } from 'react';
 import { axiosInstance } from '../api/axios';
+import { LOCAL_STORAGE_KEY } from '../constants/key';
+
+interface User {
+  id: number;
+  name: string;
+  email: string | null;
+}
 
 interface AuthContextType {
   accessToken: string | null;
   isLoggedIn: boolean;
   setAccessToken: (token: string | null) => void;
   logout: () => Promise<void>;
+  login: (token: string, user: User) => void;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -18,22 +26,30 @@ export const useAuth = () => {
   return context;
 };
 
-export const AuthProvider = ({ children }: PropsWithChildren): ReactNode => {
+export const AuthProvider = ({ children }: PropsWithChildren) => {
   const [accessToken, setAccessTokenState] = useState<string | null>(null);
   const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
 
   const setAccessToken = (token: string | null) => {
     console.log('[AuthContext] Access Token 설정:', token ? '있음' : '없음');
     if (token) {
-      localStorage.setItem('accessToken', token);
+      localStorage.setItem(LOCAL_STORAGE_KEY.accessToken, token);
       axiosInstance.defaults.headers.common['Authorization'] = `Bearer ${token}`;
       setIsLoggedIn(true);
     } else {
-      localStorage.removeItem('accessToken');
+      localStorage.removeItem(LOCAL_STORAGE_KEY.accessToken);
       delete axiosInstance.defaults.headers.common['Authorization'];
       setIsLoggedIn(false);
     }
     setAccessTokenState(token);
+  };
+
+  const login = (token: string, user: User) => {
+    console.log('[AuthContext] 로그인:', { token: token ? '있음' : '없음', user });
+    setAccessToken(token);
+    if (user.email) localStorage.setItem(LOCAL_STORAGE_KEY.email, user.email);
+    localStorage.setItem(LOCAL_STORAGE_KEY.nickname, user.name || '사용자');
+    localStorage.setItem(LOCAL_STORAGE_KEY.userId, user.id.toString());
   };
 
   const logout = async () => {
@@ -46,15 +62,14 @@ export const AuthProvider = ({ children }: PropsWithChildren): ReactNode => {
     } finally {
       setAccessToken(null);
       setIsLoggedIn(false);
-      localStorage.removeItem('signup_nickname');
-      localStorage.removeItem('signup_email');
-      localStorage.removeItem('userId');
-      
+      localStorage.removeItem(LOCAL_STORAGE_KEY.nickname);
+      localStorage.removeItem(LOCAL_STORAGE_KEY.email);
+      localStorage.removeItem(LOCAL_STORAGE_KEY.userId);
     }
   };
 
   useEffect(() => {
-    const storedAccessToken = localStorage.getItem('accessToken');
+    const storedAccessToken = localStorage.getItem(LOCAL_STORAGE_KEY.accessToken);
     if (storedAccessToken) {
       setAccessToken(storedAccessToken);
     }
@@ -67,10 +82,10 @@ export const AuthProvider = ({ children }: PropsWithChildren): ReactNode => {
         isLoggedIn,
         setAccessToken,
         logout,
+        login
       }}
     >
       {children}
     </AuthContext.Provider>
   );
 };
-

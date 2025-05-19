@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "umc-be",
   "version": "0.0.1",
   "description": "",
@@ -95,3 +96,9 @@
     "testEnvironment": "node"
   }
 } 
+=======
+  "dependencies": {
+    "@tanstack/react-query": "^5.75.7"
+  }
+}
+>>>>>>> a598c7f39d32c5bb3cb35d9a43196552350c5ff4

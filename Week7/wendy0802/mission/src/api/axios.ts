@@ -5,7 +5,7 @@ interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
-const baseURL = import.meta.env.VITE_SERVER_API_URL;
+const baseURL = import.meta.env.VITE_SERVER_API_URL || 'http://localhost:8000';
 
 const getAccessToken = () => {
   const token = localStorage.getItem("accessToken");
@@ -107,3 +107,5 @@ axiosInstance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export default axiosInstance;
