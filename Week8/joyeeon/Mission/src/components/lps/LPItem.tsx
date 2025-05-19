@@ -2,6 +2,7 @@ import type { LP } from "../../apis/lps";
 import { FaHeart } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import { MouseEvent, useState } from "react";
+import LPDefaultImg from "../../assets/LpDefault.jpg"
 
 
 interface LpItemProps {
@@ -19,7 +20,7 @@ const LpItem = ({lp} : LpItemProps) =>{
         <li  onClick={handleNavigate(lp.id)} 
         className="relative w-32 group aspect-square overflow-hidden  hover:scale-120">
 
-            <img src={lp.thumbnail} 
+            <img src={lp.thumbnail || LPDefaultImg} 
             alt="lp썸네일" 
             className="w-full h-full object-cover"
             />
