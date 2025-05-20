@@ -1,0 +1,16 @@
+import { Outlet } from "react-router-dom";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
+
+const HomeLayout = () => {
+  return (
+    <div className="flex h-dvh flex-col ">
+      <Navbar />
+      <main className="flex-1 mt-20">
+        <Outlet />
+      </main>
+      <Footer />
+    </div>
+  );
+};
+export default HomeLayout;
