@@ -5,9 +5,10 @@ import { useInView } from "react-intersection-observer";
 import SortOrderButtons from "../SortOrderButtons";
 import LpCommentSkeletonList from "./LpCommentSkeletonList";
 import LpCommentWrapper from "./LpCommentWrapper";
+import { PAGINATION_ORDER } from "../../enums/common";
 
 const LpCommentSection = ({ lpId }: { lpId: number }) => {
-  const [order, setOrder] = useState<"asc" | "desc">("desc");
+  const [order, setOrder] = useState<PAGINATION_ORDER>(PAGINATION_ORDER.desc);
   const [comment, setComment] = useState("");
   const { mutate: createComment } = useCreateComment(lpId, order);
 

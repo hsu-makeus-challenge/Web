@@ -10,12 +10,12 @@ import { SEARCH_DEBOUNCE_DELAY } from "../constants/delay.ts";
 import useThrottle from "../hooks/queries/useThrottle";
 
 const HomePage = () => {
-  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
+  const [sortOrder, setSortOrder] = useState<PAGINATION_ORDER>(PAGINATION_ORDER.desc);
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search, SEARCH_DEBOUNCE_DELAY);
 
   const { data: lps, isFetching, hasNextPage, isLoading, fetchNextPage, isError } =
-    useGetInfiniteLpList(10, debouncedSearch, sortOrder as PAGINATION_ORDER);
+    useGetInfiniteLpList(10, debouncedSearch, sortOrder);
 
   // ref, inView
   // ref -> 특정한 HTML 요소 감시 가능
@@ -33,11 +33,6 @@ const HomePage = () => {
       throttledFetchNextPage();
     }
   }, [inView, throttledFetchNextPage]);
-
-  useEffect(() => {
-    window.addEventListener("scroll", throttledFetchNextPage);
-    return () => window.removeEventListener("scroll", throttledFetchNextPage);
-  }, [throttledFetchNextPage]);
 
   return (
     <div className="flex flex-col bg-[#121212] min-h-screen text-white">

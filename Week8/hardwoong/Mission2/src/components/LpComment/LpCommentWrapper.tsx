@@ -6,11 +6,12 @@ import { Comment } from "../../types/comment";
 import EditComment from "./EditComment";
 import DeleteComment from "./DeleteComment";
 import LpComment from "./LpComment";
+import { PAGINATION_ORDER } from "../../enums/common";
 
 type Props = {
   comment: Comment;
   lpId: number;
-  order: "asc" | "desc";
+  order: PAGINATION_ORDER;
 };
 
 const LpCommentWrapper = ({ comment, lpId, order }: Props) => {
