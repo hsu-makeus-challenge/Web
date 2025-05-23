@@ -4,12 +4,16 @@ import useGetInfiniteLpList from '../hooks/queries/useGetInfiniteLpList';
 import LpCard from '../components/lp-detail/lp-card';
 import LpCardSkeletonList from '../components/lp-detail/lp-card-skeleton-list';
 import useThrottle from '../hooks/custom/useThrottle';
+import { PAGINATION_ORDER } from '../enums/commons';
+import OrderButton from '../components/order-button';
 
 const HomePage: React.FC = () => {
-  const [order, setOrder] = useState<'desc' | 'asc'>('desc');
+  const [order, setOrder] = useState<PAGINATION_ORDER>(PAGINATION_ORDER.desc);
+  const [prevInView, setPrevInView] = useState(false);
 
   const { ref, inView } = useInView({
-    threshold: 0,
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px',
   });
   const throttledInView = useThrottle(inView, 1000);
 
@@ -18,7 +22,6 @@ const HomePage: React.FC = () => {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    isLoading,
     status,
     error,
     refetch,
@@ -29,11 +32,21 @@ const HomePage: React.FC = () => {
   }, [order, refetch]);
 
   useEffect(() => {
-    if (throttledInView && hasNextPage && !isFetchingNextPage) {
-      console.log('다음 페이지 호출');
+    //inView가 false에서 true로 변할 때만 다음 페이지 호출
+    if (throttledInView && !prevInView && hasNextPage && !isFetchingNextPage) {
+      setPrevInView(true);
       fetchNextPage();
+      console.log('다음페이지호출');
+    } else if (!throttledInView) {
+      setPrevInView(false);
     }
-  }, [throttledInView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  }, [
+    throttledInView,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage,
+    prevInView,
+  ]);
 
   const allLps = data?.pages.flatMap((page) => page.data.data) || [];
 
@@ -47,31 +60,7 @@ const HomePage: React.FC = () => {
 
   return (
     <div className="px-6 py-8 max-w-7xl mx-auto">
-      <div className="flex justify-end mb-6">
-        <div className="bg-gray-800 rounded-lg p-1 inline-flex">
-          <button
-            className={`px-4 py-2 rounded-md transition-all ${
-              order === 'desc'
-                ? 'bg-pink-600 text-white'
-                : 'bg-transparent text-gray-300 hover:text-white'
-            }`}
-            onClick={() => setOrder('desc')}
-          >
-            최신순
-          </button>
-          <button
-            className={`px-4 py-2 rounded-md transition-all ${
-              order === 'asc'
-                ? 'bg-pink-600 text-white'
-                : 'bg-transparent text-gray-300 hover:text-white'
-            }`}
-            onClick={() => setOrder('asc')}
-          >
-            오래된순
-          </button>
-        </div>
-      </div>
-
+      <OrderButton order={order} setOrder={setOrder} />
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {allLps.length === 0 ? (
           <div className="text-white text-lg col-span-full text-center py-10">
@@ -83,7 +72,7 @@ const HomePage: React.FC = () => {
               <LpCard key={lp.id} lp={lp} />
             ))}
 
-            {!isLoading && <LpCardSkeletonList count={20} />}
+            {isFetchingNextPage && <LpCardSkeletonList count={20} />}
           </>
         )}
       </div>

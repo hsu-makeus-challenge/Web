@@ -1,25 +1,41 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import useDebounce from '../hooks/custom/useDebounce';
 import useGetInfiniteLpList from '../hooks/queries/useGetInfiniteLpList';
 import LpCard from '../components/lp-detail/lp-card';
 import LpCardSkeletonList from '../components/lp-detail/lp-card-skeleton-list';
 import useThrottle from '../hooks/custom/useThrottle';
+import { PAGINATION_ORDER } from '../enums/commons';
+import OrderButton from '../components/order-button';
 
 const SearchPage: React.FC = () => {
   const [search, setSearch] = useState('');
-  const [order, setOrder] = useState<'desc' | 'asc'>('desc');
+  const [order, setOrder] = useState<PAGINATION_ORDER>(PAGINATION_ORDER.desc);
   const debouncedSearch = useDebounce(search, 500);
-  const { ref, inView } = useInView({ threshold: 0 });
+
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+    rootMargin: '0px 0px -100px 0px',
+  });
   const throttledInView = useThrottle(inView, 1000);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
-    useGetInfiniteLpList(10, order, debouncedSearch);
+    useGetInfiniteLpList(20, order, debouncedSearch);
+
+  const prevInViewRef = useRef(false);
 
   useEffect(() => {
-    if (throttledInView && hasNextPage && !isFetchingNextPage) {
+    if (
+      throttledInView &&
+      !prevInViewRef.current &&
+      hasNextPage &&
+      !isFetchingNextPage
+    ) {
       fetchNextPage();
       console.log('다음 페이지 호출');
+      prevInViewRef.current = true; //다음 호출 방지
+    } else if (!throttledInView) {
+      prevInViewRef.current = false;
     }
   }, [throttledInView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
@@ -39,30 +55,7 @@ const SearchPage: React.FC = () => {
         />
       </div>
 
-      <div className="flex justify-end mb-6">
-        <div className="bg-gray-800 rounded-lg p-1 inline-flex">
-          <button
-            className={`px-4 py-2 rounded-md transition-all ${
-              order === 'desc'
-                ? 'bg-pink-600 text-white'
-                : 'bg-transparent text-gray-300 hover:text-white'
-            }`}
-            onClick={() => setOrder('desc')}
-          >
-            최신순
-          </button>
-          <button
-            className={`px-4 py-2 rounded-md transition-all ${
-              order === 'asc'
-                ? 'bg-pink-600 text-white'
-                : 'bg-transparent text-gray-300 hover:text-white'
-            }`}
-            onClick={() => setOrder('asc')}
-          >
-            오래된순
-          </button>
-        </div>
-      </div>
+      <OrderButton order={order} setOrder={setOrder} />
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {debouncedSearch === '' ? (
