@@ -59,13 +59,8 @@ const Search = () => {
   );
 
   const handleClick = () => {
-    if (searchType === 'title') {
-      setSearchType('tag');
-      setSearch('');
-    } else {
-      setSearchType('title');
-      setSearch('');
-    }
+    setSearchType((prevType) => (prevType === 'title' ? 'tag' : 'title'));
+    setSearch('');
   };
 
   useEffect(() => {
@@ -92,10 +87,6 @@ const Search = () => {
     }
   }, [debouncedSearch, refetch, tagRefetch, searchType]);
 
-  if (searchType === 'title' ? isLoading : tagIsLoading)
-    return <LoadingSpinner />;
-  if (searchType === 'title' ? error : tagError) return <Error />;
-
   return (
     <div className="flex flex-col items-center min-h-screen">
       <div className="w-1/2 flex flex-col gap-4 py-4 sticky top-0 bg-white z-10">
@@ -116,11 +107,15 @@ const Search = () => {
         onAscClick={() => setOrder('asc')}
         onDescClick={() => setOrder('desc')}
       />
-      <LpGrid
-        lpData={searchType === 'title' ? allLpData : allTagData}
-        isFetching={searchType === 'title' ? isFetching : tagIsFetching}
-        isLoading={searchType === 'title' ? isLoading : tagIsLoading}
-      />
+      {(searchType === 'title' ? isLoading : tagIsLoading) ? (
+        <LoadingSpinner />
+      ) : (
+        <LpGrid
+          lpData={searchType === 'title' ? allLpData : allTagData}
+          isFetching={searchType === 'title' ? isFetching : tagIsFetching}
+          isLoading={searchType === 'title' ? isLoading : tagIsLoading}
+        />
+      )}
       <div ref={observerRef} className="h-10" />
     </div>
   );
