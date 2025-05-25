@@ -14,19 +14,19 @@ const Modal = () => {
   };
 
   return (
-    <div className="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded shadow-lg text-center">
-        <p className="mb-4 text-lg font-semibold">정말 삭제하시겠습니까?</p>
+    <div className="fixed inset-0 bg-black/10 backdrop-blur-md flex items-center justify-center z-50 transition-opacity">
+      <div className="bg-white px-8 py-6 rounded-xl shadow-lg text-center w-[90%] max-w-sm">
+        <p className="mb-6 text-base font-medium text-gray-800">정말 삭제하시겠습니까?</p>
         <div className="flex justify-center gap-4">
           <button
             onClick={closeModal}
-            className="px-4 py-2 bg-gray-300 text-gray-700 rounded"
+            className="px-5 py-2 rounded-md border border-gray-300 text-gray-700 bg-white hover:bg-gray-100"
           >
             아니요
           </button>
           <button
             onClick={handleConfirm}
-            className="px-4 py-2 bg-red-500 text-white rounded"
+            className="px-5 py-2 rounded-md bg-[#3182f6] text-white hover:bg-[#1d72e8] transition"
           >
             네
           </button>

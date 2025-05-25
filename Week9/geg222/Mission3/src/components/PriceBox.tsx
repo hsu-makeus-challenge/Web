@@ -9,16 +9,18 @@ const PriceBox = () => {
     openModal();
   };
   return (
-    <div className="p-12 flex flex-col gap-4">
-      <div className="flex justify-center">
+    <div className="p-5 rounded-xl w-full max-w-xl mx-auto">
+      <div className="flex justify-center mb-4">
         <button
           onClick={handleClearCart}
-          className="border p-4 rounded-md cursor-pointer"
+          className="px-5 py-2 bg-[#3182f6] text-white rounded-md hover:bg-[#1d72e8] transition"
         >
           전체 삭제
         </button>
       </div>
-      <div className="flex justify-end">총 가격: {total} 원</div>
+      <div className="text-right text-base font-medium text-gray-700">
+        총 가격: {total} 원
+      </div>
     </div>
   );
 };
