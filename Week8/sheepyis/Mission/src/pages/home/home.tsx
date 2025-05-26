@@ -6,6 +6,7 @@ import Skeleton from "../../components/skeleton/skeleton";
 import Add from "../../components/lp/add/add";
 import AddModal from "../../components/lp/add/addModal";
 import useThrottle from "../../hooks/useThrottle";
+import SortButton from "../../components/search/sortButton";
 
 const Home = () => {
   const [order, setOrder] = useState<"asc" | "desc">("desc");
@@ -27,24 +28,7 @@ const Home = () => {
   return (
     <div className="w-full flex flex-col items-center py-[2vw] relative">
       <div className="w-[90%]">
-        <div className="flex justify-end mb-[2vw] gap-[1vw] text-[1vw]">
-          <button 
-            onClick={() => setOrder("asc")}
-            className={`px-[1vw] py-[0.5vw] rounded cursor-pointer ${
-              order === "asc" ? "bg-white text-black" : "bg-gray-700 text-white"
-            }`}
-          >
-            오래된 순
-          </button>
-          <button
-            onClick={() => setOrder("desc")}
-            className={`px-[1vw] py-[0.5vw] rounded cursor-pointer ${
-              order === "desc" ? "bg-white text-black" : "bg-gray-700 text-white"
-            }`}
-          >
-            최신순
-          </button>
-        </div>
+        <SortButton order={order} setOrder={setOrder} />
 
         {data?.pages.map((page, idx) => (
             <ListLp key={idx} data={page.data} />

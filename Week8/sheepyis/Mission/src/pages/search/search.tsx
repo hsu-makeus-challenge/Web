@@ -4,13 +4,14 @@ import { useInView } from "react-intersection-observer";
 import Skeleton from "../../components/skeleton/skeleton";
 import { useInfiniteLpQuery } from "../../hooks/lp/useLpInfiniteQuery";
 import useDebounce from "../../hooks/useDebounce";
+import SortButton from "../../components/search/sortButton";
 
 const Search = () => {
     const [order, setOrder] = useState<"asc" | "desc">("desc");
     const [searchField, setSearchField] = useState<"title" | "tag">("title");
     const [searchQuery, setSearchQuery] = useState("");
     const debouncedSearchQuery = useDebounce(searchQuery, 500);
-    const { data, fetchNextPage, hasNextPage, isFetchingNextPage, refetch } = useInfiniteLpQuery(order, 10, debouncedSearchQuery, searchField);
+    const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteLpQuery(order, 10, debouncedSearchQuery, searchField);
 
     const { ref, inView } = useInView({ threshold: 0.1, rootMargin: "0px 0px 100px 0px" });
 
@@ -35,24 +36,7 @@ const Search = () => {
                     </select>
                 </div>
 
-                <div className="flex justify-end mb-[2vw] gap-[1vw] text-[1vw]">
-                    <button 
-                        onClick={() => setOrder("asc")}
-                        className={`px-[1vw] py-[0.5vw] rounded cursor-pointer ${
-                        order === "asc" ? "bg-white text-black" : "bg-gray-700 text-white"
-                        }`}
-                    >
-                        오래된 순
-                    </button>
-                    <button
-                        onClick={() => setOrder("desc")}
-                        className={`px-[1vw] py-[0.5vw] rounded cursor-pointer ${
-                        order === "desc" ? "bg-white text-black" : "bg-gray-700 text-white"
-                        }`}
-                    >
-                        최신순
-                    </button>
-                </div>
+                <SortButton order={order} setOrder={setOrder} />
 
                 {data?.pages.map((page, idx) => (
                     <ListLp key={idx} data={page.data} />
