@@ -6,7 +6,7 @@ import { useEffect } from "react";
 
 const ListCart = () => {
     const dispatch = useDispatch();
-    const { cartItems, totalAmount } = useSelector((state: RootState) => state.cart);
+    const { cartItems } = useSelector((state: RootState) => state.cart);
 
     useEffect(() => {
         dispatch(calculateTotals());
@@ -25,11 +25,6 @@ const ListCart = () => {
             {cartItems.map((item) => (
                 <ItemCart key={item.id} item={item} />
             ))}
-
-            <div className="w-full h-[5vw] items-center flex justify-between p-[1vw] my-[2vw] border-black border-t-[0.2vw]">
-                <button className="px-[1vw] py-[0.5vw] bg-blue-950 text-white text-xs cursor-pointer">전체 삭제</button>
-                <p className="">금액: {totalAmount}</p>
-            </div>
         </div>
     )
 }
