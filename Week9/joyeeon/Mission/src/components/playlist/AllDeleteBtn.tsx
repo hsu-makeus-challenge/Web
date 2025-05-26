@@ -12,11 +12,15 @@ const AllDeleteBtn = () => {
         dispatch(openModal());
     }
     return (
-        <button className="border mx-3 mb-20 rounded-md py-2 px-3 cursor-pointer hover:bg-gray-300"
-            onClick={handleopenModal}
-        >
-            전체 삭제
-        </button>
+        <>
+            <button className="border mx-3 mb-20 rounded-md py-2 px-3 cursor-pointer hover:bg-gray-300"
+                onClick={handleopenModal}
+            >
+                전체 삭제
+            </button>
+
+            <DeleteModal />
+        </>
 
     )
 }

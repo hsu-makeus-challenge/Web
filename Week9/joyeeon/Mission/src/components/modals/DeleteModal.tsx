@@ -21,6 +21,7 @@ const DeleteModal = () => {
             isOpen={isOpen}
             onRequestClose={() => dispatch(closeModal())}
             contentLabel='delete modal'
+            style={customModalStyles}
         >
             <main className='flex flex-col justify-center items-center w-full h-full'>
                 <div className="mb-4 text-lg">정말 삭제하시겠습니까?</div>

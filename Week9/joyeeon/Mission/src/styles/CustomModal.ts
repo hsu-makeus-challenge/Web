@@ -4,7 +4,7 @@ export const customModalStyles  = {
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: '80%',
+    width: '300px',
     maxWidth: '500px',
     backgroundColor: '#fff',
     borderRadius: '8px',
