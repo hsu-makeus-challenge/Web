@@ -13,12 +13,14 @@ interface UpdateCommentPayload {
 }
 
 export const useCreateLpComment = () => {
+    const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: ({ content, lpid }: CreateCommentPayload) => createcomment(content, lpid),
-        onSuccess: (response) => {
-            console.log("LP 댓글 생성 성공:", response.data);
-        },
+        onSuccess: (_data, variables) => {
+      // 댓글 생성 성공 후, 해당 LP의 댓글 목록 쿼리를 무효화
+      queryClient.invalidateQueries({ queryKey: ["lpComments", variables.lpid] });
+    },
         onError: (error) => {
             console.error("LP 댓글 생성 실패:", error);
         },
