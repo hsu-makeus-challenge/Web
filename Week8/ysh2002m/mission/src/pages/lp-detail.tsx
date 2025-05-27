@@ -5,7 +5,7 @@ import Spinner from "../components/spinner";
 import LPDetailContent from "../components/lp-detail/detailcontent";
 import { AiOutlineComment } from "react-icons/ai";
 import CommentsSection from "../components/comments/comments";
-import { fetchCurrentUserInfo } from "../hooks/user/userinfo";  
+import { fetchCurrentUserInfo } from "../hooks/user/useuserinfo";  
 import type { LpDetailDataType } from "../types/lp";
 
 const LPDetailPage: React.FC = () => {
