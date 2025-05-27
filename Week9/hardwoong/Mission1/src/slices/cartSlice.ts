@@ -10,7 +10,7 @@ export interface CartState {
 }
 
 const initialState: CartState = {
-  cartItems: cartItems,
+  cartItems: [...cartItems], // 외부에서 cartItems를 변경하면 영향을 받지 않도록 복사 
   amount: 0,
   total: 0,
 };

@@ -9,6 +9,13 @@ function createStore() {
       cart: cartReducer,
       modal: modalReducer,
     },
+    // middleware: (getDefaultMiddleware) =>
+    //   getDefaultMiddleware()
+    //     .concat(myCustomMiddleware) // 커스텀 미들웨어 추가
+    //     .concat(logger) // redux-logger: 액션/상태 변화 콘솔 출력
+    //     .concat(thunk), // redux-thunk: 비동기 액션 지원(기본 포함)
+    //
+    // devTools: process.env.NODE_ENV !== 'production', // 개발툴 활성화 옵션
   });
   return store;
 }
