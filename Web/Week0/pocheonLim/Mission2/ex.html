@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flex와 Grid 레이아웃</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+        }
+        
+        .container {
+            display: grid;
+            grid-template-rows: 100px 400px 450px 100px;
+            grid-template-columns: 1fr;
+            height: 100vh;
+        }
+        
+        .header-menu {
+            display: flex;
+            grid-row: 1;
+        }
+        
+        .header {
+            background-color: #1a2639;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+        }
+        
+        .menu {
+            background-color: #e94560;
+            flex: 3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+        }
+        
+        .hero {
+            background-color: #4d80b3;
+            grid-row: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+        }
+        
+        .content {
+            grid-row: 3;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+        }
+        
+        .main {
+            background-color: #1a2639;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+        }
+        
+        .white-space {
+            background-color: white;
+        }
+        
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .image {
+            background-color: #c5e3e5;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: black;
+        }
+        
+        .extra {
+            background-color: #4ecdc4;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            color: black;
+        }
+        
+        .banner {
+            background-color: #ffd166;
+            grid-row: 4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header-menu">
+            <div class="header">HEADER</div>
+            <div class="menu">MENU</div>
+        </div>
+        <div class="hero">HERO</div>
+        <div class="content">
+            <div class="main">MAIN</div>
+            <div class="white-space"></div>
+            <div class="sidebar">
+                <div class="image">IMAGE</div>
+                <div class="extra">EXTRA</div>
+            </div>
+        </div>
+        <div class="banner">BANNER</div>
+    </div>
+</body>
+</html>

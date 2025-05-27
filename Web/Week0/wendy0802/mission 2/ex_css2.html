@@ -1,0 +1,120 @@
+git add . 
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exact Layout with Flex & Grid</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .top {
+            display: flex;
+            width: 100%;
+        }
+
+        .header {
+            background-color: #1a1a2e;
+            color: white;
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .menu {
+            background-color: #e63946;
+            color: white;
+            flex: 1;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .hero {
+            background-color: #457b9d;
+            color: white;
+            padding: 50px;
+            text-align: center;
+            width: 100%;
+            flex: 2;
+        }
+
+        .content {
+            display: grid;
+            grid-template-columns: 2fr 0.5fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            flex: 3;
+        }
+
+        .main {
+            background-color: #1a1a2e;
+            color: white;
+            grid-row: span 2;
+            padding: 50px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .empty {
+            background-color: white;
+        }
+
+        .image {
+            background-color: #a8dadc;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .extra {
+            background-color: #6a994e;
+            padding: 20px;
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            grid-column: 3; /* EXTRA를 오른쪽 정렬 */
+        }
+
+        .banner {
+            background-color: #f4a261;
+            padding: 20px;
+            text-align: center;
+            color: black;
+            width: 100%;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top">
+            <div class="header">HEADER</div>
+            <div class="menu">MENU</div>
+        </div>
+        <div class="hero">HERO</div>
+        <div class="content">
+            <div class="main">MAIN</div>
+            <div class="empty"></div>
+            <div class="image">IMAGE</div>
+            <div class="empty"></div> <!-- EXTRA가 오른쪽 정렬되도록 공백 추가 -->
+            <div class="extra">EXTRA</div>
+        </div>
+        <div class="banner">BANNER</div>
+    </div>
+</body>
+</html>

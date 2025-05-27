@@ -1,0 +1,136 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #e1e7f5;
+  box-sizing: border-box;
+  flex-direction: column;
+  padding: 5rem;
+  margin: 0;
+}
+
+hr {
+  height: 1px;
+  width: 80%;
+  border: none;
+  background: skyblue;
+  margin: 4rem 0 1rem 0;
+}
+
+input {
+  width: 100%;
+  padding: 1.25rem 1rem;
+  box-sizing: border-box;
+  border: 2px solid black;
+  border-radius: 4px;
+}
+
+input::placeholder {
+  font-style: italic;
+}
+
+input:focus {
+  border-color: skyblue;
+  outline: none;
+}
+
+main {
+  width: 60%;
+}
+
+.container {
+  display: flex;
+  text-align: center;
+}
+
+.todo-section,
+.complete-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.taskList,
+.completedList {
+  width: 65%;
+  list-style-type: none;
+  padding: 0;
+}
+
+.subtitle {
+  border-bottom: 2px solid lightsteelblue;
+}
+
+.todo {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 4px solid lightsteelblue;
+  align-items: center;
+}
+
+.todoButton {
+  padding: 0.25rem 0.5rem;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  background: lightsteelblue;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  main {
+    width: 90%;
+  }
+
+  hr {
+    width: 90%;
+    margin-top: 1.5rem;
+  }
+
+  .taskList,
+  .completedList {
+    width: 90%;
+  }
+}
+
+@media (max-width: 480px) {
+  body {
+    padding: 1rem;
+  }
+  main {
+    width: 95%;
+  }
+
+  input {
+    padding: 0.5rem;
+  }
+
+  hr {
+    width: 95%;
+    margin-top: 0;
+  }
+
+  h1 {
+    font-size: 1.25rem;
+  }
+
+  h2.subtitle {
+    font-size: 1rem;
+  }
+
+  h3 {
+    font-size: 0.75rem;
+  }
+
+  .todo {
+    border-bottom-width: 2px;
+  }
+
+  .todoButton {
+    padding: 0.2rem 0.4rem;
+  }
+}

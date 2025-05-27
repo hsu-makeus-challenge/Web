@@ -1,0 +1,20 @@
+import { create } from "zustand";
+
+interface User {
+  id: string;
+  nickname: string;
+  email: string;
+  // 필요한 경우 추가 필드: avatar, role 등
+}
+
+interface UserStore {
+  user: User | null;
+  setUser: (user: User) => void;
+  logout: () => void;
+}
+
+export const useUserStore = create<UserStore>((set) => ({
+  user: null,
+  setUser: (user) => set({ user }),
+  logout: () => set({ user: null }),
+}));

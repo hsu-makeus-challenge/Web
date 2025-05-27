@@ -1,0 +1,31 @@
+.btn {
+    @apply w-full border-1 rounded-lg h-10 p-3 text-sm box-border flex items-center justify-center 
+}
+
+.input {
+    @apply w-full border-1 rounded-lg h-10 p-3 text-sm box-border placeholder:text-xs
+}
+
+.inputpass {
+    @apply w-full border-1 rounded-lg h-10 p-3 text-sm box-border placeholder:text-xs flex items-center justify-between
+}
+
+.customHr {
+    @apply h-0.5 bg-white mt-1 mb-1
+}
+
+.loginbtn {
+    @apply w-full border-2 rounded-lg h-10 p-3 text-sm box-border
+}
+
+.errorMSG {
+    @apply text-xs text-red-400 italic mt-2
+}
+
+.lpinput {
+    @apply w-full mb-5 border-1 bg-cyan-100 border-cyan-300  rounded-lg h-10 p-3 text-sm box-border placeholder:text-xs flex items-center justify-between
+}
+
+.lpsubmit {
+    @apply w-[50px] cursor-pointer border-1 bg-cyan-200 border-cyan-300 rounded-lg h-10 p-3 text-sm box-border placeholder:text-xs flex items-center justify-between
+}

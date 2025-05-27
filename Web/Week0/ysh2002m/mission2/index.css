@@ -1,0 +1,109 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    height: 100%;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 50%;
+    margin: auto;
+  }
+  
+  .container {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
+    grid-template-rows: 10% 40% 40% 10%;
+  }
+  
+  .head {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+  }
+  
+  .header {
+    background-color: #1f2c39;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+  }
+  
+  .menu {
+    background-color: #e74c3c;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+  }
+  
+  .hero {
+    background-color: #3498db;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 36px;
+  }
+  
+  .row {
+    display: grid;
+    grid-template-columns: 50% 25% 25%;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas:
+      "main space image"
+      "main space extra";
+  }
+  
+  .main {
+    grid-area: main;
+    background-color: #1f2c39;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+  }
+  
+  .space {
+    grid-area: space;
+    background-color: white;
+  }
+  
+  .image {
+    grid-area: image;
+    background-color: #a6d3d3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+  }
+  
+  .extra {
+    grid-area: extra;
+    background-color: #2ecc71;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+  }
+  
+  .banner {
+    background-color: #f1c40f;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+  }
+  
