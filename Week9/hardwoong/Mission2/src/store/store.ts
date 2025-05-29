@@ -1,20 +1,31 @@
 import { configureStore } from "@reduxjs/toolkit";
 import cartReducer from '../slices/cartSlice';
 import modalReducer from '../slices/modalSlice';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage'; // localStorage 사용
+import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
+
+const persistConfig = {
+  key: 'cart',
+  storage,
+};
+
+const persistedCartReducer = persistReducer(persistConfig, cartReducer);
 
 // 1. 저장소 설정
 function createStore() {
   const store = configureStore({
     reducer: {
-      cart: cartReducer,
+      cart: persistedCartReducer,
       modal: modalReducer,
     },
-    // middleware: (getDefaultMiddleware) =>
-    //   getDefaultMiddleware()
-    //     .concat(myCustomMiddleware) // 커스텀 미들웨어 추가
-    //     .concat(logger) // redux-logger: 액션/상태 변화 콘솔 출력
-    //     .concat(thunk), // redux-thunk: 비동기 액션 지원(기본 포함)
-    //
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          // redux-persist 관련 액션은 직렬화 체크에서 제외
+          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
+        },
+      }),
     // devTools: process.env.NODE_ENV !== 'production', // 개발툴 활성화 옵션
   });
   return store;
@@ -26,6 +37,7 @@ function createStore() {
 
 const store = createStore();
 
+export const persistor = persistStore(store);
 export default store;
 
 export type RootState = ReturnType<typeof store.getState>;
