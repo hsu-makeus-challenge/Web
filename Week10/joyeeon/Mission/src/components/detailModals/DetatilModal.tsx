@@ -13,7 +13,6 @@ const DetailModal = () => {
 
 
     const imgURL: string = 'https://image.tmdb.org/t/p/w1280'
-    console.log(detail)
 
 
     return (
@@ -23,18 +22,25 @@ const DetailModal = () => {
             contentLabel='detail modal'
             style={customModalStyles}
         >
-            <button className='z-50 absolute top-5 right-10 text-black' 
+            <button className='z-50 absolute top-2 right-5 text-black'
                 onClick={() => closeModal()}
-            ><ImCross/></button>
-            <div className="relative text-white p-0">
+            ><ImCross /></button>
+            <div className="relative text-white p-0 overflow-hidden">
 
-                <img
-                    src={`${imgURL}${detail?.backdrop_path}`}
-                    alt="background"
-                    className="absolute top-0 left-0 w-full h-[300px] object-cover"
-                />
+                <div className="relative w-full h-[300px] mb-5">
+                    {/* 백드롭 이미지 (배경) */}
+                    <img
+                        src={`${imgURL}${detail?.backdrop_path}`}
+                        alt="background"
+                        className="absolute top-0 left-0 w-full h-full object-cover"
+                    />
 
-                <div className="relative z-10 flex gap-6 p-6 pt-[320px]">
+                    {/* 텍스트 위에 올라오도록 */}
+                    <div className="relative z-10 flex flex-col h-full items-start justify-end text-white text-center px-4">
+                        <h2 className="text-2xl font-bold text-white  mb-2">{detail?.title}</h2>
+                    </div>
+                </div>
+                <div className="relative z-10 flex gap-6 p-6 ">
                     {/* 포스터 */}
                     <img
                         src={`${imgURL}${detail?.poster_path}`}
@@ -44,9 +50,8 @@ const DetailModal = () => {
 
                     {/* 텍스트 영역 */}
                     <div className="flex-1 text-black">
-                        <h2 className="text-2xl font-bold">{detail?.title}</h2>
-                        <p className="text-sm italic mb-2">{detail?.title}</p>
 
+                        <h4>개봉일</h4>
                         <div className="flex items-center gap-3 text-sm mb-3">
                             {/* <span className="text-blue-400 font-bold">{detail.vote_average.toFixed(1)}</span> */}
                             <span>|</span>
