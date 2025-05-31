@@ -14,15 +14,21 @@ interface CategoryProps {
     page: number;
     setTotalPages: (total: number) => void;
     searchKeyword?: string;
+    searchOptions?: {
+        language: string;
+        includeAdult: boolean;
+    };
 }
 
-const MovieList = ({ category, page, setTotalPages, searchKeyword }: CategoryProps) => {
+const MovieList = ({ category, page, setTotalPages, searchKeyword, searchOptions }: CategoryProps) => {
     const trimmedKeyword = (searchKeyword ?? "").trim(); // 안전 처리
     const isSearching = trimmedKeyword.length > 0;
 
+    const lang = searchOptions?.language || 'en';
+
     const endpoint = isSearching
-        ? `search/movie?query=${encodeURIComponent(trimmedKeyword)}&language=ko-KR&page=${page}`
-        : `movie/${category}?language=ko-KR&page=${page}`; // 여기에 movie/ 붙어야 함!!
+        ? `search/movie?query=${encodeURIComponent(trimmedKeyword)}&language=${lang}&page=${page}`
+        : `movie/${category}?language=${lang}&page=${page}`;
 
     const { data, isLoading, error } = useCustomFetch<{ results: Movie[]; total_pages: number }>(endpoint);
 
@@ -31,7 +37,6 @@ const MovieList = ({ category, page, setTotalPages, searchKeyword }: CategoryPro
     useEffect(() => {
         if (data) {
             setTotalPages(data.total_pages);
-            console.log(data.results)
         }
     }, [data, setTotalPages]);
 
@@ -46,10 +51,19 @@ const MovieList = ({ category, page, setTotalPages, searchKeyword }: CategoryPro
 
     const renderedMovies = useMemo(() => {
         if (!data?.results) return null;
+        console.log(data.results)
         return data.results.map((movie) => (
             <MovieItem key={movie.id} movie={movie} />
         ));
     }, [data?.results]);
+
+    //성인 콘텐츠 필터링
+    const filteredResults = useMemo(() => {
+        if (!data?.results) return [];
+        return data.results.filter(movie => {
+            return searchOptions?.includeAdult ? true : !movie.adult;
+        });
+    }, [data?.results, searchOptions]);
 
     return (
         <>
@@ -62,20 +76,17 @@ const MovieList = ({ category, page, setTotalPages, searchKeyword }: CategoryPro
                 <div className="flex justify-center items-center min-h-[50vh] w-full">
                     <IsError /></div>
             }
-            {
-                !isLoading && !error && hasResults && (
-                    <div className="flex justify-center">
-                        <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 
-                        gap-5 cursor-pointer">
-                            {/* {data?.results?.map((movie: any) => (
-                                <MovieItem key={movie.id} movie={movie} />
-                            ))} */}
-                            {renderedMovies}
-                        </ul>
-                    </div>
-                )
-            }
-            {!isLoading && !error && !hasResults && isSearching && (
+            {!isLoading && !error && filteredResults.length > 0 && (
+                <div className="flex justify-center">
+                    <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5 cursor-pointer">
+                        {filteredResults.map(movie => (
+                            <MovieItem key={movie.id} movie={movie} />
+                        ))}
+                    </ul>
+                </div>
+            )}
+
+            {!isLoading && !error && filteredResults.length === 0 && isSearching && (
                 <div className="text-center text-gray-600 mt-10">검색 결과가 없습니다.</div>
             )}
         </>

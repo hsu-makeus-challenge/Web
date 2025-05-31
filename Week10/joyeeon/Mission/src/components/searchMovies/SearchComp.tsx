@@ -2,19 +2,23 @@ import { FaFilm } from "react-icons/fa";
 import { GrSettingsOption } from "react-icons/gr";
 import { FaSearch } from "react-icons/fa";
 import { FaGlobe } from "react-icons/fa";
-
+import { useState } from "react";
 
 interface SearchInputProps {
     value: string;
     onChange: (value: string) => void;
-    onSearch: (keyword: string) => void;
+    onSearch: (
+        keyword: string,
+        options: { language: string; includeAdult: boolean }) => void;
 }
 
 const SearchComp = ({ value, onChange, onSearch }: SearchInputProps) => {
+    const [language, setLanguage] = useState("ko-KR");
+    const [includeAdult, setIncludeAdult] = useState(false);
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSearch(value); // 상위로 전달
-        //console.log(inputValue);
+        onSearch(value, { language, includeAdult });
     };
 
     return (
@@ -44,7 +48,12 @@ const SearchComp = ({ value, onChange, onSearch }: SearchInputProps) => {
                             옵션
                         </label>
                         <div className="flex items-center gap-2">
-                            <input type="checkbox" id="adult" />
+                            <input
+                                type="checkbox"
+                                id="adult"
+                                checked={includeAdult}
+                                onChange={(e) => setIncludeAdult(e.target.checked)}
+                            />
                             <label htmlFor="adult" className="text-sm">
                                 성인 콘텐츠 표시
                             </label>
@@ -59,15 +68,20 @@ const SearchComp = ({ value, onChange, onSearch }: SearchInputProps) => {
                         <FaGlobe />
                         언어
                     </label>
-                    <select className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none">
-                        <option>한국어</option>
-                        <option>영어</option>
-                        <option>일본어</option>
+                    <select
+                        className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none"
+                        value={language}
+                        onChange={(e) => setLanguage(e.target.value)}
+                    >
+
+                        <option value="ko">한국어</option>
+                        <option value="en">영어</option>
+                        <option value="ja">일본어</option>
                     </select>
                 </div>
 
                 {/* 검색 버튼 */}
-                <button 
+                <button
                     type="submit"
                     className="w-full bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 shadow-md flex items-center justify-center gap-2">
                     <FaSearch />

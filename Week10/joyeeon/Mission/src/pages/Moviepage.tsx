@@ -15,6 +15,7 @@ const MoviePage = () => {
 
     const [page, setPage] = useState<number>(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [searchOptions, setSearchOptions] = useState({ language: 'ko-KR', includeAdult: false });
 
     const [searchKeyword, setSearchKeyword] = useState<string>("");
     const [searchInput, setSearchInput] = useState("");
@@ -35,8 +36,9 @@ const MoviePage = () => {
         setSearchInput(value);
     }, []);
 
-    const handleSearch = useCallback((keyword: string) => {
+    const handleSearch = useCallback((keyword: string, options: { language: string; includeAdult: boolean }) => {
         setSearchKeyword(keyword);
+        setSearchOptions(options);
     }, []);
 
     return (
@@ -52,6 +54,7 @@ const MoviePage = () => {
                 page={page}
                 setTotalPages={setTotalPages}
                 searchKeyword={searchKeyword}
+                searchOptions={searchOptions}
             />
         </main>
     )
