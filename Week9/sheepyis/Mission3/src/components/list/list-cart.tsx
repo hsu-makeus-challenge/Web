@@ -1,14 +1,8 @@
 import ItemCart from "./item-cart";
 import { useCartStore } from "../../store/useCartStore";
-import { useEffect } from "react";
 
 const ListCart = () => {
     const cartItems = useCartStore((state) => state.cartItems);
-    const calculateTotals = useCartStore((state) => state.calculateTotals);
-
-    useEffect(() => {
-        calculateTotals();
-    }, [cartItems, calculateTotals]);
 
     if (cartItems.length === 0) {
         return (
