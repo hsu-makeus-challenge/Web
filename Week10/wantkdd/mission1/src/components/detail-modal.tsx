@@ -64,6 +64,17 @@ const MovieDetailModal = ({ movieId, onClose }: Props) => {
             </p>
           </div>
         </div>
+        <div className="absolute bottom-4 right-4 px-4 py-2 w-37 bg-yellow-400 text-black font-bold rounded cursor-pointer shadow-lg">
+          <a
+            href={`https://www.imdb.com/find?q=${encodeURIComponent(
+              movie.title || ''
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            IMDb에서 보기
+          </a>
+        </div>
       </div>
     </div>
   );
