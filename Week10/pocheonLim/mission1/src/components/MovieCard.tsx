@@ -1,4 +1,5 @@
 import type { Movie } from "../types/movie";
+import useModalStore from "../store/modalStore";
 
 interface MovieCardProps {
     movie: Movie;
@@ -7,9 +8,17 @@ interface MovieCardProps {
 const MovieCard = ({ movie }: MovieCardProps) => {
     const imageBaseUrl = "https://image.tmdb.org/t/p/w500";
     const fallbackImageImage = "https://via.placeholder.com/500x750";
+    const openModal = useModalStore((state) => state.openModal);
+
+    const handleClick = () => {
+        openModal(movie);
+    };
 
     return (
-        <div className="cursor-pointer overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:shadow-lg">
+        <div 
+            className="cursor-pointer overflow-hidden rounded-lg bg-white shadow-md transition-all duration-300 hover:shadow-lg"
+            onClick={handleClick}
+        >
             <div className="relative h-80 overflow-hidden">
                 <img
                     src={movie.poster_path

@@ -56,7 +56,7 @@ const MovieFilter = ({ onChange }: MovieFilterProps) => {
                     
                 </div>
                 <div className="pt-4">
-                    <button onClick={handleSubmit}>영화검색</button>
+                    <button onClick={handleSubmit} className="rounded-lg bg-blue-500 px-4 py-2 text-white hover:bg-blue-600">영화검색</button>
                 </div>
             </div>
         </div>
