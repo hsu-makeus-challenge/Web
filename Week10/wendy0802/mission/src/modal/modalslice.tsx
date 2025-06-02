@@ -1,5 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
-
+import { createSlice } from "@reduxjs/toolkit";
+ 
 // modalSlice.ts 또는 modalslice.ts
 export interface Movie {
   backdrop_path: string;
@@ -26,7 +26,7 @@ const initialState: ModalState = {
 };
 
 const modalSlice = createSlice({
-  name: 'modal',
+  name: "modal",
   initialState,
   reducers: {
     openModal: (state, action) => {

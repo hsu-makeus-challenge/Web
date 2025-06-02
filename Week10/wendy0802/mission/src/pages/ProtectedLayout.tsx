@@ -7,7 +7,7 @@ const ProtectedLayout = () => {
     if (!accessToken) {
       return <Navigate to="/login" replace />;
     }
-  
+   
     return <Outlet />;
   };
   

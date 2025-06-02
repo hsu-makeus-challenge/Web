@@ -1,5 +1,4 @@
 
-// src/api/auth.ts
 import axios, { AxiosError, AxiosInstance, InternalAxiosRequestConfig } from "axios";
  
 const api = axios.create({
@@ -7,13 +6,11 @@ baseURL: "http://localhost:8000",
 withCredentials: true,
 });
 
-// 토큰 관리 함수
 const getAccessToken = () => localStorage.getItem("accessToken");
 const getRefreshToken = () => localStorage.getItem("refreshToken");
 const setAccessToken = (token: string) => localStorage.setItem("accessToken", token);
 const setRefreshToken = (token: string) => localStorage.setItem("refreshToken", token);
 
-// (무한 재시도 방지)
 let isRefreshing = false;
 // 토큰 갱신 중 대기중인 요청들을 저장
 let failedQueue: any[] = [];

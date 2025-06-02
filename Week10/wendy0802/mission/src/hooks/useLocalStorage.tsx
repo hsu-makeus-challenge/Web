@@ -6,7 +6,7 @@ export const useLocalStorage = (key: string) => {
         console.log(error);
       }
     };
-  
+   
     const getItem = () => {
       try {
         const item: string | null = window.localStorage.getItem(key);

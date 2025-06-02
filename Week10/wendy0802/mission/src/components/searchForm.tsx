@@ -1,5 +1,5 @@
 import React from "react";
-
+ 
 interface SearchFormProps {
   query: string;
   setQuery: (v: string) => void;

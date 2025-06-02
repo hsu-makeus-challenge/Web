@@ -7,7 +7,7 @@ import { loginApi } from "../api/auth";
 import { useAuth } from "../context/AuthContext";
 import { useEffect, useCallback } from "react";
 import { useLocation } from "react-router-dom";
-
+ 
 // 로그인 스키마 정의
 const loginSchema = z.object({
   email: z.string().email("올바른 이메일 형식이 아닙니다."),

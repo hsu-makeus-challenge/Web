@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import LoadingSpinner from "./LoadingSpinner";
 import NotFoundPage from "./NotFoundPage";
-
+ 
 const MovieDetailPage = (): JSX.Element => {
   const { movieId } = useParams();
   const [movieDetails, setMovieDetails] = useState<any>(null);

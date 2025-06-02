@@ -2,7 +2,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../store/store';
 import { closeModal, ModalState } from './modalslice';
 
-const MovieModal = () => {
+
+ const MovieModal = () => {
   const modalState = useSelector((state: RootState): ModalState => state.modal as ModalState);
   const { isOpen, movie } = modalState;
   const dispatch = useDispatch();
