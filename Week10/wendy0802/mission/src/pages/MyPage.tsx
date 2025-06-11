@@ -6,7 +6,7 @@ const MyPage = () => {
   const [nickname, setNickname] = useState("");
   const navigate = useNavigate();
 
-  // localStorage에서 유저 정보 로드
+  /
   useEffect(() => {
     const storedEmail = localStorage.getItem("signup_email") || "";
     const storedNickname = localStorage.getItem("signup_nickname") || "";

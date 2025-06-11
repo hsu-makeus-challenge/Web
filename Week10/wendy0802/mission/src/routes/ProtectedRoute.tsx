@@ -3,7 +3,7 @@ import { Navigate } from "react-router-dom";
 interface ProtectedRouteProps {
   children: React.ReactNode;
 }
-
+ 
 const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
   const token =
     typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;

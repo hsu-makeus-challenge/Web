@@ -2,7 +2,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-// ✅ 카테고리 이름을 실제 API endpoint에 맞게 변환하는 맵
 const categoryMap: Record<string, string> = {
   popular: "popular",
   "top-rated": "top_rated",

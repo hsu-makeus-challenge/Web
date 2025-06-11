@@ -4,7 +4,6 @@ import  Navbar  from "../components/Navbar"
 const HomePage = (): JSX.Element => {
   return <div>
     <>
-    
     <Outlet /> 
     </>
   </div>;

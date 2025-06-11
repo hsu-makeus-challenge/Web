@@ -9,7 +9,7 @@ import SearchForm from "../components/searchForm";
 import { useDispatch } from "react-redux";
 import { openModal } from "../modal/modalslice";
 import MovieModal from "../modal/MovieModal";
-
+ 
 export default function MoviePage(): JSX.Element {
   const [page, setPage] = useState(1);
   const { category } = useParams<{ category: string }>();

@@ -3,7 +3,7 @@ import { useState } from "react";
 import Navbar from "../components/Navbar";
 import { useForm } from "../hooks/useForm";
 import {
-  emailSchema,
+  emailSchema, 
   passwordSchema,
   nicknameSchema,
   EmailForm,
